@@ -1,290 +1,174 @@
 'use client'
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './global.css';
-import { checkUser, loginUser, registerUser, getOidcInfo } from '../api/user';
-import { message, Result, Button } from "antd";
-import { UserManager } from 'oidc-client';
-import logoIcon from "../img/health.svg";
+import React, { useState, useEffect, useCallback } from 'react'
+import { getEiamAuthUrl, buildConsoleLoginUrl } from '../config/auth'
 
+/**
+ * 登录页（tech-design §3.5 / ui-design 组件 1 UF-1）：
+ * 移除本地账密表单，改为「使用平台账号登录」单按钮跳 haven-console 登录页。
+ * 四态：Default（未登录）/ Loading（跳转中）/ Error（登录失败）/ Config（配置缺失）。
+ * 视觉按平台设计语言（默认深色 + html.light 浅色、品牌四格 logo、靛蓝 CTA、danger 软底错误条）。
+ */
 export const Login = () => {
-    const [showOidcButtons, setShowOidcButtons] = useState(false);
-    const [adminExists, setAdminExists] = useState(null); // null: 加载中, false: 不存在, true: 存在
-    const navigate = useNavigate();
-    const [serviceError, setServiceError] = useState(false)
-    const [serviceErrorMsg, setServiceErrorMsg] = useState("服务暂时不可用，请稍后重试或联系管理员") // 新增：服务异常详细信息
+  const [state, setState] = useState('default') // default | loading | error | config
+  const [configRetryCount, setConfigRetryCount] = useState(0)
 
-    // 检查是否已登录
-    useEffect(() => {
-        const token = localStorage.getItem('Authorization');
-        if (token) {
-            const redirectPath = localStorage.getItem('redirectPath') || '/';
-            localStorage.removeItem('redirectPath');
-            navigate(redirectPath);
-        }
-    }, [navigate]);
+  // 读取 eiamAuthUrl 配置；缺失时进入「配置缺失」态，后台每 30s 重试拉取。
+  const refreshConfig = useCallback(() => {
+    const url = getEiamAuthUrl()
+    setState((prev) => {
+      // 仅当此前因配置缺失而禁用时，才在配置命中后回到 Default（不覆盖 loading/error）
+      if (url) {
+        return prev === 'config' ? 'default' : prev
+      }
+      return 'config'
+    })
+  }, [])
 
-    // 检查 admin 用户是否存在
-    useEffect(() => {
-        const checkAdminUser = async () => {
-            try {
-                const params = { identifier: 'admin' };
-                const res = await checkUser(params);
-                console.log(res?.data);
-                // 返回 'ok' 表示用户存在
-                setAdminExists(res?.data === 'ok');
-            } catch (error) {
-                console.error(error);
-                setAdminExists(false);
-            }
-        };
-        checkAdminUser();
-    }, []);
+  useEffect(() => {
+    refreshConfig()
+  }, [refreshConfig])
 
-    // 处理普通登录表单提交
-    const onFinish = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const params = {
-            identifier: formData.get('identifier'),
-            password: formData.get('password'),
-        };
-        try {
-            const response = await loginUser(params);
-            if (response.data) {
-                const info = response.data;
-                localStorage.setItem('Authorization', info.token);
-                localStorage.setItem('Identifier', info.identifier);
-                localStorage.setItem('UserId', info.userId);
-                const redirectPath = localStorage.getItem('redirectPath') || '/';
-                localStorage.removeItem('redirectPath');
-                navigate(redirectPath);
-            }
-        } catch (error) {
-            message.error('用户名或密码错误');
-        }
-    };
+  useEffect(() => {
+    // 配置缺失时每 30s 重试拉取
+    if (state !== 'config') return
+    const timer = setInterval(() => {
+      setConfigRetryCount((c) => c + 1)
+      refreshConfig()
+    }, 30000)
+    return () => clearInterval(timer)
+  }, [state, refreshConfig])
 
-    // 处理密码初始化并自动登录（admin 不存在时）
-    const handleInitAndLogin = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const password = formData.get('password');
-        const confirmPassword = formData.get('confirm-password');
+  const handleLogin = () => {
+    // 回跳地址：优先取当前 URL 上的 redirect query（经白名单清洗），否则默认看板。
+    const params = new URLSearchParams(window.location.search)
+    const redirectTarget = params.get('redirect') || '/'
+    const loginUrl = buildConsoleLoginUrl(redirectTarget)
 
-        if (password !== confirmPassword) {
-            message.error('两次输入的密码不一致');
-            return;
-        }
-
-        try {
-            // 1. 注册 admin 用户
-            await registerUser({
-                userid: 'admin',
-                username: 'admin',
-                email: 'admin@qq.com',
-                phone: '18888888888',
-                password: password,
-                role: 'admin',
-            });
-            
-            // 2. 自动登录
-            const loginResponse = await loginUser({
-                identifier: 'admin',
-                password: password,
-            });
-            
-            if (loginResponse.data) {
-                const info = loginResponse.data;
-                localStorage.setItem('Authorization', info.token);
-                localStorage.setItem('Identifier', info.identifier);
-                localStorage.setItem('UserId', info.userId);
-                message.success('初始化成功，已自动登录');
-                const redirectPath = localStorage.getItem('redirectPath') || '/';
-                localStorage.removeItem('redirectPath');
-                navigate(redirectPath);
-            }
-        } catch (error) {
-            console.error(error);
-            message.error('初始化失败，请稍后重试');
-        }
-    };
-
-    const handleOidcLogin = async () => {
-        try {
-            const res = await getOidcInfo();
-            if (res?.data?.authType !== 2) {
-                message.error('OIDC 未启用，请联系管理员');
-                return;
-            }
-
-            const oidcConfig = {
-                authority: res?.data?.upperURI,
-                client_id: res?.data?.clientID,
-                client_secret: res?.data?.clientSecret,
-                redirect_uri: res?.data?.redirectURI,
-                response_type: 'code',
-                scope: 'openid profile email',
-            };
-            const userManager = new UserManager(oidcConfig);
-            userManager.signinRedirect();
-        } catch (error) {
-            console.error('获取 OIDC 信息失败:', error);
-        }
+    if (!loginUrl) {
+      setState('config')
+      return
     }
 
-    // 错误组件 - 区分认证错误和服务异常
-    const SystemErrorScreen = () => {
-        return (
-            <div
-                style={{
-                    height: "100vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "linear-gradient(135deg, #000000 0%, #1a1a1a 100%)",
-                }}
-            >
-                <Result
-                    status="error"
-                    title={<span style={{ color: "#FFFFFF" }}>服务异常</span>}
-                    subTitle={<span style={{ color: "#CCCCCC" }}>{serviceErrorMsg}</span>}
-                    extra={[
-                        <Button
-                            type="primary"
-                            key="retry"
-                            onClick={() => {
-                                setServiceErrorMsg("服务暂时不可用，请稍后重试或联系管理员")
-                                setServiceError(true)
-                                // 直接刷新页面
-                                window.location.reload()
-                            }}
-                            style={{
-                                background: "linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%)",
-                                borderColor: "#FF9900",
-                                color: "#000",
-                                fontWeight: "600",
-                                boxShadow: "0 4px 12px rgba(255, 153, 0, 0.3)",
-                                border: "none"
-                            }}
-                        >
-                            重试
-                        </Button>
-                    ]}
-                />
-            </div>
-        )
-    }
+    setState('loading')
+    // 整页跳转（location.replace，不 pushState；跳转失败可回退登录页重试）
+    window.location.replace(loginUrl)
+  }
 
-    if (serviceError) {
-        return <SystemErrorScreen />
-    }
+  const isDisabled = state === 'loading' || state === 'config'
 
-    return (
-        <div className="min-h-screen flex bg-black text-white">
-            {/* 左侧插画区 */}
-            <div style={{ maxWidth: "60%" }}>
-                <img
-                    src={logoIcon}
-                    alt="WatchAlert Logo"
-                    style={{ height: "700px", borderRadius: "8px",  marginTop: "20px" }}
-                />
-            </div>
-
-            {/* 右侧登录区域 */}
-            <div className="w-full md:w-1/2 flex items-center justify-center px-6 py-12">
-                <div
-                    className="bg-white text-black rounded-2xl shadow-xl w-full max-w-md p-8"
-                >
-                    <h1 className="text-2xl font-medium mb-2">欢迎回来</h1>
-                    <p className="text-gray-600 mb-8">请登录以继续使用 WatchAlert</p>
-                    
-                    {adminExists === null ? (
-                        // 加载中状态
-                        <div className="text-center text-gray-500 py-8">加载中...</div>
-                    ) : !adminExists ? (
-                        // ✅ admin 不存在：显示初始化密码表单（样式保持原结构）
-                        <form onSubmit={handleInitAndLogin} className="space-y-6">
-                            <div>
-                                <input
-                                    type="text"
-                                    name="identifier"
-                                    value="admin"
-                                    readOnly
-                                    placeholder="用户名"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black transition-all bg-gray-50"
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="设置密码"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black transition-all"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    type="password"
-                                    name="confirm-password"
-                                    placeholder="确认密码"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black transition-all"
-                                    required
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors"
-                            >
-                                初始化并登陆
-                            </button>
-                        </form>
-                    ) : !showOidcButtons ? (
-                        // ✅ admin 存在：显示普通登录表单（保持原逻辑）
-                        <div>
-                            <form onSubmit={onFinish} className="space-y-6">
-                                <div>
-                                    <input
-                                        type="text"
-                                        name="identifier"
-                                        placeholder="用户名/邮箱/手机号"
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black transition-all"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        placeholder="密码"
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-black transition-all"
-                                        required
-                                    />
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors"
-                                >
-                                    登录
-                                </button>
-                            </form>
-                            <p className="text-black text-center text-sm py-3 rounded-lg cursor-pointer hover:underline" onClick={()=> setShowOidcButtons(true)}>Login using SSO service</p>
-                        </div>
-                    ) : (
-                        // OIDC 登录选项
-                        <div>
-                            <button 
-                                onClick={handleOidcLogin}
-                                className="w-full py-3 border border-gray-300 text-black rounded-lg hover:bg-gray-100 transition-colors text-center"
-                            >
-                                Login with Oidc
-                            </button>
-                            <p className="text-black text-center text-sm py-3 rounded-lg cursor-pointer hover:underline" onClick={()=> setShowOidcButtons(false)}>Login as administrator</p>
-                        </div>
-                    )}
-                </div>
-            </div>
+  return (
+    <div className="min-h-screen flex items-center justify-center px-6 py-12" style={{ background: 'var(--bg-page, #08090a)' }}>
+      <main
+        className="w-full max-w-[400px] rounded-2xl p-6"
+        style={{
+          background: 'var(--bg-surface, #191a1b)',
+          border: '1px solid var(--border-subtle, rgba(255,255,255,0.05))',
+          boxShadow: 'var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.5))',
+        }}
+      >
+        {/* 品牌区 */}
+        <div className="flex flex-col items-center mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            width="40"
+            height="40"
+            style={{ color: 'var(--accent-blue, #5e6ad2)' }}
+          >
+            <path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" />
+          </svg>
+          <h3 className="text-2xl font-medium mt-2" style={{ color: 'var(--text-primary, #ededef)' }}>WatchAlert</h3>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary, #8b8b93)' }}>运维告警平台</p>
         </div>
-    );
-};
+
+        {/* 错误提示（登录失败 / 配置缺失 两态复用，文案不同） */}
+        {state === 'error' && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 mb-4 text-sm"
+            style={{ background: 'var(--tag-bg, rgba(255,255,255,0.1))', color: 'var(--color-danger, #ef4444)' }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
+            <span>登录失败，请重试</span>
+          </div>
+        )}
+
+        {state === 'config' && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 mb-4 text-sm"
+            style={{ background: 'var(--tag-bg, rgba(255,255,255,0.1))', color: 'var(--color-danger, #ef4444)' }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
+            <span>登录服务未配置，请联系管理员</span>
+          </div>
+        )}
+
+        {/* 主按钮：使用平台账号登录 */}
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-2 rounded-lg py-3 font-medium transition-colors"
+          onClick={handleLogin}
+          disabled={isDisabled}
+          aria-disabled={isDisabled}
+          aria-busy={state === 'loading'}
+          tabIndex={state === 'config' ? -1 : 0}
+          style={{
+            background: 'var(--accent-primary, #5e6ad2)',
+            color: '#fff',
+            opacity: state === 'config' ? 0.5 : 1,
+            cursor: isDisabled ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {state === 'loading' && (
+            <span className="spinner" aria-hidden="true" style={{
+              width: 16, height: 16, borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff',
+              animation: 'wa-spin 0.8s linear infinite',
+            }} />
+          )}
+          <span>{state === 'loading' ? '正在跳转安全登录…' : '使用平台账号登录'}</span>
+          {state !== 'loading' && (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" x2="3" y1="12" y2="12" />
+            </svg>
+          )}
+        </button>
+
+        {/* 重试按钮（登录失败态） */}
+        {state === 'error' && (
+          <button
+            type="button"
+            className="w-full rounded-lg py-3 mt-3 font-medium"
+            onClick={() => setState('default')}
+            style={{
+              background: 'transparent',
+              color: 'var(--text-secondary, #b4b4bb)',
+              border: '1px solid var(--border-subtle, rgba(255,255,255,0.08))',
+            }}
+          >
+            重试
+          </button>
+        )}
+
+        <p className="text-center text-sm mt-4" style={{ color: 'var(--text-tertiary, #8b8b93)' }}>
+          请使用运维平台统一账号（eiam）登录
+        </p>
+      </main>
+
+      <style>{`@keyframes wa-spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  )
+}

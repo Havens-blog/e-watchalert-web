@@ -1,38 +1,10 @@
 import http from '../utils/http';
 import { message } from 'antd';
-import {HandleApiError} from "../utils/lib";
+import { HandleApiError } from "../utils/lib";
 
 async function getUserList(params) {
     try {
         const res = await http('get', `/api/w8t/user/userList`, params);
-        return res;
-    } catch (error) {
-        HandleApiError(error)
-        return error
-    }
-}
-
-
-async function loginUser(params) {
-    try {
-        const res = await http('post', `/api/system/login`, params);
-        return res;
-    } catch (error) {
-        message.open({
-            type: 'error',
-            content: '用户不存在或密码错误',
-        });
-        return error
-    }
-}
-
-async function registerUser(params) {
-    try {
-        const res = await http('post', `/api/system/register`, params);
-        message.open({
-            type: 'success',
-            content: '用户注册成功',
-        });
         return res;
     } catch (error) {
         HandleApiError(error)
@@ -72,12 +44,18 @@ async function getUserInfo() {
     return await http('get', `/api/system/userInfo`);
 }
 
-async function checkUser(params) {
-    const queryString = Object.keys(params)
-        .map(key => params[key] !== undefined ? `${key}=${params[key]}` : '')
-        .filter(Boolean)
-        .join('&');
-    return await http('get', `/api/system/checkUser?${queryString}`);
+async function registerUser(params) {
+    try {
+        const res = await http('post', `/api/system/register`, params);
+        message.open({
+            type: 'success',
+            content: '用户创建成功',
+        });
+        return res;
+    } catch (error) {
+        HandleApiError(error)
+        return error
+    }
 }
 
 async function changeUserPass(params) {
@@ -104,9 +82,10 @@ async function getOidcInfo() {
     }
 }
 
-async function getCookieConvertToken() {
+// 单点登出：调 eiam POST /api/user/logout 销毁共享会话（BIZ-auth-005）。
+async function logoutUser() {
     try {
-        const res = await http('get', `/api/oidc/token`);
+        const res = await http('post', `/api/user/logout`);
         return res;
     } catch (error) {
         return error
@@ -115,13 +94,11 @@ async function getCookieConvertToken() {
 
 export {
     getUserList,
-    loginUser,
-    registerUser,
     updateUser,
     deleteUser,
-    checkUser,
     getUserInfo,
+    registerUser,
     changeUserPass,
     getOidcInfo,
-    getCookieConvertToken
+    logoutUser
 }

@@ -2,68 +2,25 @@
 
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { message } from "antd"
-import axios from "axios"
-import { getCookieConvertToken } from "../api/user"
 
-// Create a Higher-Order Component (HOC) instead of a hook
+/**
+ * 鉴权 HOC（会话化改造，tech-design §3.5 / §4.2）。
+ * 移除本地 localStorage Authorization 校验与 getCookieConvertToken（端点已删除）。
+ * 鉴权强制由后端 Auth 中间件 + http 拦截器（401 → 跳登录）承接；本 HOC 仅做薄透传。
+ */
 const Auth = (WrappedComponent) => {
-    // Return a new component
-    return function WithAuthComponent(props) {
-        const navigate = useNavigate()
-        
-        // Check if user is logged in
-        useEffect(() => {
-            const checkUser = async () => {
-                const token = localStorage.getItem("Authorization")
-                if (!token) {
-                    const res = await getCookieConvertToken()
-                    if (res.code !== 200) {
-                        const currentPath = window.location.pathname + window.location.search
-                        localStorage.clear()
-                        localStorage.setItem('redirectPath', currentPath)
-                        navigate("/login")
-                    } else {
-                        localStorage.setItem("Authorization", res?.data?.token)
-                        localStorage.setItem("Username", res?.data?.username)
-                        localStorage.setItem("UserId", res?.data?.userId)
-                        navigate("/")
-                    }
-                }
-            }
+  return function WithAuthComponent(props) {
+    const navigate = useNavigate()
 
-            checkUser()
-        }, [navigate])
+    // 无本地 token 概念；页面挂载时不主动跳转。
+    // 未登录/无角色由全局 http 拦截器（401 → 跳登录 / 403 → 原地提示）兜底。
+    useEffect(() => {
+      // 保留：防止 SSG/SSR 阶段访问 window 的防御（本仓为 CRA，纯客户端）。
+      void navigate
+    }, [navigate])
 
-        // Set global request headers and response interceptor
-        useEffect(() => {
-            const token = localStorage.getItem("Authorization")
-            if (token) {
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-            }
-            
-            const interceptor = axios.interceptors.response.use(
-                (response) => response,
-                (error) => {
-                    if (error.response?.status === 401) {
-                        const currentPath = window.location.pathname + window.location.search
-                        localStorage.clear()
-                        localStorage.setItem('redirectPath', currentPath)
-                        navigate("/login")
-                        message.error("登录已过期，请重新登录")
-                    }
-                    return Promise.reject(error)
-                }
-            )
-
-            return () => {
-                axios.interceptors.response.eject(interceptor) // Clean up interceptor
-            }
-        }, [navigate])
-
-        // Render the wrapped component with all props
-        return <WrappedComponent {...props} />
-    }
+    return <WrappedComponent {...props} />
+  }
 }
 
 export default Auth

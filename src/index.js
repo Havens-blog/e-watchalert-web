@@ -5,6 +5,12 @@ import App from './App.jsx';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN.js';
 
+// 令牌层（Linear 深色优先，§11 视觉基线）+ 主题初始化（hc_theme 持久化）
+import './theme-variables.css';
+import './degradation.css';
+import { initTheme } from './theme/theme';
+initTheme();
+
 // 全局处理 ResizeObserver 错误
 const handleResizeObserverError = (e) => {
   if (e.message === 'ResizeObserver loop completed with undelivered notifications.' || 

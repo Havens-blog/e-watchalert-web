@@ -22,8 +22,9 @@ import {
 import {Link, useNavigate} from 'react-router-dom';
 import {Menu, Layout, Typography, Dropdown, message, Spin, theme, Popover, Avatar, Divider} from 'antd';
 import logoIcon from "../../img/logo.svg";
-import {getUserInfo} from "../../api/user";
+import {getUserInfo, logoutUser} from "../../api/user";
 import {getTenantList, getTenant} from "../../api/tenant";
+import {buildConsoleLoginUrl} from "../../config/auth";
 
 const { Sider } = Layout;
 
@@ -288,15 +289,17 @@ export const ComponentSider = () => {
         return convertToMenuItems(baseMenuItems);
     }, [userInfo, currentTenant, convertToMenuItems]);
 
-    const handleLogout = () => {
-        // 清除本地存储
-        localStorage.clear()
-        // 显示退出登录提示
-        message.success('已退出登录');
-        // 延迟跳转到登录页面，确保用户能看到提示
-        setTimeout(() => {
-            navigate("/login");
-        }, 800); // 延迟0.8秒跳转
+    const handleLogout = async () => {
+        // 会话化（§4.2）：调 eiam POST /api/user/logout 销毁共享会话；
+        // 不清 localStorage（保留 hc_theme 等非凭据偏好），跳 haven-console 登录页。
+        try {
+            await logoutUser()
+        } catch (e) {
+            console.warn("logout request failed, still redirecting:", e)
+        }
+        const currentPath = window.location.pathname + window.location.search
+        const loginUrl = buildConsoleLoginUrl(currentPath)
+        window.location.href = loginUrl || "/login"
     }
 
     const userPopoverMenuItems = [
@@ -541,14 +544,8 @@ export const ComponentSider = () => {
             setLoading(false)
         } catch (error) {
             console.error("Failed to fetch user info:", error)
-            // 清除认证信息
-            window.localStorage.removeItem("Authorization")
-            // 显示错误提示
-            message.error('获取用户信息失败，请重新登录');
-            // 延迟跳转到登录页面，确保用户能看到提示
-            setTimeout(() => {
-                navigate("/login");
-            }, 1000); // 延迟1秒跳转
+            // 会话化：401/403 由 http 拦截器兜底（跳登录/原地提示），不在此手动清 storage/跳转
+            setLoading(false)
         }
     }
 
@@ -581,14 +578,8 @@ export const ComponentSider = () => {
             setTenantStatus(true)
         } catch (error) {
             console.error("Failed to fetch tenant list:", error)
-            // 清除本地存储
-            localStorage.clear()
-            // 显示错误提示
-            message.error("获取租户错误, 退出登录")
-            // 延迟跳转到登录页面，确保用户能看到提示
-            setTimeout(() => {
-                navigate("/login");
-            }, 1000); // 延迟1秒跳转
+            // 会话化：不清 localStorage（保留 hc_theme 等），交由上层 ErrorScreen / 拦截器处理
+            message.error("获取租户错误")
         }
     }
 

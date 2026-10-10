@@ -8,6 +8,10 @@ import { ComponentSider } from "./sider"
 import Auth from "../utils/Auth"
 import {getTenantList} from "../api/tenant";
 import {getUserInfo} from "../api/user";
+import {buildConsoleLoginUrl} from "../config/auth";
+import {DegradedBanner} from "./degradation/DegradedBanner";
+import {ForbiddenPlaceholder} from "./degradation/ForbiddenPlaceholder";
+import {useAuthHealth} from "../hooks/useAuthHealth";
 
 const Components = (props) => {
     const { name, c } = props
@@ -16,6 +20,8 @@ const Components = (props) => {
     const [authorization, setAuthorization] = useState(null)
     const [tenantId, setTenantId] = useState(null)
     const [error, setError] = useState(false)
+    const [forbidden, setForbidden] = useState(false)
+    const { writeDisabled } = useAuthHealth()
     const [isRendered, setIsRendered] = useState(false)
     const contentRef = useRef(null)
     const [serviceErrorMsg, setServiceErrorMsg] = useState("服务暂时不可用，请稍后重试或联系管理员") // 新增：服务异常详细信息
@@ -30,32 +36,33 @@ const Components = (props) => {
 
         const checkAuthAndTenant = async () => {
             try {
-                const auth = localStorage.getItem("Authorization")
-                const tenant = localStorage.getItem("TenantID")
-
-                if (!auth) {
-                    setError(true)
-                    setLoading(false)
-                    return
-                }
-
-                // 如果有认证信息但没有租户信息，尝试获取用户信息
-                if (auth && !tenant) {
-                    try {
-                        const userRes = await getUserInfo()
-                        if (userRes.data?.userid) {
-                            await fetchTenantList(userRes?.data?.userid)
-                        }
-                    } catch (err) {
-                        console.error("Failed to fetch user info:", err)
-                        setError(true)
+                // 会话化（§3.5 / §4.2）：不再依赖 localStorage Authorization。
+                // 通过受 Auth 中间件保护的 getUserInfo 确认共享会话 + 身份；
+                // 未认证/无角色由 http 拦截器兜底（401 → 跳登录 / 403 → 原地提示）。
+                try {
+                    const userRes = await getUserInfo()
+                    const userid = userRes?.data?.userid
+                    if (userid) {
+                        await fetchTenantList(userid)
                     }
+                } catch (err) {
+                    console.error("Failed to fetch user info:", err)
+                    if (isMounted) {
+                        // 403 = 已认证但无角色绑定 → 原地 403 占位（BIZ-auth-003，不跳登录）
+                        if (err?.response?.status === 403) {
+                            setForbidden(true)
+                        } else {
+                            setError(true)
+                        }
+                        setLoading(false)
+                    }
+                    return
                 }
 
                 // 再次检查租户信息
                 const updatedTenant = localStorage.getItem("TenantID")
                 if (isMounted) {
-                    setAuthorization(auth)
+                    setAuthorization(true)
                     setTenantId(updatedTenant)
                     setLoading(false)
                     setError(!updatedTenant)
@@ -118,13 +125,6 @@ const Components = (props) => {
     }
 
     const fetchTenantList = async (userid) => {
-        const auth = localStorage.getItem("Authorization")
-        if (!auth) {
-            console.error("Authorization token is missing")
-            setError(true)
-            return
-        }
-
         try {
             const res = await getTenantList({ userId: userid })
 
@@ -203,9 +203,10 @@ const Components = (props) => {
                         key="login"
                         onClick={() => {
                             const currentPath = window.location.pathname + window.location.search
-                            localStorage.clear()
-                            localStorage.setItem('redirectPath', currentPath)
-                            window.location.href = "/login"
+                            // 会话化：不清 localStorage（尤其不清 hc_theme 主题偏好）；
+                            // 跳 haven-console 登录页并携带白名单清洗后的回跳地址。
+                            const loginUrl = buildConsoleLoginUrl(currentPath)
+                            window.location.href = loginUrl || "/login"
                         }}
                         style={{
                             background: "linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%)",
@@ -270,6 +271,10 @@ const Components = (props) => {
         return <FullScreenLoading />
     }
 
+    if (forbidden) {
+        return <ForbiddenPlaceholder />
+    }
+
     if (!authorization || !tenantId) {
         return <ErrorScreen />
     }
@@ -294,6 +299,9 @@ const Components = (props) => {
                 }}
                 ref={contentRef}
             >
+                {/* 宽限横幅插槽（组件 2）：write_disabled 时顶部常驻 */}
+                <DegradedBanner visible={writeDisabled} />
+
                 <Layout style={{ background: "transparent", marginTop: "16px" }}>
                     {/* 侧边栏 */}
                     <div

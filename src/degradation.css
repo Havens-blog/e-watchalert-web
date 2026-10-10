@@ -1,0 +1,26 @@
+/* ============================================
+   鉴权降级 UI 语义令牌（ui-design §11.5 语义状态色）
+   衍生自平台令牌（--color-warning / --color-danger / --bg-hover / --text-*），
+   暗/浅两套。仅承载「宽限横幅 / 只读说明条 / 403 占位」三组件的语义色，
+   不污染字节级同一的 theme-variables.css。
+   ============================================ */
+
+/* 宽限横幅（warning 衍生态） */
+:root {
+  --degradation-banner-bg: rgba(245, 158, 11, 0.10);
+  --degradation-banner-border: rgba(245, 158, 11, 0.35);
+  --degradation-banner-text: #fbbf24;
+}
+:root.light {
+  --degradation-banner-bg: rgba(245, 158, 11, 0.10);
+  --degradation-banner-border: #f59e0b;
+  --degradation-banner-text: #92400e;
+}
+
+/* 403 占位（danger 衍生态） */
+:root {
+  --forbidden-icon: var(--color-danger);
+  --forbidden-card-bg: var(--bg-surface);
+  --forbidden-card-border: var(--border-subtle);
+  --forbidden-text: var(--text-secondary);
+}

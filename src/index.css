@@ -12,7 +12,10 @@
     padding: 0;
     height: 100vh;
     width: 100%;
-    background-color: rgb(238, 240, 243);
+    /* 深色优先（Linear）：默认取令牌 --bg-page；令牌层在 theme-variables.css */
+    background-color: var(--bg-page, #08090a);
+    color: var(--text-primary, #f7f8f8);
+    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   }
 
 *::-webkit-scrollbar {
