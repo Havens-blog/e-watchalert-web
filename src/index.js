@@ -43,7 +43,7 @@ if (typeof window !== 'undefined') {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <BrowserRouter>
+    <BrowserRouter basename="/watchalert">
         <ConfigProvider componentSize='middle' locale={zhCN}>
             <App />
         </ConfigProvider>
