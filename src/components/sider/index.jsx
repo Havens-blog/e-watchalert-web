@@ -704,7 +704,8 @@ export const ComponentSider = () => {
                         items: tenantMenuItems, 
                         selectable: true, 
                         defaultSelectedKeys: [getTenantIndex()],
-                        onSelect: changeTenant 
+                        onSelect: changeTenant,
+                        theme: isDark ? 'dark' : 'light',
                     }} 
                     trigger={["click"]} 
                     placement="bottomLeft"
@@ -730,10 +731,10 @@ export const ComponentSider = () => {
                     >
                         <TeamOutlined style={{color: 'var(--accent-blue)', fontSize: '14px', marginRight: '8px'}}/>
                         <Typography.Text
-                            style={{color: '#fff', fontSize: '13px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
+                            style={{color: 'var(--text-primary)', fontSize: '13px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
                             {getTenantName()}
                         </Typography.Text>
-                        <DownOutlined style={{color: 'rgba(255, 255, 255, 0.5)', fontSize: '10px'}}/>
+                        <DownOutlined style={{color: 'var(--text-tertiary)', fontSize: '10px'}}/>
                     </div>
                 </Dropdown>
             </div>
@@ -822,7 +823,7 @@ export const ComponentSider = () => {
                 justifyContent: 'space-between',
             }}>
                 <Popover 
-                    content={<Menu mode="vertical" items={userPopoverMenuItems} />} 
+                    content={<Menu mode="vertical" theme={isDark ? 'dark' : 'light'} items={userPopoverMenuItems} />} 
                     trigger="click" 
                     placement="topRight"
                 >
