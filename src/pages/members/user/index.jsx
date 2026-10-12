@@ -2,6 +2,7 @@ import {Input, Table, Button, Modal, Tooltip, Dropdown, Tag} from 'antd';
 import React, { useState, useEffect } from 'react';
 import UserCreateModal from './UserCreateModal';
 import { listUsers, deleteUser } from '../../../api/eiam/user';
+import { getUserList, syncLocalUsers } from '../../../api/user';
 import {CopyOutlined, DeleteOutlined, EditOutlined, PlusOutlined, MoreOutlined} from "@ant-design/icons";
 import {HandleShowTotal} from "../../../utils/lib";
 import {copyToClipboard} from "../../../utils/copyToClipboard";
@@ -15,6 +16,7 @@ export const User = () => {
     const [updateVisible, setUpdateVisible] = useState(false); // 更新弹窗可见性
     const [visible, setVisible] = useState(false); // 创建弹窗可见性
     const [list, setList] = useState([]); // 用户列表
+    const [dutyMap, setDutyMap] = useState({}); // eiam uid -> 本地「接受值班」标记
     const [height, setHeight] = useState(window.innerHeight); // 动态表格高度
 
     // 表格列定义
@@ -76,6 +78,17 @@ export const User = () => {
             },
         },
         {
+            // 「接受值班」为 WatchAlert 应用侧扩展属性，存本地扩展表（按 eiam uid 关联）
+            title: '接受值班',
+            dataIndex: 'joinDuty',
+            key: 'joinDuty',
+            render: (_, record) => (
+                dutyMap[String(record.id)] === 'true'
+                    ? <Tag color="green">是</Tag>
+                    : <Tag>否</Tag>
+            ),
+        },
+        {
             title: '创建时间',
             dataIndex: 'ctime',
             key: 'ctime',
@@ -135,11 +148,34 @@ export const User = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // 同步 eiam 用户进本地扩展表，并读取「接受值班」标记
+    const syncLocalProfiles = async (users) => {
+        try {
+            // 仅确保本地扩展记录存在（不传 joinDuty → 保持原值），
+            // 使值班/通知选人列表能覆盖全部 eiam 用户。
+            if (users.length > 0) {
+                await syncLocalUsers(users.map((u) => ({
+                    userid: String(u.id),
+                    username: u.username,
+                })));
+            }
+            const localRes = await getUserList();
+            const rows = localRes?.data || [];
+            const map = {};
+            rows.forEach((r) => { map[String(r.userid)] = r.joinDuty || ''; });
+            setDutyMap(map);
+        } catch (error) {
+            console.error('加载本地值班扩展失败:', error);
+        }
+    };
+
     // 加载用户列表
     const handleList = async (keyword) => {
         try {
             const res = await listUsers({ offset: 0, limit: 200, keyword: keyword || '' });
-            setList(res?.users || []);
+            const users = res?.users || [];
+            setList(users);
+            await syncLocalProfiles(users);
         } catch (error) {
             console.error(error);
         }
@@ -157,7 +193,8 @@ export const User = () => {
 
     // 打开更新用户弹窗
     const handleUpdateModalOpen = (record) => {
-        setSelectedRow(record);
+        // 合并本地「接受值班」标记，供弹窗回显（eiam 用户对象无该字段）
+        setSelectedRow({ ...record, joinDuty: dutyMap[String(record.id)] || '' });
         setUpdateVisible(true);
     };
 

@@ -1,7 +1,8 @@
 "use client"
-import { Modal, Form, Input, Button, Select, message } from "antd"
+import { Modal, Form, Input, Button, Select, message, Switch } from "antd"
 import React, { useState, useEffect } from "react"
 import { createUser, updateUser } from "../../../api/eiam/user"
+import { syncLocalUsers } from "../../../api/user"
 
 const MyFormItemContext = React.createContext([])
 function toArr(str) {
@@ -19,11 +20,15 @@ const MyFormItem = ({ name, ...props }) => {
 const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) => {
     const [form] = Form.useForm()
     const [spaceValue, setSpaceValue] = useState("") // 用户名输入框的值，用于处理空格
+    // 「接受值班」是 WatchAlert 应用侧扩展属性（eiam 无此概念），
+    // 存于本地 members 扩展表，按 eiam uid 关联，故不随 eiam 用户接口提交。
+    const [joinDuty, setJoinDuty] = useState(false)
 
     useEffect(() => {
         if (visible) {
             if (selectedRow && type === "update") {
                 setSpaceValue(selectedRow.username)
+                setJoinDuty(selectedRow.joinDuty === "true")
                 form.setFieldsValue({
                     username: selectedRow.username,
                     nickname: selectedRow.nickname,
@@ -34,6 +39,7 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
             } else {
                 form.resetFields()
                 setSpaceValue("")
+                setJoinDuty(false)
                 form.setFieldsValue({
                     status: 'active',
                 })
@@ -56,7 +62,8 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
     // 创建用户
     const handleCreate = async (values) => {
         try {
-            await createUser({
+            // eiam 返回新用户主体 id（eiam uid）
+            const newId = await createUser({
                 username: values.username,
                 email: values.email,
                 nickname: values.nickname,
@@ -65,6 +72,16 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
                 password: values.password,
                 confirm_password: values.confirm_password,
             })
+            // 同步本地扩展记录（承载 join_duty）；失败不影响主体创建结果
+            try {
+                await syncLocalUsers([{
+                    userid: String(newId),
+                    username: values.username,
+                    joinDuty: joinDuty ? "true" : "false",
+                }])
+            } catch (syncErr) {
+                console.error('同步本地值班扩展失败:', syncErr)
+            }
             message.success('用户创建成功')
             handleList()
         } catch (error) {
@@ -84,6 +101,16 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
                 phone: values.phone,
                 status: values.status || 'active',
             })
+            // 「接受值班」存本地扩展表（按 eiam uid 关联）
+            try {
+                await syncLocalUsers([{
+                    userid: String(selectedRow.id),
+                    username: values.username,
+                    joinDuty: joinDuty ? "true" : "false",
+                }])
+            } catch (syncErr) {
+                console.error('同步本地值班扩展失败:', syncErr)
+            }
             message.success('用户更新成功')
             handleList()
         } catch (error) {
@@ -192,6 +219,13 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
                         ]}
                     />
                 </MyFormItem>
+
+                <Form.Item label="接受值班" labelCol={{ span: 5 }} wrapperCol={{ span: 20 }}>
+                    <Switch checked={joinDuty} onChange={setJoinDuty} />
+                    <span style={{ marginLeft: 8, color: '#8c8c8c', fontSize: 12 }}>
+                        开启后该用户可被排入值班表
+                    </span>
+                </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>

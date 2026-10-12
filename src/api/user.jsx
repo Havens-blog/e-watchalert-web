@@ -92,6 +92,12 @@ async function logoutUser() {
     }
 }
 
+// 同步 eiam 用户到 WatchAlert 本地扩展表（承载 join_duty 等应用侧扩展属性）。
+// 人员身份以 eiam 为唯一来源；本接口仅维护本地扩展记录，joinDuty 省略时保持原值。
+async function syncLocalUsers(users) {
+    return await http('post', `/api/w8t/user/userSyncLocal`, { users });
+}
+
 export {
     getUserList,
     updateUser,
@@ -100,5 +106,6 @@ export {
     registerUser,
     changeUserPass,
     getOidcInfo,
-    logoutUser
+    logoutUser,
+    syncLocalUsers
 }
