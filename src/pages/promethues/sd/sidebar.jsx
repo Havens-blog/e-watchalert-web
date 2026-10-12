@@ -77,9 +77,9 @@ export const ServiceGroupSidebar = ({ selectedGroupId, onGroupChange }) => {
             flexDirection: 'column',
             height: 'calc(100vh - 120px)',
             overflow: 'hidden',
-            background: '#fff',
+            background: 'var(--bg-elevated)',
             borderRadius: '10px',
-            border: '1px solid #f0f0f0',
+            border: '1px solid var(--bg-surface)',
             boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         }}>
             {/* 头部 */}
@@ -96,7 +96,7 @@ export const ServiceGroupSidebar = ({ selectedGroupId, onGroupChange }) => {
                         <span style={{ fontSize: '13px', fontWeight: 600, color: '#262626' }}>服务组</span>
                         <Badge
                             count={filteredGroupList.length}
-                            style={{ backgroundColor: '#f0f0f0', color: '#8c8c8c', fontSize: '11px', boxShadow: 'none' }}
+                            style={{ backgroundColor: 'var(--bg-surface)', color: '#8c8c8c', fontSize: '11px', boxShadow: 'none' }}
                         />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
@@ -133,8 +133,8 @@ export const ServiceGroupSidebar = ({ selectedGroupId, onGroupChange }) => {
                                     borderRadius: '8px',
                                     cursor: 'pointer',
                                     userSelect: 'none',
-                                    background: isSelected ? '#f5f0e6' : '#fff',
-                                    border: `1px solid ${isSelected ? 'rgba(94, 106, 210, 0.5)' : '#f0f0f0'}`,
+                                    background: isSelected ? 'var(--bg-surface)' : 'var(--bg-elevated)',
+                                    border: `1px solid ${isSelected ? 'rgba(94, 106, 210, 0.5)' : 'var(--bg-surface)'}`,
                                     boxShadow: isSelected
                                         ? '0 1px 4px rgba(94, 106, 210, 0.25)'
                                         : isHovered

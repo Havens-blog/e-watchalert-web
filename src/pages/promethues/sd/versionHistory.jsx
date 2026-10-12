@@ -152,8 +152,8 @@ export const VersionHistoryModal = ({ visible, onClose, targetId, groupId, onRol
                                         marginBottom: '4px',
                                         borderRadius: '6px',
                                         cursor: 'pointer',
-                                        border: isSelected ? '1px solid #000' : '1px solid #f0f0f0',
-                                        background: isSelected ? '#fafafa' : '#fff',
+                                        border: isSelected ? '1px solid #000' : '1px solid var(--bg-surface)',
+                                        background: isSelected ? 'var(--bg-surface)' : 'var(--bg-elevated)',
                                         transition: 'all 0.15s',
                                     }}
                                 >
@@ -184,7 +184,7 @@ export const VersionHistoryModal = ({ visible, onClose, targetId, groupId, onRol
                         })}
                     </div>
                     {total > pagination.size && (
-                        <div style={{ textAlign: 'center', paddingTop: '8px', borderTop: '1px solid #f0f0f0' }}>
+                        <div style={{ textAlign: 'center', paddingTop: '8px', borderTop: '1px solid var(--bg-surface)' }}>
                             <Button
                                 size="small"
                                 type="link"
@@ -217,18 +217,18 @@ export const VersionHistoryModal = ({ visible, onClose, targetId, groupId, onRol
                     <div style={{
                         flex: 1,
                         height: '400px',
-                        border: '1px solid #d9d9d9',
+                        border: '1px solid var(--border-base)',
                         borderRadius: '6px',
                         overflow: 'hidden',
                         position: 'relative',
                     }}>
                         {!selectedVersion && (
-                            <div style={{ position: 'absolute', inset: 0, background: '#fff', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8c8c8c' }}>
+                            <div style={{ position: 'absolute', inset: 0, background: 'var(--bg-elevated)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8c8c8c' }}>
                                 选择左侧版本查看 Diff
                             </div>
                         )}
                         {selectedVersion && diffLoading && (
-                            <div style={{ position: 'absolute', inset: 0, background: '#fff', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ position: 'absolute', inset: 0, background: 'var(--bg-elevated)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <Spin tip="加载中..." />
                             </div>
                         )}

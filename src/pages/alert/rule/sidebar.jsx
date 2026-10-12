@@ -109,10 +109,10 @@ const TreeNode = ({
                     cursor: node.isReal ? 'pointer' : 'default',
                     userSelect: 'none',
                     background: isSelected ? '#f5f0e6'
-                        : isHovered && node.isReal ? '#fafafa' : 'transparent',
+                        : isHovered && node.isReal ? 'var(--bg-surface)' : 'transparent',
                     border: `1px solid ${
                         isSelected ? 'rgba(94, 106, 210, 0.45)'
-                        : isHovered && node.isReal ? '#f0f0f0' : 'transparent'
+                        : isHovered && node.isReal ? 'var(--bg-surface)' : 'transparent'
                     }`,
                     boxShadow: isSelected
                         ? '0 1px 4px rgba(94, 106, 210, 0.2)'
@@ -141,7 +141,7 @@ const TreeNode = ({
 
                     <FolderOutlined style={{
                         fontSize: '13px',
-                        color: isSelected ? '#5e6ad2' : (node.isReal ? '#bfbfbf' : '#d9d9d9'),
+                        color: isSelected ? '#5e6ad2' : (node.isReal ? '#bfbfbf' : 'var(--border-base)'),
                         flexShrink: 0,
                     }} />
 
@@ -289,9 +289,9 @@ export const RuleGroupSidebar = ({ selectedRuleGroupId, onRuleGroupChange }) => 
             flexDirection: 'column',
             height: 'calc(100vh - 120px)',
             overflow: 'hidden',
-            background: '#fff',
+            background: 'var(--bg-elevated)',
             borderRadius: '10px',
-            border: '1px solid #f0f0f0',
+            border: '1px solid var(--bg-surface)',
             boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         }}>
             {/* 头部 */}
@@ -308,7 +308,7 @@ export const RuleGroupSidebar = ({ selectedRuleGroupId, onRuleGroupChange }) => 
                         <span style={{ fontSize: '13px', fontWeight: 600, color: '#262626' }}>规则组</span>
                         <Badge
                             count={filteredRuleGroupList.length}
-                            style={{ backgroundColor: '#f0f0f0', color: '#8c8c8c', fontSize: '11px', boxShadow: 'none' }}
+                            style={{ backgroundColor: 'var(--bg-surface)', color: '#8c8c8c', fontSize: '11px', boxShadow: 'none' }}
                         />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>

@@ -395,7 +395,7 @@ export const PrometheusServiceDiscovery = () => {
 
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', marginLeft: '20px' }}>
                     <div style={{
-                        background: '#fff',
+                        background: 'var(--bg-elevated)',
                         borderRadius: '8px',
                         height: '100%',
                         display: 'flex',
@@ -516,8 +516,8 @@ const CodeBlock = ({ code, title }) => (
         {title && <div style={{ fontSize: '12px', color: '#595959', marginBottom: '6px', fontWeight: 500 }}>{title}</div>}
         <div style={{ position: 'relative' }}>
             <pre style={{
-                background: '#f5f5f5',
-                border: '1px solid #e8e8e8',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--bg-surface)',
                 borderRadius: '6px',
                 padding: '12px 40px 12px 12px',
                 fontSize: '12px',
@@ -559,7 +559,7 @@ const HelpContent = () => {
             <Typography.Title level={5}>Query 参数</Typography.Title>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', marginBottom: '16px' }}>
                 <thead>
-                    <tr style={{ background: '#fafafa', borderBottom: '1px solid #f0f0f0' }}>
+                    <tr style={{ background: 'var(--bg-surface)', borderBottom: '1px solid var(--bg-surface)' }}>
                         <th style={{ padding: '8px 12px', textAlign: 'left' }}>参数</th>
                         <th style={{ padding: '8px 12px', textAlign: 'left' }}>说明</th>
                     </tr>
@@ -574,7 +574,7 @@ const HelpContent = () => {
                         ['excludeTarget', '反向过滤：target 地址'],
                         ['excludeLabel', '反向过滤：label'],
                     ].map(([param, desc]) => (
-                        <tr key={param} style={{ borderBottom: '1px solid #f5f5f5' }}>
+                        <tr key={param} style={{ borderBottom: '1px solid var(--bg-surface)' }}>
                             <td style={{ padding: '6px 12px' }}><code>{param}</code></td>
                             <td style={{ padding: '6px 12px', color: '#595959' }}>{desc}</td>
                         </tr>

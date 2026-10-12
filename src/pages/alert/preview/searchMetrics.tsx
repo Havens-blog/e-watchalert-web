@@ -208,7 +208,7 @@ export const SearchViewMetrics = ({
                     alignItems: "center",
                     justifyContent: "center",
                     minHeight: "400px",
-                    background: "#fafafa",
+                    background: "var(--bg-surface)",
                     borderRadius: "8px",
                 }}
             >
@@ -242,7 +242,7 @@ export const SearchViewMetrics = ({
                 }
                 style={{
                     padding: "60px 20px",
-                    background: "#fafafa",
+                    background: "var(--bg-surface)",
                     borderRadius: "8px",
                     margin: "20px 0",
                 }}
@@ -262,8 +262,8 @@ export const SearchViewMetrics = ({
                             style={{
                                 borderLeft: `4px solid #5e6ad2`,
                                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-                                backgroundColor: "#fff",
-                                border: "1px solid #f0f0f0",
+                                backgroundColor: "var(--bg-elevated)",
+                                border: "1px solid var(--bg-surface)",
                                 borderRadius: "6px",
                                 padding: "16px",
                                 marginBottom: "16px",
@@ -426,7 +426,7 @@ export const SearchViewMetrics = ({
             <div
                 style={{
                     padding: "20px 24px",
-                    borderBottom: "1px solid #f0f0f0",
+                    borderBottom: "1px solid var(--bg-surface)",
                     background: "linear-gradient(135deg, rgb(0 0 0) 0%, rgb(191 191 191) 100%)",
                     borderRadius: "8px 8px 0 0",
                 }}

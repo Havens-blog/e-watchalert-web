@@ -309,7 +309,7 @@ export const Datasources = () => {
                         x: 'max-content', // 水平滚动
                     }}
                     style={{
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--bg-elevated)",
                         borderRadius: "8px",
                         overflow: "hidden",
                     }}

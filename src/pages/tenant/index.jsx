@@ -129,7 +129,7 @@ export const Tenants = () => {
             overflow: "hidden",
         },
         headerSection: {
-            backgroundColor: "#fff",
+            backgroundColor: "var(--bg-elevated)",
             zIndex: 10,
             marginBottom: "20px",
         },
@@ -149,7 +149,7 @@ export const Tenants = () => {
         card: {
             borderRadius: "10px",
             boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            border: "1px solid #f0f0f0",
+            border: "1px solid var(--bg-surface)",
             transition: "all 0.3s ease",
             height: "145px",
             display: "flex",
@@ -157,7 +157,7 @@ export const Tenants = () => {
             padding: "16px",
             position: "relative",
             overflow: "hidden",
-            background: "linear-gradient(135deg, #ffffff 0%, #fafafa 100%)",
+            background: "linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%)",
         },
         cardHeader: {
             display: "flex",
@@ -208,7 +208,7 @@ export const Tenants = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            borderTop: "1px solid #f5f5f5",
+            borderTop: "1px solid var(--bg-surface)",
             paddingTop: "8px",
             marginTop: "4px",
         },
@@ -345,7 +345,7 @@ export const Tenants = () => {
                                                 <MoreOutlined
                                                     onClick={(e) => e.stopPropagation()}
                                                     style={styles.moreIcon}
-                                                    onMouseEnter={(e) => e.target.style.backgroundColor = "#f5f5f5"}
+                                                    onMouseEnter={(e) => e.target.style.backgroundColor = "var(--bg-surface)"}
                                                     onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
                                                 />
                                             </Dropdown>

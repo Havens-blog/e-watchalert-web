@@ -162,7 +162,7 @@ export const CreateSilenceModal = ({ visible, onClose, selectedRow, type, handle
 
                 <div
                     style={{
-                        border: "1px solid #d9d9d9",
+                        border: "1px solid var(--border-base)",
                         borderRadius: "8px",
                         padding: "16px",
                         marginBottom: "16px",

@@ -47,7 +47,7 @@ export const theme = EditorView.theme({
     },
 
     '.cm-matchingBracket': {
-        color: '#000',
+        color: 'var(--text-primary)',
         backgroundColor: '#dedede',
         fontWeight: 'bold',
         outline: '1px dashed transparent',
@@ -196,7 +196,7 @@ export const theme = EditorView.theme({
 });
 
 export const promqlHighlighter = HighlightStyle.define([
-    { tag: tags.name, color: '#000' },
+    { tag: tags.name, color: 'var(--text-primary)' },
     { tag: tags.number, color: '#09885a' },
     { tag: tags.string, color: '#a31515' },
     { tag: tags.keyword, color: '#008080' },

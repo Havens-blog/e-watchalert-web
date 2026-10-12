@@ -267,7 +267,7 @@ export const AlertHistoryEvent = (props) => {
                         >
                             {[...Array(totalBlocks)].map((_, blockIndex) => {
                                 const blockColor = GetBlockColor(blockIndex, totalBlocks, gradientStyle.intensity)
-                                const isActive = blockColor !== "#e8e8e8"
+                                const isActive = blockColor !== "var(--bg-surface)"
                                 return (
                                     <div
                                         key={blockIndex}
@@ -794,7 +794,7 @@ export const AlertHistoryEvent = (props) => {
                 }}
                 onChange={handleHistoryPageChange}
                 style={{
-                    backgroundColor: "#fff",
+                    backgroundColor: "var(--bg-elevated)",
                     borderRadius: "8px",
                     overflow: "hidden",
                 }}
@@ -1025,7 +1025,7 @@ export const AlertHistoryEvent = (props) => {
                                     style={{
                                         marginTop: "16px",
                                         padding: "16px",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         borderRadius: "8px",
                                         marginBottom: "12px",
                                     }}
@@ -1278,7 +1278,7 @@ export const AlertHistoryEvent = (props) => {
                         y: height - 200,
                     }}
                     style={{
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--bg-elevated)",
                         borderRadius: "8px",
                         overflow: "hidden",
                     }}

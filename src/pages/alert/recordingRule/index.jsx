@@ -496,7 +496,7 @@ export const RecordingRuleIndex = () => {
                 
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', marginLeft: '20px' }}>
                     <div style={{
-                        background: '#fff',
+                        background: 'var(--bg-elevated)',
                         borderRadius: '8px',
                         height: '100%',
                         display: 'flex',

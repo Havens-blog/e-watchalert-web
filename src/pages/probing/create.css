@@ -1,8 +1,8 @@
 .probing-create-page {
-    --probing-ink: #141414;
+    --probing-ink: var(--bg-surface);
     --probing-muted: #6b7280;
     --probing-border: #e7e9ee;
-    --probing-surface: #fff;
+    --probing-surface: var(--bg-surface);
     --probing-accent: #111827;
     max-width: 1440px;
     margin: 10px auto 24px;
@@ -80,7 +80,7 @@
 .probing-protocol-option {
     padding: 9px 12px;
     color: #4b5563;
-    background: #fff;
+    background: var(--bg-elevated);
     border: 1px solid #dfe3e8;
     border-radius: 8px;
     font-size: 13px;
@@ -112,7 +112,7 @@
 .probing-json-editor { margin-top: 20px; }
 .probing-json-editor > strong { display: block; margin-bottom: 8px; color: #374151; font-size: 13px; }
 
-.probing-publish-section { background: linear-gradient(180deg, #fff 0%, #fcfcfd 100%); }
+.probing-publish-section { background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-surface) 100%); }
 .probing-datasource-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; }
 .probing-datasource-row .ant-form-item { margin-bottom: 0; }
 .probing-refresh-button { margin-bottom: 0; }

@@ -325,7 +325,7 @@ export const NoticeRecords = ({ noticeObjectId }) => {
                 }}
                 onChange={handlePageChange}
                 style={{
-                    backgroundColor: "#fff",
+                    backgroundColor: "var(--bg-elevated)",
                     borderRadius: "8px",
                     overflow: "hidden",
                 }}
@@ -346,7 +346,7 @@ export const NoticeRecords = ({ noticeObjectId }) => {
                 onClose={() => setDrawerOpen(false)}
                 open={drawerOpen}
                 styles={{
-                    header: { borderBottom: "1px solid #f0f0f0", padding: "16px 24px" },
+                    header: { borderBottom: "1px solid var(--bg-surface)", padding: "16px 24px" },
                     body: { padding: "24px" },
                 }}
                 extra={

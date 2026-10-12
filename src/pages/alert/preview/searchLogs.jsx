@@ -75,7 +75,7 @@ export const SearchViewLogs = ({ type, datasourceId, index, query, logScope }) =
                             fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
                             fontSize: "12px",
                             margin: 0,
-                            border: "1px solid #e8e8e8",
+                            border: "1px solid var(--bg-surface)",
                             marginLeft: "10px"
                         }}
                     >
@@ -142,8 +142,8 @@ export const SearchViewLogs = ({ type, datasourceId, index, query, logScope }) =
                             display: "flex",
                             justifyContent: "center",
                             padding: "20px 0",
-                            borderTop: "1px solid #f0f0f0",
-                            background: "#fafafa",
+                            borderTop: "1px solid var(--bg-surface)",
+                            background: "var(--bg-surface)",
                             borderRadius: "0 0 8px 8px",
                         }}
                     >
@@ -225,7 +225,7 @@ export const SearchViewLogs = ({ type, datasourceId, index, query, logScope }) =
                     <div
                         style={{
                             padding: "20px 24px",
-                            borderBottom: "1px solid #f0f0f0",
+                            borderBottom: "1px solid var(--bg-surface)",
                             background: "linear-gradient(135deg, rgb(0 0 0) 0%, rgb(191 191 191) 100%)",
                             borderRadius: "8px 8px 0 0",
                         }}

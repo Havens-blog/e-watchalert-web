@@ -106,7 +106,7 @@ const SloMetricCard = ({ title, subtitle, dataKey, data, loading, gradientId, ic
             padding: 20,
             border: "1px solid #ddddddff",
             borderRadius: 12,
-            background: "#fff",
+            background: "var(--bg-elevated)",
         }}
     >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
@@ -132,7 +132,7 @@ const SloMetricCard = ({ title, subtitle, dataKey, data, loading, gradientId, ic
                     <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={{ stroke: "#cacacaff" }} tickLine={{ stroke: "#cacacaff" }} />
                     <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={{ stroke: "#cacacaff" }} tickLine={{ stroke: "#cacacaff" }} tickFormatter={(value) => `${value}s`} width={40} />
                     <RechartsTooltip
-                        contentStyle={{ backgroundColor: "#ffffff", border: "1px solid #cacacaff", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.1)", fontSize: 12 }}
+                        contentStyle={{ backgroundColor: "var(--bg-elevated)", border: "1px solid #cacacaff", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.1)", fontSize: 12 }}
                         labelStyle={{ color: "#000000ff", fontWeight: 600 }}
                         formatter={(value) => formatSloDuration(value)}
                     />
@@ -368,7 +368,7 @@ export const AlertCurrentEvent = (props) => {
                         >
                             {[...Array(totalBlocks)].map((_, blockIndex) => {
                                 const blockColor = GetBlockColor(blockIndex, totalBlocks, gradientStyle.intensity)
-                                const isActive = blockColor !== "#e8e8e8"
+                                const isActive = blockColor !== "var(--bg-surface)"
 
                                 return (
                                     <div
@@ -1186,7 +1186,7 @@ export const AlertCurrentEvent = (props) => {
                 }}
             >
                 <div style={{ 
-                    backgroundColor: '#fff', 
+                    backgroundColor: 'var(--bg-elevated)', 
                     borderRadius: '8px',
                     minHeight: '400px'
                 }}>
@@ -1199,7 +1199,7 @@ export const AlertCurrentEvent = (props) => {
                         justifyContent: 'flex-end'
                     }}>
                         <div>
-                            <div style={{ fontWeight: '500', color: '#000' }}>用户</div>
+                            <div style={{ fontWeight: '500', color: 'var(--text-primary)' }}>用户</div>
                         </div>
                         <div style={{ 
                             width: '32px', 
@@ -1275,7 +1275,7 @@ export const AlertCurrentEvent = (props) => {
                             AI
                         </div>
                         <div>
-                            <div style={{ fontWeight: '500', color: '#000' }}>AI 助手</div>
+                            <div style={{ fontWeight: '500', color: 'var(--text-primary)' }}>AI 助手</div>
                         </div>
                     </div>
                     <div style={{ marginLeft: '44px' }}>
@@ -1408,7 +1408,7 @@ export const AlertCurrentEvent = (props) => {
                 }}
                 onChange={handleCurrentPageChange}
                 style={{
-                    backgroundColor: "#fff",
+                    backgroundColor: "var(--bg-elevated)",
                     borderRadius: "8px",
                     overflow: "hidden",
                 }}
@@ -1645,7 +1645,7 @@ export const AlertCurrentEvent = (props) => {
                                     style={{
                                         marginTop: "16px",
                                         padding: "16px",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         borderRadius: "8px",
                                         marginBottom: "12px",
                                     }}
@@ -1898,7 +1898,7 @@ export const AlertCurrentEvent = (props) => {
                         y: height - 200,
                     }}
                     style={{
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--bg-elevated)",
                         borderRadius: "8px",
                         overflow: "hidden",
                     }}

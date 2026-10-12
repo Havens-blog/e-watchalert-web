@@ -123,7 +123,7 @@ export const EventMetricChart = ({ data }) => {
                 <CartesianGrid
                     vertical={false}
                     strokeDasharray="3 3"
-                    stroke="#e8e8e8"
+                    stroke="var(--bg-surface)"
                 />
 
                 <XAxis
@@ -132,14 +132,14 @@ export const EventMetricChart = ({ data }) => {
                         const date = new Date(value * 1000)
                         return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
                     }}
-                    axisLine={{ stroke: '#d9d9d9' }}
+                    axisLine={{ stroke: 'var(--border-base)' }}
                     tickLine={false}
                     tickMargin={8}
                     tick={{ fill: "#666", fontSize: 12 }}
                 />
 
                 <YAxis
-                    axisLine={{ stroke: '#d9d9d9' }}
+                    axisLine={{ stroke: 'var(--border-base)' }}
                     tickLine={false}
                     tick={{ fill: "#666", fontSize: 12 }}
                     tickFormatter={(value) => {

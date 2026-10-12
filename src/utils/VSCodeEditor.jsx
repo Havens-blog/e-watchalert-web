@@ -236,7 +236,7 @@ const VSCodeEditor = ({
                 alignItems: "center",
                 justifyContent: "center",
                 padding: "20px",
-                background: "#fff",
+                background: "var(--bg-elevated)",
                 zIndex: 10,
             }}
         >
@@ -292,7 +292,7 @@ const VSCodeEditor = ({
         <div
             ref={containerRef}
             style={{
-                border: "1px solid #d9d9d9",
+                border: "1px solid var(--border-base)",
                 borderRadius: "6px",
                 overflow: "hidden",
                 height: height,

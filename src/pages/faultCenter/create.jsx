@@ -146,7 +146,7 @@ export const CreateFaultCenter = ({ visible, onClose, handleList }) => {
                         display: 'flex',
                         gap: 8,
                         alignItems: 'center',
-                        borderLeft: '1px solid #e8e8e8',
+                        borderLeft: '1px solid var(--bg-surface)',
                         marginLeft: 10,
                         paddingLeft: 10,
                         height: 32,
@@ -164,7 +164,7 @@ export const CreateFaultCenter = ({ visible, onClose, handleList }) => {
                                     alignItems: 'center',
                                     padding: '4px 8px',
                                     borderRadius: 4,
-                                    background: '#f5f5f5',
+                                    background: 'var(--bg-surface)',
                                     transition: 'all 0.3s',
                                     color: '#666',
                                     '&:hover': {

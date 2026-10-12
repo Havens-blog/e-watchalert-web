@@ -38,10 +38,10 @@ export function ForbiddenPlaceholder() {
           <circle cx="12" cy="12" r="10" />
           <path d="m4.9 4.9 14.2 14.2" />
         </svg>
-        <h2 className="text-lg font-medium mt-4" style={{ color: 'var(--text-primary, #f7f8f8)' }}>
+        <h2 className="text-lg font-medium mt-4" style={{ color: 'var(--text-primary, var(--bg-page))' }}>
           无访问权限
         </h2>
-        <p className="text-sm mt-2" style={{ color: 'var(--forbidden-text, var(--text-secondary, #8a8f98))' }}>
+        <p className="text-sm mt-2" style={{ color: 'var(--forbidden-text, var(--text-secondary, var(--text-secondary)))' }}>
           您已登录但没有当前子项目的访问权限，请联系管理员配置角色。
         </p>
       </div>

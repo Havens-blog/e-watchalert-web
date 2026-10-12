@@ -17,7 +17,7 @@ export function ReadonlyNotice() {
       style={{
         background: 'var(--bg-hover, #28282c)',
         borderBottom: '1px solid var(--border-subtle, rgba(255,255,255,0.05))',
-        color: 'var(--text-secondary, #8a8f98)',
+        color: 'var(--text-secondary, var(--text-secondary))',
       }}
     >
       <svg

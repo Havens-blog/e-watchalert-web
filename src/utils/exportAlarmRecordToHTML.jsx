@@ -216,7 +216,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
           gap: 20px;
           margin-bottom: 30px;
           padding: 15px;
-          background-color: #ffffff;
+          background-color: var(--bg-elevated);
           border-radius: 8px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
@@ -255,7 +255,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
         .report-info {
           margin-bottom: 25px;
           padding: 15px 20px;
-          background-color: #ffffff;
+          background-color: var(--bg-elevated);
           border-left: 5px solid #5e6ad2;
           border-radius: 4px;
           box-shadow: 0 1px 5px rgba(0,0,0,0.05);
@@ -279,7 +279,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
         th, td {
           padding: 12px 18px;
           text-align: left;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--bg-surface);
           word-break: break-word; /* Prevent long words from breaking layout */
         }
         th {
@@ -290,7 +290,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
           font-size: 0.9em;
         }
         tr:nth-child(even) {
-          background-color: #fafafa;
+          background-color: var(--bg-surface);
         }
         tr:hover {
           background-color: #e6f7ff;
@@ -312,7 +312,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          background-color: #ffffff;
+          background-color: var(--bg-elevated);
           padding: 15px;
           border-radius: 8px;
           box-shadow: 0 1px 5px rgba(0,0,0,0.05);
@@ -331,7 +331,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
         .page-btn, .nav-btn {
           padding: 8px 15px;
           background-color: #f0f2f5;
-          border: 1px solid #d9d9d9;
+          border: 1px solid var(--border-base);
           border-radius: 4px;
           cursor: pointer;
           min-width: 40px;
@@ -359,12 +359,12 @@ function generateHtmlContent(title, data, exportTimeRange) {
         button:disabled {
           opacity: 0.6;
           cursor: not-allowed;
-          background-color: #f5f5f5;
+          background-color: var(--bg-surface);
           color: #bfbfbf;
         }
         button:disabled:hover {
-          background-color: #f5f5f5; /* Keep background static on hover when disabled */
-          border-color: #d9d9d9;
+          background-color: var(--bg-surface); /* Keep background static on hover when disabled */
+          border-color: var(--border-base);
           color: #bfbfbf;
         }
 

@@ -42,7 +42,7 @@ export const TableWithPagination = ({
       style={{
         overflowX: 'auto',
         marginTop: 10,
-        // border: '1px solid #ebebebff',
+        // border: '1px solid var(--bg-surface)ff',
         borderRadius: 6,
       }}
     >
@@ -55,7 +55,7 @@ export const TableWithPagination = ({
           x: 'max-content',
         }}
         style={{
-          backgroundColor: '#fff',
+          backgroundColor: 'var(--bg-elevated)',
           borderRadius: '8px',
           overflow: 'hidden',
         }}
@@ -87,7 +87,7 @@ export const TableWithPagination = ({
     <div
       style={{
         width: '100%',
-        background: '#fff',
+        background: 'var(--bg-elevated)',
         padding: '8px 0',
         zIndex: 100,
         display: 'flex',

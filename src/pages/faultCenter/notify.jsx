@@ -281,7 +281,7 @@ export const FaultCenterNotify = () => {
                 />
             </div>
 
-            <div style={{ marginTop: "32px", paddingTop: "28px", borderTop: "1px solid #f0f0f0", marginBottom: "24px" }}>
+            <div style={{ marginTop: "32px", paddingTop: "28px", borderTop: "1px solid var(--bg-surface)", marginBottom: "24px" }}>
                 <Title level={4} style={{ margin: 0, fontSize: "16px" }}>
                     <BellOutlined style={{ marginRight: "12px" }} />
                     通知配置
@@ -300,11 +300,11 @@ export const FaultCenterNotify = () => {
                         <div
                             style={{
                                 padding: "24px",
-                                background: "#fff",
+                                background: "var(--bg-elevated)",
                                 borderRadius: "12px",
                                 boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
                                 marginBottom: "24px",
-                                border: "1px solid #f0f0f0"
+                                border: "1px solid var(--bg-surface)"
                             }}
                         >
                             <div style={{
@@ -313,7 +313,7 @@ export const FaultCenterNotify = () => {
                                 justifyContent: "space-between",
                                 marginBottom: "16px",
                                 paddingBottom: "16px",
-                                borderBottom: "1px solid #f0f0f0"
+                                borderBottom: "1px solid var(--bg-surface)"
                             }}>
                                 <div>
                                     <SettingOutlined style={{ marginRight: "8px", color: "#5e6ad2" }} />
@@ -471,10 +471,10 @@ export const FaultCenterNotify = () => {
                         <div
                             style={{
                                 padding: "24px",
-                                background: "#fff",
+                                background: "var(--bg-elevated)",
                                 borderRadius: "12px",
                                 boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
-                                border: "1px solid #f0f0f0",
+                                border: "1px solid var(--bg-surface)",
                                 minHeight: "300px"
                             }}
                         >
@@ -484,7 +484,7 @@ export const FaultCenterNotify = () => {
                                 justifyContent: "space-between",
                                 marginBottom: "16px",
                                 paddingBottom: "16px",
-                                borderBottom: "1px solid #f0f0f0",
+                                borderBottom: "1px solid var(--bg-surface)",
                             }}>
                                 <div>
                                     <TagOutlined style={{ marginRight: "8px", color: "#5e6ad2" }} />
@@ -543,7 +543,7 @@ export const FaultCenterNotify = () => {
                                                         style={{
                                                             padding: "16px",
                                                             borderRadius: "12px",
-                                                            border: "1px solid #e8e8e8",
+                                                            border: "1px solid var(--bg-surface)",
                                                         }}
                                                     >
                                                         {/* 非编辑模式：使用 Tag 展示条件 */}
@@ -663,7 +663,7 @@ export const FaultCenterNotify = () => {
                                                         {/* 通知对象选择 */}
                                                         <div style={{
                                                             paddingTop: "12px",
-                                                            borderTop: "1px dashed #e8e8e8",
+                                                            borderTop: "1px dashed var(--bg-surface)",
                                                             display: "flex",
                                                             alignItems: "flex-start",
                                                             gap: "8px"
@@ -734,21 +734,21 @@ export const FaultCenterNotify = () => {
                                                 <div
                                                     onClick={() => add({ labels: [{ key: "", operator: "==", value: "" }], noticeIds: [] })}
                                                     style={{
-                                                        border: "2px dashed #d9d9d9",
+                                                        border: "2px dashed var(--border-base)",
                                                         borderRadius: "12px",
                                                         padding: "16px",
                                                         textAlign: "center",
                                                         cursor: "pointer",
                                                         transition: "all 0.3s",
-                                                        background: "#fafafa"
+                                                        background: "var(--bg-surface)"
                                                     }}
                                                     onMouseEnter={(e) => {
                                                         e.currentTarget.style.borderColor = "#5e6ad2"
                                                         e.currentTarget.style.background = "#f0f5ff"
                                                     }}
                                                     onMouseLeave={(e) => {
-                                                        e.currentTarget.style.borderColor = "#d9d9d9"
-                                                        e.currentTarget.style.background = "#fafafa"
+                                                        e.currentTarget.style.borderColor = "var(--border-base)"
+                                                        e.currentTarget.style.background = "var(--bg-surface)"
                                                     }}
                                                 >
                                                     <PlusOutlined style={{ color: "#8c8c8c", fontSize: "18px", marginRight: "8px" }} />
@@ -764,7 +764,7 @@ export const FaultCenterNotify = () => {
                 </Row>
             </Form>
 
-            <div style={{ marginTop: "32px", paddingTop: "28px", borderTop: "1px solid #f0f0f0" }}>
+            <div style={{ marginTop: "32px", paddingTop: "28px", borderTop: "1px solid var(--bg-surface)" }}>
                 <AlarmUpgrade />
             </div>
 
@@ -783,8 +783,8 @@ export const FaultCenterNotify = () => {
                 
                 .notify-config-container .form-editable .ant-input,
                 .notify-config-container .form-editable .ant-select-selector {
-                    background-color: #ffffff;
-                    border-color: #d9d9d9;
+                    background-color: var(--bg-elevated);
+                    border-color: var(--border-base);
                 }
                 
                 .notify-config-container .form-editable .ant-input:hover,

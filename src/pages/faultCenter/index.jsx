@@ -93,7 +93,7 @@ export const FaultCenter = () => {
             overflow: "hidden", // 防止整个页面滚动
         },
         headerSection: {
-            backgroundColor: "#fff",
+            backgroundColor: "var(--bg-elevated)",
             zIndex: 10,
         },
         scrollContainer: {
@@ -132,7 +132,7 @@ export const FaultCenter = () => {
         card: {
             borderRadius: "10px",
             boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            border: "1px solid #f0f0f0",
+            border: "1px solid var(--bg-surface)",
             transition: "all 0.3s ease",
             height: "145px",
             display: "flex",
@@ -140,7 +140,7 @@ export const FaultCenter = () => {
             padding: "16px",
             position: "relative",
             overflow: "hidden",
-            background: "linear-gradient(135deg, #ffffff 0%, #fafafa 100%)",
+            background: "linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%)",
         },
         cardContent: {
             flex: 1,
@@ -168,7 +168,7 @@ export const FaultCenter = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            borderTop: "1px solid #f5f5f5",
+            borderTop: "1px solid var(--bg-surface)",
             paddingTop: "8px",
             marginTop: "4px",
         },
@@ -185,7 +185,7 @@ export const FaultCenter = () => {
             color: "#8c8c8c",
         },
         moreIconHover: {
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "var(--bg-surface)",
         },
     }
 
@@ -282,7 +282,7 @@ export const FaultCenter = () => {
                                                         e.stopPropagation()
                                                     }}
                                                     style={styles.moreIcon}
-                                                    onMouseEnter={(e) => e.target.style.backgroundColor = "#f5f5f5"}
+                                                    onMouseEnter={(e) => e.target.style.backgroundColor = "var(--bg-surface)"}
                                                     onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}
                                                 />
                                             </Dropdown>

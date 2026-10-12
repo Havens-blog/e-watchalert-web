@@ -349,7 +349,7 @@ const Components = (props) => {
                         <div
                             style={{
                                 textAlign: "center",
-                                color: "#999999",
+                                color: "var(--text-tertiary)",
                                 fontSize: "12px",
                                 padding: "2px",
                                 background: "rgba(0, 0, 0, 0.8)",

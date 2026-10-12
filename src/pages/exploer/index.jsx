@@ -52,7 +52,7 @@ const QueryItem = ({ query, index, onRemove, onQueryChange, datasourceOptions })
             style={{ marginBottom: '16px' }}
             title={
                 <Space>
-                    <BarChartOutlined style={{ color: '#000' }} />
+                    <BarChartOutlined style={{ color: 'var(--text-primary)' }} />
                     <Text strong>查询 #{index + 1}</Text>
                 </Space>
             }
@@ -99,7 +99,7 @@ const MetricTable = ({ metrics, loading }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     minHeight: "400px",
-                    background: "#fafafa",
+                    background: "var(--bg-surface)",
                     borderRadius: "8px",
                 }}
             >
@@ -264,7 +264,7 @@ const ChartView = ({ chartData, metrics, loading }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     minHeight: "400px",
-                    background: "#fafafa",
+                    background: "var(--bg-surface)",
                     borderRadius: "8px",
                 }}
             >
@@ -562,11 +562,11 @@ export const DataAnalysis = () => {
             />
             {queries.map((query, index) => (
                 <div key={index} style={{ 
-                    border: '1px solid #f0f0f0',
+                    border: '1px solid var(--bg-surface)',
                     borderRadius: '8px',
                     padding: '16px',
                     marginBottom: '16px',
-                    background: '#fff'
+                    background: 'var(--bg-elevated)'
                 }}>
                     <Row gutter={16} align="middle">
                         {/* 左侧：数据源选择 */}

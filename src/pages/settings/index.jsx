@@ -399,10 +399,10 @@ export const SystemSettings = () => {
                                 <div
                                     style={{
                                         padding: "24px",
-                                        background: "#fff",
+                                        background: "var(--bg-elevated)",
                                         borderRadius: "12px",
                                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         minHeight: "200px"
                                     }}
                                 >
@@ -451,10 +451,10 @@ export const SystemSettings = () => {
                                 <div
                                     style={{
                                         padding: "24px",
-                                        background: "#fff",
+                                        background: "var(--bg-elevated)",
                                         borderRadius: "12px",
                                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         minHeight: "200px"
                                     }}
                                 >
@@ -511,10 +511,10 @@ export const SystemSettings = () => {
                                 <div
                                     style={{
                                         padding: "24px",
-                                        background: "#fff",
+                                        background: "var(--bg-elevated)",
                                         borderRadius: "12px",
                                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         minHeight: "200px"
                                     }}
                                 >
@@ -657,10 +657,10 @@ export const SystemSettings = () => {
                                 <div
                                     style={{
                                         padding: "24px",
-                                        background: "#fff",
+                                        background: "var(--bg-elevated)",
                                         borderRadius: "12px",
                                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         minHeight: "300px"
                                     }}
                                 >
@@ -767,10 +767,10 @@ export const SystemSettings = () => {
                                 <div 
                                     style={{
                                         padding: "24px",
-                                        background: "#fff",
+                                        background: "var(--bg-elevated)",
                                         borderRadius: "12px",
                                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
-                                        border: "1px solid #f0f0f0",
+                                        border: "1px solid var(--bg-surface)",
                                         minHeight: "300px"
                                     }}
                                 >
@@ -823,7 +823,7 @@ export const SystemSettings = () => {
                             <Typography.Title level={5}>系统版本</Typography.Title>
                             <div style={{
                                 padding: '8px 12px',
-                                background: '#f5f5f5',
+                                background: 'var(--bg-surface)',
                                 borderRadius: '4px',
                                 fontFamily: 'monospace'
                             }}>

@@ -112,7 +112,7 @@ export const MetricBuilder = ({ datasourceId, onApply }) => {
     const metricOptions = useMemo(() => metricNames.map(m => ({ label: m, value: m })), [metricNames])
 
     return (
-        <div style={{ border: '1px solid #f0f0f0', borderRadius: 8, padding: '12px 16px', marginBottom: 16, background: '#fafafa' }}>
+        <div style={{ border: '1px solid var(--bg-surface)', borderRadius: 8, padding: '12px 16px', marginBottom: 16, background: 'var(--bg-surface)' }}>
             <Space align="center" style={{ marginBottom: 8 }}>
                 <ThunderboltOutlined style={{ color: '#5e6ad2' }} />
                 <Text strong>指标浏览器</Text>
@@ -224,7 +224,7 @@ export const MetricBuilder = ({ datasourceId, onApply }) => {
                     <Divider style={{ margin: '12px 0' }} />
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <div style={{ flex: 1, fontFamily: 'monospace', fontSize: 13, background: '#fff', border: '1px dashed #d9d9d9', borderRadius: 6, padding: '6px 10px', minHeight: 34 }}>
+                        <div style={{ flex: 1, fontFamily: 'monospace', fontSize: 13, background: 'var(--bg-elevated)', border: '1px dashed var(--border-base)', borderRadius: 6, padding: '6px 10px', minHeight: 34 }}>
                             {buildPromQL}
                         </div>
                         <Button type="primary" icon={<ThunderboltOutlined />} onClick={handleApply} disabled={!metricName}>

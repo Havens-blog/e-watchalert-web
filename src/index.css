@@ -14,7 +14,7 @@
     width: 100%;
     /* 深色优先（Linear）：默认取令牌 --bg-page；令牌层在 theme-variables.css */
     background-color: var(--bg-page, #08090a);
-    color: var(--text-primary, #f7f8f8);
+    color: var(--text-primary, var(--bg-page));
     font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   }
 

@@ -60,7 +60,7 @@ export const RuleTemplateGroup = () => {
                     count={count}
                     showZero
                     style={{
-                        backgroundColor: count > 0 ? "#5e6ad2" : "#d9d9d9",
+                        backgroundColor: count > 0 ? "#5e6ad2" : "var(--border-base)",
                         fontWeight: "normal",
                         fontSize: "14px",
                     }}
@@ -260,9 +260,9 @@ export const RuleTemplateGroup = () => {
                     flexDirection: 'column',
                     height: 'calc(100vh - 120px)',
                     overflow: 'hidden',
-                    background: '#fff',
+                    background: 'var(--bg-elevated)',
                     borderRadius: '10px',
-                    border: '1px solid #f0f0f0',
+                    border: '1px solid var(--bg-surface)',
                     boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
                 }}>
                     {/* 头部 */}
@@ -277,7 +277,7 @@ export const RuleTemplateGroup = () => {
                         <span style={{ fontSize: '13px', fontWeight: 600, color: '#262626' }}>模版类型</span>
                         <Badge
                             count={menuItems.length}
-                            style={{ backgroundColor: '#f0f0f0', color: '#8c8c8c', fontSize: '11px', boxShadow: 'none' }}
+                            style={{ backgroundColor: 'var(--bg-surface)', color: '#8c8c8c', fontSize: '11px', boxShadow: 'none' }}
                         />
                     </div>
 
@@ -294,8 +294,8 @@ export const RuleTemplateGroup = () => {
                                             borderRadius: '7px',
                                             cursor: 'pointer',
                                             userSelect: 'none',
-                                            background: isSelected ? '#f5f0e6' : '#fff',
-                                            border: `1px solid ${isSelected ? 'rgba(94, 106, 210, 0.45)' : '#f0f0f0'}`,
+                                            background: isSelected ? 'var(--bg-surface)' : 'var(--bg-elevated)',
+                                            border: `1px solid ${isSelected ? 'rgba(94, 106, 210, 0.45)' : 'var(--bg-surface)'}`,
                                             boxShadow: isSelected
                                                 ? '0 1px 4px rgba(94, 106, 210, 0.2)'
                                                 : '0 0.5px 2px rgba(0,0,0,0.04)',
@@ -330,7 +330,7 @@ export const RuleTemplateGroup = () => {
             {/* 主内容区 */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', marginLeft: '20px' }}>
                 <div style={{
-                    background: '#fff',
+                    background: 'var(--bg-elevated)',
                     borderRadius: '8px',
                     height: '100%',
                     display: 'flex',

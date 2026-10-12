@@ -575,7 +575,7 @@ export const CreateNoticeObjectModal = ({ visible, onClose, selectedRow, type, h
                                             style={{
                                                 marginBottom: 16,
                                                 padding: 22,
-                                                border: '1px solid #d9d9d9',
+                                                border: '1px solid var(--border-base)',
                                                 background: '#ffffffff',
                                                 borderRadius: 8,
                                                 boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -635,7 +635,7 @@ export const CreateNoticeObjectModal = ({ visible, onClose, selectedRow, type, h
                                                                                     width: 110,
                                                                                     position: 'relative',
                                                                                     cursor: 'pointer',
-                                                                                    border: selectedCardIndex === cardIndex ? '2px solid #5e6ad2' : '1px solid #d9d9d9',
+                                                                                    border: selectedCardIndex === cardIndex ? '2px solid #5e6ad2' : '1px solid var(--border-base)',
                                                                                 }}
                                                                                 onClick={() => handleRouteCardClick(cardIndex)}
                                                                             >

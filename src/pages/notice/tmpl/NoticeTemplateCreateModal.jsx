@@ -240,7 +240,7 @@ const NoticeTemplateCreateModal = ({ visible, onClose, selectedRow, type, handle
                                         width: 120,
                                         position: 'relative',
                                         cursor: type === 'update' ? 'not-allowed' : 'pointer',
-                                        border: selectedNotifyCard === index ? '2px solid #5e6ad2' : '1px solid #d9d9d9',
+                                        border: selectedNotifyCard === index ? '2px solid #5e6ad2' : '1px solid var(--border-base)',
                                         pointerEvents: type === 'update' ? 'none' : 'auto',
                                     }}
                                     onClick={() => handleCardClick(index)}

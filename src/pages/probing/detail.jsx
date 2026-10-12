@@ -260,7 +260,7 @@ export const ProbingMetrics = () => {
                     textAlign: 'center',
                     padding: '60px 20px',
                     color: '#999',
-                    backgroundColor: '#fafafa',
+                    backgroundColor: 'var(--bg-surface)',
                     borderRadius: '8px'
                 }}>
                     <p style={{ fontSize: '16px', marginBottom: '8px' }}>
@@ -319,11 +319,11 @@ export const ProbingMetrics = () => {
                         <div
                             key={title}
                             style={{
-                                background: '#fff',
+                                background: 'var(--bg-elevated)',
                                 borderRadius: '8px',
                                 padding: '20px',
                                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                border: '1px solid #f0f0f0'
+                                border: '1px solid var(--bg-surface)'
                             }}
                         >
                             <div style={{
@@ -371,7 +371,7 @@ export const ProbingMetrics = () => {
                     textAlign: 'center',
                     padding: '60px 20px',
                     color: '#999',
-                    backgroundColor: '#fafafa',
+                    backgroundColor: 'var(--bg-surface)',
                     borderRadius: '8px'
                 }}>
                     <p style={{ fontSize: '16px', marginBottom: '8px' }}>

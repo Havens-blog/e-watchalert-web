@@ -233,8 +233,8 @@ export const AlertRuleList = () => {
                                             fontSize: '12px', 
                                             margin: 0, 
                                             cursor: 'pointer',
-                                            backgroundColor: '#f5f5f5',
-                                            borderColor: '#d9d9d9'
+                                            backgroundColor: 'var(--bg-surface)',
+                                            borderColor: 'var(--border-base)'
                                         }}
                                     >
                                         +{remainingCount}
@@ -1196,7 +1196,7 @@ rules:
 
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', marginLeft: '20px' }}>
                 <div style={{
-                    background: '#fff',
+                    background: 'var(--bg-elevated)',
                     borderRadius: '8px',
                     height: '100%',
                     display: 'flex',

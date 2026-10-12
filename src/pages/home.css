@@ -146,7 +146,7 @@
 }
 
 .capability-item:hover {
-  background: #fff;
+  background: var(--bg-elevated);
   border-color: rgba(99, 102, 241, 0.22);
   box-shadow: 0 5px 14px rgba(79, 70, 229, 0.08);
   transform: translateY(-2px);

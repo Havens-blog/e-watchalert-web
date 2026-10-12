@@ -355,7 +355,7 @@ export const Probing = () => {
                         x: 'max-content',
                     }}
                     style={{
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--bg-elevated)",
                         borderRadius: "8px",
                         overflow: "hidden",
                     }}
@@ -379,7 +379,7 @@ export const Probing = () => {
                     <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                         <div style={{ 
                             padding: '12px', 
-                            border: '1px solid #d9d9d9', 
+                            border: '1px solid var(--border-base)', 
                             borderRadius: '6px', 
                         }}>
                             <Title level={5} style={{ margin: 0, color: '#5e6ad2' }}>HTTP 拨测</Title>
@@ -393,7 +393,7 @@ export const Probing = () => {
 
                         <div style={{ 
                             padding: '12px', 
-                            border: '1px solid #d9d9d9', 
+                            border: '1px solid var(--border-base)', 
                             borderRadius: '6px', 
                         }}>
                             <Title level={5} style={{ margin: 0, color: '#10b981' }}>ICMP 拨测</Title>
@@ -410,7 +410,7 @@ export const Probing = () => {
 
                         <div style={{ 
                             padding: '12px', 
-                            border: '1px solid #d9d9d9', 
+                            border: '1px solid var(--border-base)', 
                             borderRadius: '6px', 
                         }}>
                             <Title level={5} style={{ margin: 0, color: '#fa8c16' }}>TCP 拨测</Title>
@@ -423,7 +423,7 @@ export const Probing = () => {
 
                         <div style={{ 
                             padding: '12px', 
-                            border: '1px solid #d9d9d9', 
+                            border: '1px solid var(--border-base)', 
                             borderRadius: '6px', 
                         }}>
                             <Title level={5} style={{ margin: 0, color: '#8b5cf6' }}>SSL 拨测</Title>

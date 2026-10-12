@@ -165,7 +165,7 @@ export const AlarmUpgrade = () => {
                                 <Button
                                     icon={<CloseOutlined />}
                                     onClick={handleCancel}
-                                    style={{ backgroundColor: '#fff', borderColor: '#d9d9d9', color: '#000' }}
+                                    style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border-base)', color: 'var(--text-primary)' }}
                                 >
                                     取消
                                 </Button>
@@ -189,11 +189,11 @@ export const AlarmUpgrade = () => {
                 <div
                     style={{
                         padding: "24px",
-                        background: "#fff",
+                        background: "var(--bg-elevated)",
                         borderRadius: "12px",
                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02)",
                         marginBottom: "24px",
-                        border: "1px solid #f0f0f0"
+                        border: "1px solid var(--bg-surface)"
                     }}
                     >
                         <Form.Item

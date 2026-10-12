@@ -46,7 +46,7 @@ const AlertItem = ({ item, severityColors, textColor }) => (
     className="alert-item"
     style={{
       background: "rgba(0,0,0,0.02)",
-      borderLeft: `3px solid ${severityColors[item?.severity] || "#d9d9d9"}`,
+      borderLeft: `3px solid ${severityColors[item?.severity] || "var(--border-base)"}`,
     }}
   >
     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>

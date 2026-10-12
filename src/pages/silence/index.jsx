@@ -387,7 +387,7 @@ export const Silences = () => {
 
             <div style={{
                 borderRadius: "8px",
-                border: "1px solid #f0f0f0"
+                border: "1px solid var(--bg-surface)"
             }}>
                 <Table
                     columns={columns}
@@ -404,7 +404,7 @@ export const Silences = () => {
                         pageSizeOptions: ["10", "20", "50"],
                     }}
                     style={{
-                        backgroundColor: "#fff",
+                        backgroundColor: "var(--bg-elevated)",
                         borderRadius: "8px",
                         overflow: "hidden",
                     }}

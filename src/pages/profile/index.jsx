@@ -264,7 +264,7 @@ export default function Profile() {
                                             <Avatar
                                                 style={{
                                                     background: 'linear-gradient(135deg, #ffcb7dff 0%, #a78753ff 100%)',
-                                                    color: "#000",
+                                                    color: "var(--text-primary)",
                                                     width: 256,
                                                     height: 256,
                                                     display: 'flex',

@@ -398,7 +398,7 @@ const RuleTemplateCreateModal = ({ visible, onClose, selectedRow, type, handleLi
                                             width: 120,
                                             position: 'relative',
                                             cursor: type === 'update' ? 'not-allowed' : 'pointer',
-                                            border: selectedCard === index ? '2px solid #5e6ad2' : '1px solid #d9d9d9',
+                                            border: selectedCard === index ? '2px solid #5e6ad2' : '1px solid var(--border-base)',
                                             pointerEvents: type === 'update' ? 'none' : 'auto',
                                             flexShrink: 0,  // 防止卡片被压缩
                                         }}

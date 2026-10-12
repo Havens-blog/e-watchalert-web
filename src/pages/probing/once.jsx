@@ -475,7 +475,7 @@ export const OnceProbing = () => {
                     overflow: "auto",
                     border: "none",
                     borderRadius: "8px",
-                    backgroundColor: "#fff",
+                    backgroundColor: "var(--bg-elevated)",
                 }}
             >
                 <Form form={form} layout="vertical" style={{ marginTop: "10px" }} initialValues={initialFormValues}>
@@ -542,7 +542,7 @@ export const OnceProbing = () => {
                                         </Typography.Text>
                                         <div
                                             style={{
-                                                border: "1px solid #d9d9d9",
+                                                border: "1px solid var(--border-base)",
                                                 borderRadius: "6px",
                                                 padding: "16px",
                                                 marginBottom: "24px",

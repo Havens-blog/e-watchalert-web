@@ -1,8 +1,8 @@
 .alert-rule-page {
-    --rule-ink: #141414;
+    --rule-ink: var(--bg-surface);
     --rule-muted: #6b7280;
     --rule-border: #e7e9ee;
-    --rule-surface: #ffffff;
+    --rule-surface: var(--bg-surface);
     --rule-subtle: #f7f8fa;
     --rule-accent: #111827;
     max-width: 1440px;
@@ -168,7 +168,7 @@
 .rule-content, .duration-input { display: flex; align-items: center; }
 .action-buttons { display: flex; align-items: center; justify-content: flex-end; }
 
-.rule-delivery-section { background: linear-gradient(180deg, #fff 0%, #fcfcfd 100%); }
+.rule-delivery-section { background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-surface) 100%); }
 .rule-submit-bar {
     display: flex;
     align-items: center;

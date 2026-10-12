@@ -280,7 +280,7 @@ export const CreateCalendarModal = ({ visible, onClose,onSuccess, dutyId }) => {
                                                                             style={{
                                                                                 padding: "8px",
                                                                                 marginBottom: "8px",
-                                                                                border: "1px solid #f0f0f0",
+                                                                                border: "1px solid var(--bg-surface)",
                                                                                 borderRadius: "4px",
                                                                                 backgroundColor: "white",
                                                                                 ...providedUser.draggableProps.style,
@@ -291,7 +291,7 @@ export const CreateCalendarModal = ({ visible, onClose,onSuccess, dutyId }) => {
                                                                                     <span {...providedUser.dragHandleProps}>
                                                                                       <MenuOutlined />
                                                                                     </span>
-                                                                                    <Avatar style={{ backgroundColor: group.color, color: "#000" }}>
+                                                                                    <Avatar style={{ backgroundColor: group.color, color: "var(--text-primary)" }}>
                                                                                         {user.username[0]}
                                                                                     </Avatar>
                                                                                     {user.username}

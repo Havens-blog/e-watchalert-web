@@ -39,7 +39,7 @@ export const GetBlockColor = (blockIndex, totalBlocks, intensity) => {
     const blockProgress = blockIndex / (totalBlocks - 1)
 
     if (blockProgress > intensity) {
-        return "#e8e8e8" // 未激活的灰色
+        return "var(--bg-surface)" // 未激活的灰色
     }
 
     // 根据方块位置计算颜色（黄橙红）

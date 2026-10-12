@@ -28,8 +28,8 @@ function buildAntdTheme(isDark) {
             colorWarning: '#f59e0b',      // --color-warning
             colorError: '#ef4444',        // --color-danger
             // 背景 / 文字基准（让 antd 深色推导对齐 Linear 表面阶）
-            colorBgBase: isDark ? '#08090a' : '#f7f8f8',   // --bg-base
-            colorTextBase: isDark ? '#f7f8f8' : '#111111', // --text-primary
+            colorBgBase: isDark ? '#08090a' : 'var(--bg-page)',   // --bg-base
+            colorTextBase: isDark ? 'var(--bg-page)' : '#111111', // --text-primary
             // 圆角 / 字体
             borderRadius: 8,              // Linear base
             borderRadiusLG: 12,           // dialog/card
@@ -40,15 +40,15 @@ function buildAntdTheme(isDark) {
             Layout: {
                 siderBg: isDark ? '#0f1011' : '#ffffff',   // --bg-elevated
                 headerBg: isDark ? '#0f1011' : '#ffffff',
-                bodyBg: isDark ? '#08090a' : '#f7f8f8',    // --bg-page
+                bodyBg: isDark ? '#08090a' : 'var(--bg-page)',    // --bg-page
             },
             Menu: {
                 darkItemBg: '#0f1011',                       // --bg-elevated
                 darkSubMenuItemBg: '#08090a',                // --bg-base
-                darkItemColor: '#8a8f98',                    // --text-secondary
+                darkItemColor: 'var(--text-secondary)',                    // --text-secondary
                 darkItemHoverBg: 'rgba(255,255,255,0.06)',   // --glass-bg-hover
                 darkItemSelectedBg: 'rgba(94,106,210,0.22)', // accent 选中
-                darkItemSelectedColor: '#f7f8f8',            // --text-primary
+                darkItemSelectedColor: 'var(--bg-page)',            // --text-primary
             },
         },
     };
