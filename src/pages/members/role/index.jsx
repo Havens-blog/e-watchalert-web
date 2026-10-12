@@ -1,7 +1,7 @@
-import {Input, Table, Button, Popconfirm, Tooltip, Space, Dropdown, Modal} from 'antd';
+import {Input, Table, Button, Modal, Tooltip, Dropdown} from 'antd';
 import React, { useState, useEffect } from 'react';
 import UserRoleCreateModal from './UserRoleCreateModal';
-import { deleteRole, getRoleList } from '../../../api/role';
+import { listRoles, deleteRole } from '../../../api/eiam/role';
 import {CopyOutlined, DeleteOutlined, EditOutlined, PlusOutlined, MoreOutlined} from "@ant-design/icons";
 import {HandleShowTotal} from "../../../utils/lib";
 import {copyToClipboard} from "../../../utils/copyToClipboard";
@@ -26,10 +26,10 @@ export const UserRole = () => {
             render: (text, record) => (
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     {text}
-                    <Tooltip title="点击复制 ID">
+                    <Tooltip title="点击复制编码">
                         <span
                             style={{
-                                color: '#8c8c8c',     // 灰色字体
+                                color: '#8c8c8c',
                                 fontSize: '12px',
                                 cursor: 'pointer',
                                 userSelect: 'none',
@@ -39,9 +39,9 @@ export const UserRole = () => {
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap'
                             }}
-                            onClick={() => copyToClipboard(record.id)}
+                            onClick={() => copyToClipboard(record.code)}
                         >
-                            {record.id}
+                            {record.code}
                             <CopyOutlined style={{ marginLeft: 8 }} />
                         </span>
                     </Tooltip>
@@ -50,23 +50,24 @@ export const UserRole = () => {
         },
         {
             title: '描述',
-            dataIndex: 'description',
-            key: 'description',
+            dataIndex: 'desc',
+            key: 'desc',
             width: 'auto',
             render: (text) => (!text ? '-' : text),
         },
         {
-            title: "更新时间",
-            dataIndex: "updateAt",
-            key: "updateAt",
+            title: "创建时间",
+            dataIndex: "ctime",
+            key: "ctime",
             width: "auto",
             render: (text) => {
-                const date = new Date(text * 1000)
-                    return (
-                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                            <span>{date.toLocaleString()}</span>
-                        </div>
-                    )
+                if (!text) return '-';
+                const date = new Date(text) // eiam 时间戳为毫秒
+                return (
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <span>{date.toLocaleString()}</span>
+                    </div>
+                )
             },
         },
         {
@@ -90,6 +91,7 @@ export const UserRole = () => {
                                     icon: <DeleteOutlined />,
                                     label: '删除',
                                     danger: true,
+                                    disabled: record.code === 'admin',
                                     onClick: () => {
                                         Modal.confirm({
                                             title: "确定要删除此角色吗?",
@@ -118,32 +120,31 @@ export const UserRole = () => {
 
     const [height, setHeight] = useState(window.innerHeight);
     useEffect(() => {
-        // 定义一个处理窗口大小变化的函数
         const handleResize = () => {
             setHeight(window.innerHeight);
         };
-
-        // 监听窗口的resize事件
         window.addEventListener('resize', handleResize);
-
-        // 在组件卸载时移除监听器
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
 
-    const handleList = async () => {
-        const res = await getRoleList();
-        setList(res?.data);
+    const handleList = async (keyword) => {
+        try {
+            const res = await listRoles({ offset: 0, limit: 200, keyword: keyword || '' });
+            setList(res?.roles || []);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleDelete = async (record) => {
-        const params = {
-            id: record.id,
-            name: record.name,
-        };
-        await deleteRole(params);
-        handleList();
+        try {
+            await deleteRole(record.id);
+            handleList();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleModalClose = () => {
@@ -159,6 +160,10 @@ export const UserRole = () => {
         setUpdateVisible(true);
     };
 
+    const onSearch = (value) => {
+        handleList(value);
+    };
+
     useEffect(() => {
         handleList();
     }, []);
@@ -167,7 +172,14 @@ export const UserRole = () => {
         <>
             <Breadcrumb items={['人员组织', '角色管理']} />
         
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Search
+                    allowClear
+                    placeholder="输入搜索关键字"
+                    onSearch={onSearch}
+                    onChange={(e) => { if (!e.target.value) handleList(); }}
+                    style={{ width: 300 }}
+                />
                 <Button
                     type="primary"
                     onClick={() => setVisible(true)}
@@ -195,8 +207,8 @@ export const UserRole = () => {
                     columns={columns}
                     dataSource={list}
                     scroll={{
-                        y: height - 250, // 动态设置滚动高度
-                        x: 'max-content', // 水平滚动
+                        y: height - 250,
+                        x: 'max-content',
                     }}
                     style={{
                         backgroundColor: "var(--bg-elevated)",
@@ -207,7 +219,7 @@ export const UserRole = () => {
                         showTotal: HandleShowTotal,
                         pageSizeOptions: ['10'],
                     }}
-                    rowKey={(record) => record.id} // 设置行唯一键
+                    rowKey={(record) => record.id}
                 />
             </div>
         </>

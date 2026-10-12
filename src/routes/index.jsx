@@ -6,6 +6,7 @@ import { DutyManage } from "../pages/duty";
 import { Home } from "../pages/home";
 import { UserRole } from "../pages/members/role";
 import { User } from "../pages/members/user";
+import { Department } from "../pages/members/dept";
 import { NoticeObjects } from "../pages/notice";
 import { NoticeTemplate } from "../pages/notice/tmpl";
 import { Silences } from "../pages/silence";
@@ -99,6 +100,10 @@ export default [
     {
         path: '/userRole',
         element: <ComponentsContent name="人员组织 / 角色管理" c={<UserRole />} />
+    },
+    {
+        path: '/dept',
+        element: <ComponentsContent name="人员组织 / 组织/部门管理" c={<Department />} />
     },
     {
         path: '/tenants',

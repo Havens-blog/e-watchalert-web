@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Input, Card, Row, Col, Dropdown, Menu, Modal, Empty, Typography, Tag, Tooltip } from 'antd';
-import { deleteTenant, getTenantList } from '../../api/tenant';
+import { listTenants, deleteTenant } from '../../api/eiam/tenant';
 import { CreateTenant } from './CreateTenant';
 import { useNavigate, Link } from "react-router-dom";
-import {getUserInfo} from "../../api/user";
 import { DeleteOutlined, EditOutlined, PlusOutlined, MoreOutlined, CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { copyToClipboard } from "../../utils/copyToClipboard";
 import { Breadcrumb } from "../../components/Breadcrumb";
@@ -25,23 +24,9 @@ export const Tenants = () => {
     }, []);
 
     const handleList = useCallback(async () => {
-        let userid = "";
         try {
-            const userRes = await getUserInfo();
-            userid = userRes?.data?.userid;
-        } catch (error) {
-            console.log(error);
-        }
-
-        try {
-            const params = {
-                userId: userid,
-            };
-            const res = await getTenantList(params);
-            if (res?.data === null || res?.data?.length === 0) {
-                // 不再显示错误提示，允许空列表
-            }
-            setList(res?.data || []);
+            const res = await listTenants({ offset: 0, limit: 200 });
+            setList(res?.tenants || []);
         } catch (error) {
             console.error(error);
         }
@@ -49,11 +34,7 @@ export const Tenants = () => {
 
     const handleDelete = async (record) => {
         try {
-            const params = {
-                id: record.id,
-                name: record.name,
-            };
-            await deleteTenant(params);
+            await deleteTenant(record.id);
             handleList();
         } catch (error) {
             console.error(error);
@@ -68,8 +49,8 @@ export const Tenants = () => {
         }
         const filtered = list.filter(item =>
             item.name?.toLowerCase().includes(value.toLowerCase()) ||
-            item.id?.toLowerCase().includes(value.toLowerCase()) ||
-            item.manager?.toLowerCase().includes(value.toLowerCase())
+            String(item.id)?.toLowerCase().includes(value.toLowerCase()) ||
+            item.code?.toLowerCase().includes(value.toLowerCase())
         );
         setList(filtered);
     };
@@ -233,10 +214,10 @@ export const Tenants = () => {
         },
     };
 
-    // 格式化时间
+    // 格式化时间（eiam 时间戳为毫秒）
     const formatDate = (timestamp) => {
         if (!timestamp) return "-";
-        const date = new Date(timestamp * 1000);
+        const date = new Date(timestamp);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
@@ -264,7 +245,7 @@ export const Tenants = () => {
                         <div style={{ display: "flex", gap: "10px" }}>
                             <Search
                                 allowClear
-                                placeholder="搜索租户名称、ID"
+                                placeholder="搜索租户名称、编码"
                                 onSearch={onSearch}
                                 onChange={(e) => {
                                     if (!e.target.value) handleList();
@@ -354,26 +335,32 @@ export const Tenants = () => {
                                         {/* 内容部分 */}
                                         <div style={styles.cardContent}>
                                             <div style={styles.infoRow}>
-                                                <span style={styles.infoLabel}>负责人</span>
-                                                <Tag style={{
-                                                    borderRadius: "12px",
-                                                    padding: "0 10px",
-                                                    fontSize: "12px",
-                                                    fontWeight: "500",
-                                                    backgroundColor: "#f0f5ff",
-                                                    border: "none",
-                                                    color: "#5e6ad2",
-                                                }}>
-                                                    {item.manager || "未设置"}
-                                                </Tag>
+                                                <span style={styles.infoLabel}>租户编码</span>
+                                                <span style={styles.infoValue}>{item.code || "-"}</span>
+                                            </div>
+                                            <div style={styles.infoRow}>
+                                                <span style={styles.infoLabel}>域名</span>
+                                                <span style={styles.infoValue}>{item.domain || "-"}</span>
                                             </div>
                                         </div>
 
                                         {/* 底部 */}
                                         <div style={styles.cardFooter}>
-                                            <span></span>
+                                            <Tag
+                                                style={{
+                                                    borderRadius: "12px",
+                                                    padding: "0 10px",
+                                                    fontSize: "12px",
+                                                    fontWeight: "500",
+                                                    backgroundColor: item.status === 1 ? "#f0f5ff" : "rgba(239,68,68,0.08)",
+                                                    border: "none",
+                                                    color: item.status === 1 ? "#5e6ad2" : "#ef4444",
+                                                }}
+                                            >
+                                                {item.status === 1 ? "启用" : item.status === 2 ? "禁用" : "未知"}
+                                            </Tag>
                                             <span style={styles.createTime}>
-                                                {formatDate(item.updateAt)}
+                                                {formatDate(item.ctime)}
                                             </span>
                                         </div>
                                     </Card>

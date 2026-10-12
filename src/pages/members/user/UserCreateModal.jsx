@@ -1,7 +1,7 @@
 "use client"
-import { Modal, Form, Input, Button, Switch, Typography, message } from "antd" // 导入 message
+import { Modal, Form, Input, Button, Select, message } from "antd"
 import React, { useState, useEffect } from "react"
-import { registerUser, updateUser } from "../../../api/user" // 假设这些路径是正确的
+import { createUser, updateUser } from "../../../api/eiam/user"
 
 const MyFormItemContext = React.createContext([])
 function toArr(str) {
@@ -18,36 +18,28 @@ const MyFormItem = ({ name, ...props }) => {
 // 函数组件
 const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) => {
     const [form] = Form.useForm()
-    const [checked, setChecked] = useState(false) // 初始值设为 false
     const [spaceValue, setSpaceValue] = useState("") // 用户名输入框的值，用于处理空格
 
     useEffect(() => {
         if (visible) {
-            // 仅当模态框可见时才设置值
             if (selectedRow && type === "update") {
-                const joinDutyStatus = selectedRow.joinDuty === "true"
-                setChecked(joinDutyStatus)
-                setSpaceValue(selectedRow.username) // 初始化禁用空格输入框的值
+                setSpaceValue(selectedRow.username)
                 form.setFieldsValue({
                     username: selectedRow.username,
-                    phone: selectedRow.phone,
+                    nickname: selectedRow.nickname,
                     email: selectedRow.email,
-                    joinDuty: joinDutyStatus,
-                    dutyUserId: selectedRow.dutyUserId,
-                    role: selectedRow.role,
+                    phone: selectedRow.phone,
+                    status: selectedRow.status === 'disable' ? 'disable' : 'active',
                 })
             } else {
-                // 'create' 或没有 selectedRow 时，重置表单和相关状态
                 form.resetFields()
-                setChecked(false)
                 setSpaceValue("")
                 form.setFieldsValue({
-                    joinDuty: false, // 确保初始值为false
-                    role: "app", // 设置默认角色
+                    status: 'active',
                 })
             }
         }
-    }, [visible, selectedRow, type, form]) // 依赖 visible, selectedRow, type, form
+    }, [visible, selectedRow, type, form])
 
     // 用户名输入框处理，禁止输入空格
     const handleInputChange = (e) => {
@@ -64,91 +56,69 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
     // 创建用户
     const handleCreate = async (values) => {
         try {
-            await registerUser(values)
+            await createUser({
+                username: values.username,
+                email: values.email,
+                nickname: values.nickname,
+                phone: values.phone,
+                status: values.status || 'active',
+                password: values.password,
+                confirm_password: values.confirm_password,
+            })
+            message.success('用户创建成功')
             handleList()
         } catch (error) {
             console.error(error)
+            message.error(error?.message || '创建失败')
         }
     }
 
     // 更新用户
     const handleUpdate = async (values) => {
-        await updateUser(values)
-        handleList()
+        try {
+            await updateUser({
+                id: selectedRow.id,
+                username: values.username,
+                email: values.email,
+                nickname: values.nickname,
+                phone: values.phone,
+                status: values.status || 'active',
+            })
+            message.success('用户更新成功')
+            handleList()
+        } catch (error) {
+            console.error(error)
+            message.error(error?.message || '更新失败')
+        }
     }
 
     // 提交表单
     const handleFormSubmit = async (values) => {
         if (type === "create") {
-            const newValues = {
-                ...values,
-                joinDuty: values.joinDuty ? "true" : "false",
-                role: "app",
-                dutyUserId: values.dutyUserId
-            }
-            await handleCreate(newValues)
+            await handleCreate(values)
         }
         if (type === "update") {
-            const newValues = {
-                ...values,
-                joinDuty: values.joinDuty ? "true" : "false",
-                userid: selectedRow.userid,
-                dutyUserId: values.dutyUserId
-            }
-            await handleUpdate(newValues)
+            await handleUpdate(values)
         }
         onClose()
-    }
-
-    // 接受值班 Switch 变化
-    const onChangeJoinDuty = (checkedStatus) => {
-        setChecked(checkedStatus)
-        form.setFieldsValue({ joinDuty: checkedStatus }) // 同步更新 Form.Item 的值
     }
 
     return (
         <Modal visible={visible} onCancel={onClose} footer={null}>
             <Form
                 form={form}
-                name="user_form" // 更改表单名称
-                layout="horizontal" // 关键：设置为水平布局
+                name="user_form"
+                layout="horizontal"
                 onFinish={handleFormSubmit}
-                labelCol={{ span: 5 }} // 默认标签宽度
-                wrapperCol={{ span: 20 }} // 默认输入框宽度
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 20 }}
                 style={{ padding: "40px 24px" }}
-
             >
                 <MyFormItem
                     name="username"
                     label="用户名"
                     style={{ flex: 1 }}
-                    rules={[{ required: true, message: "请输入用户名！" }, {
-                        validator: (_, value) => {
-                            if (!value) return Promise.resolve();
-                            
-                            // 计算中文字符数量（包括中文标点符号）
-                            const chineseChars = value.match(/[\u4e00-\u9fa5]/g);
-                            const chineseCount = chineseChars ? chineseChars.length : 0;
-                            
-                            // 计算英文字母数量
-                            const englishChars = value.match(/[a-zA-Z]/g);
-                            const englishCount = englishChars ? englishChars.length : 0;
-                            
-                            // 如果包含中文字符，则至少需要2个中文字符
-                            if (chineseCount > 0) {
-                                if (chineseCount < 2) {
-                                    return Promise.reject(new Error("用户名至少包含2个中文字符"));
-                                }
-                            } else {
-                                // 如果没有中文字符，则至少需要3个英文字母
-                                if (englishCount < 3) {
-                                    return Promise.reject(new Error("用户名至少包含3个英文字母"));
-                                }
-                            }
-                            
-                            return Promise.resolve();
-                        },
-                    }]}
+                    rules={[{ required: true, message: "请输入用户名！" }]}
                 >
                     <Input
                         value={spaceValue}
@@ -158,53 +128,70 @@ const UserCreateModal = ({ visible, onClose, selectedRow, type, handleList }) =>
                     />
                 </MyFormItem>
 
+                <MyFormItem
+                    name="nickname"
+                    label="昵称"
+                    style={{ flex: 1 }}
+                >
+                    <Input />
+                </MyFormItem>
+
                 {type === "create" && (
-                    <Form.Item
-                        name="password"
-                        label="密码"
-                        style={{ flex: 1 }}
-                        rules={[{ required: true, message: "请输入密码！" }, {
-                            min: 6,
-                            message: "密码至少需要6位字符！"
-                        }]}
-                        hasFeedback
-                    >
-                        <Input.Password />
-                    </Form.Item>
+                    <>
+                        <Form.Item
+                            name="password"
+                            label="密码"
+                            style={{ flex: 1 }}
+                            rules={[{ required: true, message: "请输入密码！" }, {
+                                min: 6,
+                                message: "密码至少需要6位字符！"
+                            }]}
+                            hasFeedback
+                        >
+                            <Input.Password />
+                        </Form.Item>
+                        <Form.Item
+                            name="confirm_password"
+                            label="确认密码"
+                            dependencies={['password']}
+                            style={{ flex: 1 }}
+                            rules={[{ required: true, message: "请再次输入密码！" }, ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve()
+                                    }
+                                    return Promise.reject(new Error('两次输入的密码不一致！'))
+                                },
+                            })]}
+                            hasFeedback
+                        >
+                            <Input.Password />
+                        </Form.Item>
+                    </>
                 )}
 
                 <MyFormItem
                     name="email"
                     label="邮箱"
                     rules={[
-                        { required: true, message: "请输入邮箱！", type: "email" }, // 添加type: 'email'进行格式校验
+                        { required: true, message: "请输入邮箱！", type: "email" },
                     ]}
                 >
-                    <Input disabled={selectedRow?.create_by === "LDAP"}/>
+                    <Input />
                 </MyFormItem>
 
                 <MyFormItem name="phone" label="手机号">
-                    <Input disabled={selectedRow?.create_by === "LDAP"}/>
+                    <Input />
                 </MyFormItem>
 
-                <MyFormItem
-                    name="joinDuty"
-                    label="接受值班"
-                    valuePropName="checked"
-                >
-                    <Switch checked={checked} onChange={onChangeJoinDuty} />
+                <MyFormItem name="status" label="状态">
+                    <Select
+                        options={[
+                            { label: '启用', value: 'active' },
+                            { label: '禁用', value: 'disable' },
+                        ]}
+                    />
                 </MyFormItem>
-
-                {checked && (
-                    <>
-                        <MyFormItem name="dutyUserId" label="用户标识" rules={[{ required: true, message: "请输入用户标识！" }]}>
-                            <Input />
-                        </MyFormItem>
-                        <Typography.Text type="secondary" style={{ marginTop: "5px", fontSize: "12px", display: "block" }}>
-                            {"第三方平台的用户 ID（飞书/Slack平台） 或 手机号（钉钉/企微平台）"}
-                        </Typography.Text>
-                    </>
-                )}
 
                 <Form.Item wrapperCol={{ offset: 6, span: 18 }}>
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>

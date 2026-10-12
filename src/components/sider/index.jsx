@@ -25,7 +25,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Menu, Layout, Typography, Dropdown, message, Spin, theme, Popover, Avatar, Divider, Button} from 'antd';
 import logoIcon from "../../img/logo.svg";
 import {getUserInfo, logoutUser} from "../../api/user";
-import {getTenantList, getTenant} from "../../api/tenant";
+import {listMyTenants, switchTenant} from "../../api/eiam/tenant";
 import {buildConsoleLoginUrl} from "../../config/auth";
 import {resolveTheme, toggleTheme, THEME_DARK} from "../../theme/theme";
 
@@ -113,7 +113,8 @@ const adminMenuItems = [
                 label: '人员组织',
                 children: [
                     { key: '5-1', path: '/user', label: '用户管理' },
-                    { key: '5-2', path: '/userRole', label: '角色管理' }
+                    { key: '5-2', path: '/userRole', label: '角色管理' },
+                    { key: '5-3', path: '/dept', label: '组织/部门管理' }
                 ]
             },
             { key: '4', path: '/dutyManage', icon: <CalendarOutlined />, label: '值班中心' },
@@ -219,7 +220,6 @@ export const ComponentSider = () => {
     const [userInfo, setUserInfo] = useState(null)
     const [loading, setLoading] = useState(true)
     const [tenantList, setTenantList] = useState([])
-    const [currentTenant, setCurrentTenant] = useState(null)
     const [getTenantStatus, setTenantStatus] = useState(null)
     const [isDark, setIsDark] = useState(() => resolveTheme() === THEME_DARK)
 
@@ -283,31 +283,10 @@ export const ComponentSider = () => {
     }, [handleMenuClick]);
 
     const menuItems = useMemo(() => {
-        let baseMenuItems = userInfo?.role === 'admin' ? adminMenuItems : userMenuItems;
-        
-        // 如果不是管理员但是是租户管理者，添加租户管理到组织管理分组
-        if (userInfo?.role !== 'admin' && userInfo?.username === currentTenant?.manager) {
-            baseMenuItems = baseMenuItems.map(group => {
-                if (group.key === 'group-org') {
-                    return {
-                        ...group,
-                        children: [
-                            ...group.children,
-                            { 
-                                key: '7', 
-                                path: `/tenants/detail/${localStorage.getItem('TenantID')}`, 
-                                icon: <DeploymentUnitOutlined />, 
-                                label: '租户管理' 
-                            }
-                        ]
-                    };
-                }
-                return group;
-            });
-        }
-        
+        // 租户管理菜单：admin 可见；eiam 租户无 manager 字段，移除旧「租户管理者」判断
+        const baseMenuItems = userInfo?.role === 'admin' ? adminMenuItems : userMenuItems;
         return convertToMenuItems(baseMenuItems);
-    }, [userInfo, currentTenant, convertToMenuItems]);
+    }, [userInfo, convertToMenuItems]);
 
     const handleLogout = async () => {
         // 会话化（§4.2）：调 eiam POST /api/user/logout 销毁共享会话；
@@ -555,11 +534,8 @@ export const ComponentSider = () => {
             const res = await getUserInfo()
             setUserInfo(res?.data)
 
-            if (res?.data?.userid) {
-                await fetchTenantList(res?.data?.userid)
-                // 获取当前租户信息
-                await fetchCurrentTenantInfo()
-            }
+            // 租户列表改从 eiam 拉取（list/mine，会话自动注入），不再依赖 WatchAlert 后端租户
+            await fetchTenantList()
 
             setLoading(false)
         } catch (error) {
@@ -569,19 +545,17 @@ export const ComponentSider = () => {
         }
     }
 
-    const fetchTenantList = async (userid) => {
+    const fetchTenantList = async () => {
         try {
-            const params = {
-                userId: userid,
-            }
-            const res = await getTenantList(params)
+            const res = await listMyTenants()
+            const tenants = Array.isArray(res) ? res : []
 
-            if (res?.data === null || res?.data?.length === 0) {
+            if (tenants.length === 0) {
                 message.error("该用户没有可用租户")
                 return
             }
 
-            const opts = res?.data?.map((key, index) => ({
+            const opts = tenants.map((key, index) => ({
                 label: key.name,
                 value: key.id,
                 index: index,
@@ -591,8 +565,8 @@ export const ComponentSider = () => {
 
             if (getTenantName() === null && opts.length > 0) {
                 localStorage.setItem("TenantName", opts[0].label)
-                localStorage.setItem("TenantID", opts[0].value)
-                localStorage.setItem("TenantIndex", opts[0].index)
+                localStorage.setItem("TenantID", String(opts[0].value))
+                localStorage.setItem("TenantIndex", String(opts[0].index))
             }
 
             setTenantStatus(true)
@@ -600,21 +574,6 @@ export const ComponentSider = () => {
             console.error("Failed to fetch tenant list:", error)
             // 会话化：不清 localStorage（保留 hc_theme 等），交由上层 ErrorScreen / 拦截器处理
             message.error("获取租户错误")
-        }
-    }
-
-    const fetchCurrentTenantInfo = async () => {
-        try {
-            const tenantId = localStorage.getItem("TenantID");
-            if (tenantId) {
-                const params = {
-                    id: tenantId,
-                };
-                const res = await getTenant(params);
-                setCurrentTenant(res?.data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch current tenant info:", error);
         }
     }
 
@@ -626,14 +585,23 @@ export const ComponentSider = () => {
         return localStorage.getItem("TenantIndex")
     }
 
-    const changeTenant = (c) => {
-        localStorage.setItem("TenantIndex", c.key)
-        if (c.item.props.name) {
-            localStorage.setItem("TenantName", c.item.props.name)
+    const changeTenant = async (c) => {
+        const targetId = c.item?.props?.value;
+        const targetName = c.item?.props?.name;
+
+        if (!targetId) return;
+
+        try {
+            // 调 eiam switch 销毁旧 session 重签新 cookie，成功后整页 reload（与 haven-console 同款）
+            await switchTenant(Number(targetId));
+        } catch (e) {
+            console.error("switch tenant failed:", e);
+            message.error("切换租户失败");
+            return;
         }
-        if (c.item.props.value) {
-            localStorage.setItem("TenantID", c.item.props.value)
-        }
+
+        localStorage.setItem("TenantName", targetName)
+        localStorage.setItem("TenantID", String(targetId))
 
         setSelectedMenuKey('1')
         navigate('/')

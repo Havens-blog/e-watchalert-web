@@ -1,7 +1,6 @@
-import { Modal, Form, Input, Button, Divider, Select } from 'antd'
-import React, { useEffect, useState } from 'react'
-import { createTenant, updateTenant } from '../../api/tenant'
-import { getUserList } from "../../api/user";
+import { Modal, Form, Input, Button, Divider } from 'antd'
+import React, { useEffect } from 'react'
+import { createTenant, updateTenant } from '../../api/eiam/tenant'
 
 const MyFormItemContext = React.createContext([])
 
@@ -18,17 +17,12 @@ const MyFormItem = ({ name, ...props }) => {
 
 export const CreateTenant = ({ visible, onClose, selectedRow, type, handleList }) => {
     const [form] = Form.useForm()
-    const { Option } = Select
-    const renderedOptions = new Set();
-    const [selectedItems, setSelectedItems] = useState({})
-    const [filteredOptions, setFilteredOptions] = useState([])
 
     useEffect(() => {
         if (selectedRow) {
             form.setFieldsValue({
                 name: selectedRow.name,
-                manager: selectedRow.manager,
-                description: selectedRow.description,
+                code: selectedRow.code,
             })
         }
     }, [selectedRow, form])
@@ -55,56 +49,16 @@ export const CreateTenant = ({ visible, onClose, selectedRow, type, handleList }
 
     // 提交
     const handleFormSubmit = async (values) => {
-
         if (type === 'create') {
-            const params = {
-                ...values,
-                userNumber: 10,
-                ruleNumber: 50,
-                dutyNumber: 10,
-                noticeNumber: 10,
-                removeProtection: false,
-            }
-
-            await handleCreate(params)
+            await handleCreate({ name: values.name, code: values.code })
         }
 
         if (type === 'update') {
-            const params = {
-                ...values,
-                id: selectedRow.id,
-            }
-
-            await handleUpdate(params)
+            await handleUpdate({ id: selectedRow.id, name: values.name, code: values.code })
         }
 
         // 关闭弹窗
         onClose()
-    }
-
-    const renderOption = (item) => {
-        if (!renderedOptions.has(item.username)) {
-            renderedOptions.add(item.username);
-            return <Option key={item.username} value={item.username} userid={item.userid}>{item.username}</Option>;
-        }
-        return null; // 如果选项已存在，不渲染
-    };
-
-    const handleSelectChange = (_, value) => {
-        setSelectedItems(value)
-    }
-
-    const handleUser = async () => {
-        try {
-            const res = await getUserList()
-            const options = res?.data?.map((item) => ({
-                username: item.username,
-                userid: item.userid
-            }))
-            setFilteredOptions(options)
-        } catch (error) {
-            console.error(error)
-        }
     }
 
     return (
@@ -125,12 +79,12 @@ export const CreateTenant = ({ visible, onClose, selectedRow, type, handleList }
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input maxLength={64} />
                         </MyFormItem>
 
                     <MyFormItem
-                        name="manager"
-                        label="租户负责人"
+                        name="code"
+                        label="租户编码"
                         style={{
                             width: '472px',
                         }}
@@ -140,19 +94,9 @@ export const CreateTenant = ({ visible, onClose, selectedRow, type, handleList }
                             },
                         ]}
                     >
-                        <Select
-                            showSearch
-                            placeholder="租户负责人"
-                            onChange={handleSelectChange}
-                            onClick={handleUser}
-                            style={{
-                                width: '100%',
-                            }}
-                        >
-                            {filteredOptions.map(renderOption)}
-                        </Select>
+                        <Input maxLength={32} placeholder="唯一编码，如 default / ops" />
                     </MyFormItem>
-                    
+
                     <Divider />
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

@@ -99,10 +99,10 @@ axios.interceptors.response.use(
 /**
  * 封装 get 方法
  */
-export function get(url, params = {}) {
+export function get(url, params = {}, headers = {}) {
   return new Promise((resolve, reject) => {
     axios
-      .get(url, { params })
+      .get(url, { params, headers })
       .then((response) => resolve(response.data))
       .catch((error) => reject(error))
   })
@@ -111,9 +111,9 @@ export function get(url, params = {}) {
 /**
  * 封装 post 方法
  */
-export function post(url, data) {
+export function post(url, data, headers = {}) {
   return new Promise((resolve, reject) => {
-    axios.post(url, data).then(
+    axios.post(url, data, { headers }).then(
       (response) => resolve(response.data),
       (err) => reject(err)
     )
@@ -123,9 +123,9 @@ export function post(url, data) {
 /**
  * 封装 patch 方法
  */
-export function patch(url, data = {}) {
+export function patch(url, data = {}, headers = {}) {
   return new Promise((resolve, reject) => {
-    axios.patch(url, data).then(
+    axios.patch(url, data, { headers }).then(
       (response) => resolve(response.data),
       (err) => reject(err)
     )
@@ -135,9 +135,9 @@ export function patch(url, data = {}) {
 /**
  * 封装 put 方法
  */
-export function put(url, data = {}) {
+export function put(url, data = {}, headers = {}) {
   return new Promise((resolve, reject) => {
-    axios.put(url, data).then(
+    axios.put(url, data, { headers }).then(
       (response) => resolve(response.data),
       (err) => reject(err)
     )
@@ -147,9 +147,9 @@ export function put(url, data = {}) {
 /**
  * 封装 delete 方法
  */
-export function del(url, params = {}) {
+export function del(url, params = {}, headers = {}) {
   return new Promise((resolve, reject) => {
-    axios.delete(url, { params }).then(
+    axios.delete(url, { params, headers }).then(
       (response) => resolve(response.data),
       (err) => reject(err)
     )
@@ -160,16 +160,16 @@ export function del(url, params = {}) {
  * 统一接口处理，返回数据
  */
 // eslint-disable-next-line import/no-anonymous-default-export
-export default function (method, url, param) {
+export default function (method, url, param, headers) {
   return new Promise((resolve, reject) => {
     switch (method) {
       case 'get':
-        get(url, param)
+        get(url, param, headers)
           .then(resolve)
           .catch(reject)
         break
       case 'post':
-        post(url, param)
+        post(url, param, headers)
           .then(resolve)
           .catch((error) => {
             console.error('post request failed.', error)
@@ -177,17 +177,17 @@ export default function (method, url, param) {
           })
         break
       case 'put':
-        put(url, param)
+        put(url, param, headers)
           .then(resolve)
           .catch(reject)
         break
       case 'patch':
-        patch(url, param)
+        patch(url, param, headers)
           .then(resolve)
           .catch(reject)
         break
       case 'delete':
-        del(url, param)
+        del(url, param, headers)
           .then(resolve)
           .catch(reject)
         break

@@ -1,36 +1,31 @@
 import React, { useEffect, useState } from 'react'
-import {Descriptions, Segmented} from "antd";
-import {TenantSecurity} from "./security";
-import {TenantQuota} from "./quota";
+import {Descriptions, Tag} from "antd";
 import {TenantUsers} from "./users";
 import { useParams } from 'react-router-dom'
-import {getTenant} from "../../api/tenant";
+import {getTenantDetail} from "../../api/eiam/tenant";
 import { Breadcrumb } from "../../components/Breadcrumb";
 
 
 export const TenantDetail = ()=>{
     const { id } = useParams()
     const [tenantInfo,setTenantInfo] = useState({})
-    const [activeTab, setActiveTab] = useState('1')
 
     useEffect(() => {
         handleGetTenantInfo();
-    }, []);
+    }, [id]);
 
     const handleGetTenantInfo = async ()=>{
         try {
-            const params = {
-                id: id,
-            }
-            const res = await getTenant(params)
-            setTenantInfo(res?.data);
+            const res = await getTenantDetail(id)
+            setTenantInfo(res || {});
         } catch (error) {
             console.error(error)
         }
     }
 
     const formatTimestamp = (timestamp) => {
-        const date = new Date(timestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
+        if (!timestamp) return '-';
+        const date = new Date(timestamp); // eiam 时间戳为毫秒
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
         const day = date.getDate().toString().padStart(2, '0');
@@ -40,41 +35,40 @@ export const TenantDetail = ()=>{
         return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
     };
 
+    const statusTag = (status) => {
+        if (status === 1) return <Tag color="blue">启用</Tag>;
+        if (status === 2) return <Tag color="red">禁用</Tag>;
+        return <Tag>未知</Tag>;
+    };
+
     const itemsDescriptions = [
         {
-            key: '2',
-            label: '租户名称',
-            children: `${tenantInfo.name} (${tenantInfo.id})`,
-        },
-        {
-            key: '4',
-            label: '负责人',
-            children: tenantInfo.manager,
-        },
-        {
-            key: '5',
-            label: '更新时间',
-            children: formatTimestamp(tenantInfo.updateAt),
-        },
-    ];
-
-    const itemsTabs = [
-        {
             key: '1',
-            label: '配额管理',
-            children: <TenantQuota tenantInfo={tenantInfo}/>,
+            label: '租户名称',
+            children: tenantInfo.name || '-',
         },
         {
             key: '2',
-            label: '成员管理',
-            children: <TenantUsers tenantInfo={tenantInfo}/>,
+            label: '租户编码',
+            children: tenantInfo.code || '-',
         },
         {
             key: '3',
-            label: '安全配置',
-            children: <TenantSecurity tenantInfo={tenantInfo}/>,
+            label: '域名',
+            children: tenantInfo.domain || '-',
+        },
+        {
+            key: '4',
+            label: '状态',
+            children: statusTag(tenantInfo.status),
+        },
+        {
+            key: '5',
+            label: '创建时间',
+            children: formatTimestamp(tenantInfo.ctime),
         },
     ];
+
     return(
         <>
             <Breadcrumb items={['租户管理', '详情']} />
@@ -82,14 +76,9 @@ export const TenantDetail = ()=>{
                 <Descriptions title={"基本信息"} bordered items={itemsDescriptions} />
 
                 <div style={{marginTop:'20px'}}>
-                    <span style={{fontSize:'16px',color:'rgba(0, 0, 0, 0.88)',fontWeight:'600'}}>高级配置</span>
-                    <Segmented
-                        value={activeTab}
-                        onChange={(value) => setActiveTab(String(value))}
-                        options={itemsTabs.map(({ key, label }) => ({ value: key, label }))}
-                    />
+                    <span style={{fontSize:'16px',color:'var(--text-primary)',fontWeight:'600'}}>成员管理</span>
                     <div style={{ marginTop: '16px' }}>
-                        {itemsTabs.find((item) => item.key === activeTab)?.children}
+                        <TenantUsers tenantInfo={tenantInfo}/>
                     </div>
                 </div>
             </div>

@@ -1,33 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {Form, Table, Space, Button, Modal, Transfer, Popconfirm, Select, Tooltip, message} from 'antd';
-import {DeleteOutlined, EditOutlined, PlusCircleOutlined} from '@ant-design/icons';
-import { getUserList } from '../../api/user';
-import {addUsersToTenant, changeTenantUserRole, delUsersOfTenant, getUsersForTenant,} from "../../api/tenant";
-import './index.css'
-import {getRoleList} from "../../api/role";
+import {Table, Button, Modal, Transfer, Popconfirm, Tooltip, Tag, message} from 'antd';
+import {DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
+import { listUsers } from '../../api/eiam/user';
+import { listTenantMembers, assignTenantUser, unassignTenantUser } from '../../api/eiam/tenant';
 import {HandleShowTotal} from "../../utils/lib";
 
-const MyFormItemContext = React.createContext([]);
-
-function toArr(str) {
-    return Array.isArray(str) ? str : [str];
-}
-
-// Custom form item that uses context for path concatenation
-const MyFormItem = ({ name, ...props }) => {
-    const prefixPath = React.useContext(MyFormItemContext);
-    const concatName = name !== undefined ? [...prefixPath, ...toArr(name)] : undefined;
-    return <Form.Item name={concatName} {...props} />;
-};
-
 export const TenantUsers = ({ tenantInfo }) => {
-    const [form] = Form.useForm();
     const [addUserModel, setAddUserModel] = useState(false);
-    const [mockData, setMockData] = useState([]);
-    const [targetKeys, setTargetKeys] = useState([]);
-    const [userData,setUserData]=useState([])
-    const [userRoles,setUserRoles] = useState([])
-    const [selectedUserRole,setSelectedUserRole] = useState(null)
+    const [allUsers, setAllUsers] = useState([]);      // 全部用户（Transfer 源）
+    const [targetKeys, setTargetKeys] = useState([]);  // 已选用户 id
+    const [memberData, setMemberData] = useState([]);  // 当前租户成员
 
     // Table columns definition
     const columns = [
@@ -40,196 +22,124 @@ export const TenantUsers = ({ tenantInfo }) => {
         },
         {
             title: '用户名',
-            dataIndex: 'userName',
-            key: 'userName',
-            width: '50px',
+            dataIndex: 'username',
+            key: 'username',
         },
         {
-            title: '用户ID',
-            dataIndex: 'userId',
-            key: 'userId',
-            width: '50px',
+            title: '昵称',
+            dataIndex: 'nickname',
+            key: 'nickname',
+            render: (text) => text || '-',
         },
         {
-            title: '角色',
-            dataIndex: 'userRole',
-            key: 'userRole',
-            width: '50px',
-            render: (_,record) =>
-                <div>
-                    <Select
-                        showSearch
-                        placeholder="请选择用户角色"
-                        style={{
-                            flex: 1,
-                            width:'20vh'
-                        }}
-                        value={record.userRole}
-                        options={userRoles}
-                        disabled={record.userName === 'admin'}
-                        onChange={(role) => changeUserRole(role, record)}
-                    />
-                </div>
+            title: '邮箱',
+            dataIndex: 'email',
+            key: 'email',
+            render: (text) => text || '-',
+        },
+        {
+            title: '状态',
+            dataIndex: 'status',
+            key: 'status',
+            render: (text) => {
+                if (text === 1) return <Tag color="blue">启用</Tag>;
+                if (text === 2) return <Tag color="red">禁用</Tag>;
+                return <Tag>未知</Tag>;
+            },
         },
         {
             title: '操作',
             dataIndex: 'operation',
             fixed: 'right',
-            width: '10px',
+            width: '80px',
             render: (_, record) =>
-                <Space size="middle">
-                    <Tooltip title="删除">
-                        <Popconfirm
-                            title={`确定要删除用户 ${record.userName} 吗?`}
-                            onConfirm={() => handleDelete(record)}
-                            okText="确定"
-                            cancelText="取消"
-                            placement="left"
-                        >
-                            <Button 
-                                type="text" 
-                                icon={<DeleteOutlined/>} 
-                                disabled={record.userName === 'admin'} 
-                                style={{color: record.userName === 'admin' ? "#b2b2b2" : "#ef4444"}}
-                            />
-                        </Popconfirm>
-                    </Tooltip>
-                </Space>
+                <Popconfirm
+                    title={`确定要移除成员 ${record.username} 吗?`}
+                    onConfirm={() => handleRemove(record)}
+                    okText="确定"
+                    cancelText="取消"
+                    placement="left"
+                >
+                    <Button
+                        type="text"
+                        icon={<DeleteOutlined/>}
+                        style={{color: "#ef4444"}}
+                    />
+                </Popconfirm>
         },
     ];
 
-    const changeUserRole = async (role,record) =>{
-        const cturParams = {
-            id: tenantInfo.id,
-            userId: record.userId,
-            userRole: role,
-        }
-        await changeTenantUserRole(cturParams)
-        getTenantUsers();
-        message.open({
-            type: 'success',
-            content: `用户: ${record.userName}, 角色修改成功`,
-        });
-    }
-
-    const handleGetUserRole = async () => {
+    const handleRemove = async (record) => {
         try {
-            const res = await getRoleList()
-            const options = res?.data?.map((item) => (
-                {
-                    label: item.name,
-                    value: item.id
-                }))
-            setUserRoles(options)
+            await unassignTenantUser({ user_id: record.id }, tenantInfo?.id)
+            getTenantMembers();
+            message.success(`已移除成员: ${record.username}`);
         } catch (error) {
             console.error(error)
+            message.error(error?.message || '移除失败')
         }
     }
 
-    const handleDelete = async (record) => {
+    // 拉取当前租户成员（超管查看指定租户时带 X-Active-Tenant-ID 覆写）
+    const getTenantMembers = async () => {
         try {
-            const params = {
-                id: tenantInfo.id,
-                userId: record.userId,
-            }
-            await delUsersOfTenant(params)
-            getTenantUsers();
+            const res = await listTenantMembers({ offset: 0, limit: 200 }, tenantInfo?.id);
+            setMemberData(res?.members || []);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
+
+    // 拉取全部用户（用于 Transfer 添加成员）
+    const fetchAllUsers = async () => {
+        try {
+            const res = await listUsers({ offset: 0, limit: 500 });
+            const users = res?.users || [];
+            setAllUsers(users.map((u) => ({
+                key: u.id,
+                title: `${u.username}${u.nickname ? ` (${u.nickname})` : ''}`,
+                id: u.id,
+                username: u.username,
+            })));
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     // Fetch data on component mount
     useEffect(() => {
-        fetchData();
-        getTenantUsers();
-        handleGetUserRole();
-    }, []);
+        getTenantMembers();
+        fetchAllUsers();
+    }, [tenantInfo?.id]);
 
-    useEffect(() => {
-        if (userData) {
-            const newKeys = userData.map((item) => item.userId);
-            setTargetKeys(newKeys);
-        }
-    }, [userData]);
-
-    // Function to fetch user data from API
-    const fetchData = async () => {
-        try {
-            const response = await getUserList();
-            const data = response?.data;
-            formatData(data); // Format the fetched data for Transfer
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const getTenantUsers = async ()=>{
-        try {
-            const params = {
-                id: tenantInfo.id,
-            }
-            const res = await getUsersForTenant(params)
-            setUserData(res?.data?.users)
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    // Format the data for the Transfer component
-    const formatData = (data) => {
-        const formattedData = data.map((item) => ({
-            key: item.userid,
-            title: item.username,
-            userid: item.userid,
-            username: item.username,
-            disabled: false,
-        }));
-
-        setMockData(formattedData);
-    };
-
-    // Handle the closing of the modal
     const onClose = () => {
         setAddUserModel(false);
+        setTargetKeys([]);
     };
 
-    // Handle the change in selected keys in Transfer
     const handleOnChange = (keys) => {
         setTargetKeys(keys);
     };
 
-    // Handle form submission
-    const handleFormSubmit = async (values) => {
-        // Create a list of selected users with their details
-        const selectedUsers = targetKeys.map((key) => {
-            const user = mockData.find((item) => item.key === key);
-            return {
-                userid: user?.userid,
-                username: user?.title,
-            };
-        }).filter((user) => user.userid !== undefined);
-
+    // 提交添加成员
+    const handleAddMembers = async () => {
         try {
-            const params = {
-                ...values,
-                id: tenantInfo.id,
-                userRole: selectedUserRole,
-                users: selectedUsers,
-            };
-
-            await addUsersToTenant(params)
-            onClose()
-            getTenantUsers()
+            for (const uid of targetKeys) {
+                await assignTenantUser({ user_id: uid }, tenantInfo?.id);
+            }
+            onClose();
+            getTenantMembers();
+            message.success(`已添加 ${targetKeys.length} 名成员`);
         } catch (error) {
             console.error(error)
+            message.error(error?.message || '添加失败')
         }
     };
 
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button type="link" onClick={() => setAddUserModel(true)}>
+                <Button type="link" onClick={() => { fetchAllUsers(); setAddUserModel(true); }}>
                     <PlusCircleOutlined /> 添加成员
                 </Button>
             </div>
@@ -241,53 +151,34 @@ export const TenantUsers = ({ tenantInfo }) => {
                 title="选择用户"
                 width={690}
             >
-                <Form form={form} name="form_item_path" onFinish={handleFormSubmit}>
-                    <MyFormItem name="users" label="">
-                        <Transfer
-                            showSearch
-                            dataSource={mockData}
-                            targetKeys={targetKeys}
-                            onChange={handleOnChange}
-                            render={(item) => item.title}
-                            listStyle={{ height: 300, width: 300 }} // Set list styles
-                            oneWay // Enable one-way transfer
-                            titles={['可选用户', '已选用户']} // Optional titles
-                            className="disable-right-transfer"
-                        />
-                    </MyFormItem>
-
-                    <MyFormItem name="userRole" label="用户角色" rules={[{required: true,}]}>
-                        <Select
-                            showSearch
-                            placeholder="请选择用户角色"
-                            style={{
-                                flex: 1,
-                                width:'100%'
-                            }}
-                            options={userRoles}
-                            onClick={handleGetUserRole}
-                            onChange={setSelectedUserRole}
-                        />
-                    </MyFormItem>
-
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            style={{
-                                backgroundColor: '#000000'
-                            }}
-                        >
-                            提交
-                        </Button>
-                    </div>
-                </Form>
+                <div style={{ marginBottom: 12 }}>
+                    <Transfer
+                        showSearch
+                        dataSource={allUsers}
+                        targetKeys={targetKeys}
+                        onChange={handleOnChange}
+                        render={(item) => item.title}
+                        listStyle={{ height: 300, width: 300 }}
+                        oneWay
+                        titles={['可选用户', '已选用户']}
+                    />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                        type="primary"
+                        onClick={handleAddMembers}
+                        style={{ backgroundColor: '#000000' }}
+                    >
+                        提交
+                    </Button>
+                </div>
             </Modal>
 
             <Table
                 style={{ overflow: 'hidden' }}
                 columns={columns}
-                dataSource={userData}
+                dataSource={memberData}
+                rowKey={(record) => record.id}
                 scroll={{
                     x: false,
                     y: '45vh'

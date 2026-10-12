@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Modal, Form, Input, Button, Transfer } from 'antd'
+import { Modal, Form, Input, Button, message } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { createRole, updateRole } from '../../../api/role'
-import { getPermissionsList } from '../../../api/permissions'
+import { createRole, updateRole } from '../../../api/eiam/role'
 const MyFormItemContext = React.createContext([])
 
 function toArr(str) {
@@ -19,154 +18,99 @@ const MyFormItem = ({ name, ...props }) => {
 // 函数组件
 const UserRoleCreateModal = ({ visible, onClose, selectedRow, type, handleList }) => {
     const [form] = Form.useForm()
-    const [mockData, setMockData] = useState([])
-    const [targetKeys, setTargetKeys] = useState([])
-    const [disabledPermission, setDisabledPermission] = useState(false)
 
     // 禁止输入空格
     const [spaceValue, setSpaceValue] = useState('')
 
     const handleInputChange = (e) => {
-        // 移除输入值中的空格
         const newValue = e.target.value.replace(/\s/g, '')
         setSpaceValue(newValue)
+        form.setFieldsValue({ code: newValue })
     }
 
     const handleKeyPress = (e) => {
-        // 阻止空格键的默认行为
         if (e.key === ' ') {
             e.preventDefault()
         }
     }
 
     useEffect(() => {
-        if (selectedRow) {
-            setTargetKeys(selectedRow.permissions)
-            form.setFieldsValue({
-                id: selectedRow.id,
-                name: selectedRow.name,
-                description: selectedRow.description,
-                permissions: targetKeys,
-            })
-            if (selectedRow.name === 'admin') {
-                setDisabledPermission(true)
+        if (visible) {
+            if (selectedRow) {
+                setSpaceValue(selectedRow.code || '')
+                form.setFieldsValue({
+                    name: selectedRow.name,
+                    code: selectedRow.code,
+                    desc: selectedRow.desc,
+                })
             } else {
-                setDisabledPermission(false)
+                form.resetFields()
+                setSpaceValue('')
             }
         }
-    }, [selectedRow, form])
+    }, [visible, selectedRow, form])
 
 
     // 提交
     const handleFormSubmit = async (values) => {
-
         if (type === 'create') {
             try {
-                const params = {
-                    ...values,
-                    permissions: targetKeys
-                }
-
-                await createRole(params)
+                await createRole({ name: values.name, code: values.code, desc: values.desc })
+                message.success('角色创建成功')
                 handleList()
             } catch (error) {
                 console.error(error)
+                message.error(error?.message || '创建失败')
             }
         }
 
         if (type === 'update') {
-            const params = {
-                ...values,
-                id: selectedRow.id,
-                permissions: targetKeys
+            try {
+                await updateRole({ id: selectedRow.id, name: values.name, code: values.code, desc: values.desc })
+                message.success('角色更新成功')
+                handleList()
+            } catch (error) {
+                console.error(error)
+                message.error(error?.message || '更新失败')
             }
-
-            await updateRole(params)
-            handleList()
-
         }
 
         // 关闭弹窗
         onClose()
-
-    }
-
-    const fetchData = async () => {
-        try {
-            const response = await getPermissionsList()
-            const data = response.data
-            formatData(data) // 格式化数据
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-    const formatData = (data) => {
-        const tempTargetKeys = []
-        const tempMockData = data.map((item) => {
-            const { key } = item
-            const chosen = targetKeys.includes(key)
-            if (chosen) {
-                tempTargetKeys.push(key)
-            }
-            return {
-                key,
-                api: item.api,
-                title: item.key,
-                chosen,
-            }
-        })
-
-        setMockData(tempMockData)
-        setTargetKeys(tempTargetKeys)
-    }
-
-    const handleOnChange = (keys) => {
-        const tempTargetKeys = keys.map((key) => {
-            const item = mockData.find((item) => item.key === key)
-            return { key, api: item ? item.api : undefined }
-        })
-        setTargetKeys(tempTargetKeys)
     }
 
     return (
-        <Modal visible={visible} onCancel={onClose} footer={null} width={690}>
+        <Modal visible={visible} onCancel={onClose} footer={null} width={560}>
             <Form form={form} name="form_item_path" layout="vertical" onFinish={handleFormSubmit}>
 
                 <MyFormItem name="name" label="角色名称"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your roleName!',
+                            message: '请输入角色名称！',
+                        },
+                    ]}>
+                    <Input maxLength={64} />
+                </MyFormItem>
+
+                <MyFormItem name="code" label="角色编码"
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入角色编码！',
                         },
                     ]}>
                     <Input
                         value={spaceValue}
                         onChange={handleInputChange}
                         onKeyPress={handleKeyPress}
+                        maxLength={32}
+                        placeholder="唯一编码，如 admin / viewer"
                         disabled={type === 'update'} />
                 </MyFormItem>
 
-                <MyFormItem name="description" label="描述">
-                    <Input />
-                </MyFormItem>
-
-                <MyFormItem name="permissions" label="选择权限">
-                    <Transfer
-                        showSearch
-                        dataSource={mockData}
-                        targetKeys={targetKeys.map((item) => {
-                            return item.key
-                        })}
-                        onChange={(keys) => handleOnChange(keys)}
-                        render={(item) => item.title}
-                        listStyle={{ height: 300, width: 300 }} // 设置列表样式
-                        disabled={disabledPermission}
-                    />
+                <MyFormItem name="desc" label="描述">
+                    <Input.TextArea rows={3} />
                 </MyFormItem>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
