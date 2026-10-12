@@ -3,9 +3,9 @@ import {Anchor, Button, Form, Input, Popconfirm, Typography, Radio, Segmented, S
 import "./index.css";
 import { getSystemSetting, saveSystemSetting, syncLdapUser } from "../../api/settings";
 import TextArea from "antd/es/input/TextArea";
-import {getRoleList} from "../../api/role";
+import {listRoles} from "../../api/eiam/role";
 import { Breadcrumb } from "../../components/Breadcrumb";
-import { getTenantList } from "../../api/tenant";
+import {listTenants} from "../../api/eiam/tenant";
 
 // 表单上下文
 const MyFormItemContext = React.createContext([]);
@@ -328,11 +328,11 @@ export const SystemSettings = () => {
 
     const handleRoleList = async () => {
         try {
-            const res = await getRoleList();
-            const newData = res.data?.map((item) => ({
+            const res = await listRoles({ offset: 0, limit: 200 });
+            const newData = (res?.roles || []).map((item) => ({
                 label: item.name,
                 value: item.id,
-            })) || [];
+            }));
             setRoleList(newData);
         } catch (error) {
             console.error("Failed to load role list:", error);
@@ -350,11 +350,11 @@ export const SystemSettings = () => {
     
     const handleTenantList = async () => {
         try {
-            const res = await getTenantList();
-            const newData = res.data?.map((item) => ({
+            const res = await listTenants({ offset: 0, limit: 200 });
+            const newData = (res?.tenants || []).map((item) => ({
                 label: item.name,
                 value: item.id,
-            })) || [];
+            }));
             setTenantList(newData);
         } catch (error) {
             console.error("Failed to load tenant list:", error);

@@ -6,7 +6,7 @@ import { LeftOutlined, LoadingOutlined, HomeOutlined } from "@ant-design/icons"
 import "./index.css"
 import { ComponentSider } from "./sider"
 import Auth from "../utils/Auth"
-import {getTenantList} from "../api/tenant";
+import {listMyTenants} from "../api/eiam/tenant";
 import {getUserInfo} from "../api/user";
 import {buildConsoleLoginUrl} from "../config/auth";
 import {DegradedBanner} from "./degradation/DegradedBanner";
@@ -41,10 +41,9 @@ const Components = (props) => {
                 // 未认证/无角色由 http 拦截器兜底（401 → 跳登录 / 403 → 原地提示）。
                 try {
                     const userRes = await getUserInfo()
-                    const userid = userRes?.data?.userid
-                    if (userid) {
-                        await fetchTenantList(userid)
-                    }
+                    // 会话化：getUserInfo 确认共享会话 + 身份（401/403 由拦截器兜底）。
+                    // 租户列表改从 eiam 拉取（list/mine，会话自动注入），不再依赖 WatchAlert 后端租户。
+                    await fetchTenantList()
                 } catch (err) {
                     console.error("Failed to fetch user info:", err)
                     if (isMounted) {
@@ -124,17 +123,18 @@ const Components = (props) => {
         window.history.back()
     }
 
-    const fetchTenantList = async (userid) => {
+    const fetchTenantList = async () => {
         try {
-            const res = await getTenantList({ userId: userid })
+            const res = await listMyTenants()
+            const tenants = Array.isArray(res) ? res : []
 
-            if (!res?.data || !Array.isArray(res?.data) || res?.data?.length === 0) {
+            if (tenants.length === 0) {
                 console.error("No tenant data available")
                 setError(true)
                 return
             }
 
-            const tenantOptions = res?.data?.map((tenant, index) => ({
+            const tenantOptions = tenants.map((tenant, index) => ({
                 label: tenant.name,
                 value: tenant.id,
                 index: index,
@@ -143,8 +143,8 @@ const Components = (props) => {
             // 设置第一个租户为默认
             const firstTenant = tenantOptions[0]
             localStorage.setItem("TenantName", firstTenant.label)
-            localStorage.setItem("TenantID", firstTenant.value)
-            localStorage.setItem("TenantIndex", firstTenant.index)
+            localStorage.setItem("TenantID", String(firstTenant.value))
+            localStorage.setItem("TenantIndex", String(firstTenant.index))
 
             return tenantOptions
         } catch (error) {
