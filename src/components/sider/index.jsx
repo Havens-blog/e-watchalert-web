@@ -558,15 +558,19 @@ export const ComponentSider = () => {
             const opts = tenants.map((key, index) => ({
                 label: key.name,
                 value: key.id,
+                code: key.code,
                 index: index,
             }))
 
             setTenantList(opts)
 
             if (getTenantName() === null && opts.length > 0) {
-                localStorage.setItem("TenantName", opts[0].label)
-                localStorage.setItem("TenantID", String(opts[0].value))
-                localStorage.setItem("TenantIndex", String(opts[0].index))
+                // 默认租户：跳过 eiam 系统根租户（system-root，母体管理空间，无业务数据），
+                // 落到第一个业务租户（default-tenant / 用户首个业务空间）。
+                const firstBusinessTenant = opts.find(o => o.code !== 'system-root') || opts[0]
+                localStorage.setItem("TenantName", firstBusinessTenant.label)
+                localStorage.setItem("TenantID", String(firstBusinessTenant.value))
+                localStorage.setItem("TenantIndex", String(firstBusinessTenant.index))
             }
 
             setTenantStatus(true)

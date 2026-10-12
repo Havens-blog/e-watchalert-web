@@ -137,14 +137,16 @@ const Components = (props) => {
             const tenantOptions = tenants.map((tenant, index) => ({
                 label: tenant.name,
                 value: tenant.id,
+                code: tenant.code,
                 index: index,
             }))
 
-            // 设置第一个租户为默认
-            const firstTenant = tenantOptions[0]
-            localStorage.setItem("TenantName", firstTenant.label)
-            localStorage.setItem("TenantID", String(firstTenant.value))
-            localStorage.setItem("TenantIndex", String(firstTenant.index))
+            // 设置默认租户：跳过 eiam 系统根租户（system-root，母体管理空间，无业务数据），
+            // 默认落到第一个业务租户（default-tenant / 用户首个业务空间）。
+            const firstBusinessTenant = tenantOptions.find(t => t.code !== 'system-root') || tenantOptions[0]
+            localStorage.setItem("TenantName", firstBusinessTenant.label)
+            localStorage.setItem("TenantID", String(firstBusinessTenant.value))
+            localStorage.setItem("TenantIndex", String(firstBusinessTenant.index))
 
             return tenantOptions
         } catch (error) {
