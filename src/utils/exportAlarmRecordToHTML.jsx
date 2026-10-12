@@ -2,8 +2,8 @@ import { message } from "antd";
 
 // 颜色映射
 const SEVERITY_COLORS = {
-    P0: '#ff4d4f', // 红色，表示最高优先级
-    P1: '#faad14', // 橙色，表示高优先级
+    P0: '#ef4444', // 红色，表示最高优先级
+    P1: '#f59e0b', // 橙色，表示高优先级
     P2: '#b0e1fb'  // 浅蓝色，表示中优先级
 };
 
@@ -256,7 +256,7 @@ function generateHtmlContent(title, data, exportTimeRange) {
           margin-bottom: 25px;
           padding: 15px 20px;
           background-color: #ffffff;
-          border-left: 5px solid #1890ff;
+          border-left: 5px solid #5e6ad2;
           border-radius: 4px;
           box-shadow: 0 1px 5px rgba(0,0,0,0.05);
         }
@@ -342,12 +342,12 @@ function generateHtmlContent(title, data, exportTimeRange) {
         .page-btn:hover, .nav-btn:hover {
           background-color: #e6f7ff;
           border-color: #91d5ff;
-          color: #1890ff;
+          color: #5e6ad2;
         }
         .page-btn.active {
-          background-color: #1890ff;
+          background-color: #5e6ad2;
           color: white;
-          border-color: #1890ff;
+          border-color: #5e6ad2;
           font-weight: bold;
           box-shadow: 0 2px 8px rgba(24,144,255,0.2);
         }

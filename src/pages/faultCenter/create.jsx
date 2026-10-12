@@ -136,7 +136,7 @@ export const CreateFaultCenter = ({ visible, onClose, handleList }) => {
                                 marginTop: 5,
                                 marginLeft: 10,
                                 cursor: 'pointer',
-                                color: '#1890ff',
+                                color: '#5e6ad2',
                                 transition: 'all 0.3s',
                             }}
                         />
@@ -168,7 +168,7 @@ export const CreateFaultCenter = ({ visible, onClose, handleList }) => {
                                     transition: 'all 0.3s',
                                     color: '#666',
                                     '&:hover': {
-                                        background: '#1890ff',
+                                        background: '#5e6ad2',
                                         color: '#fff',
                                         textDecoration: 'none'
                                     }

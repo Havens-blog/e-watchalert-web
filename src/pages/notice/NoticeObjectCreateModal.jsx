@@ -587,7 +587,7 @@ export const CreateNoticeObjectModal = ({ visible, onClose, selectedRow, type, h
                                                         <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                                                             <MinusCircleOutlined
                                                                 onClick={() => remove(name)}
-                                                                style={{color: '#ff4d4f', cursor: 'pointer'}}
+                                                                style={{color: '#ef4444', cursor: 'pointer'}}
                                                             />
                                                         </div>
                                                     )}
@@ -635,7 +635,7 @@ export const CreateNoticeObjectModal = ({ visible, onClose, selectedRow, type, h
                                                                                     width: 110,
                                                                                     position: 'relative',
                                                                                     cursor: 'pointer',
-                                                                                    border: selectedCardIndex === cardIndex ? '2px solid #1890ff' : '1px solid #d9d9d9',
+                                                                                    border: selectedCardIndex === cardIndex ? '2px solid #5e6ad2' : '1px solid #d9d9d9',
                                                                                 }}
                                                                                 onClick={() => handleRouteCardClick(cardIndex)}
                                                                             >

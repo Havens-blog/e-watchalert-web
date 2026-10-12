@@ -204,8 +204,8 @@ export const AlertCurrentEvent = (props) => {
 
     // Constants
     const SEVERITY_COLORS = {
-        P0: "#ff4d4f",
-        P1: "#faad14",
+        P0: "#ef4444",
+        P1: "#f59e0b",
         P2: "#b0e1fb",
     }
 
@@ -1205,7 +1205,7 @@ export const AlertCurrentEvent = (props) => {
                             width: '32px', 
                             height: '32px', 
                             borderRadius: '50%', 
-                            backgroundColor: '#ff4d4f', 
+                            backgroundColor: '#ef4444', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
@@ -1265,7 +1265,7 @@ export const AlertCurrentEvent = (props) => {
                             width: '32px', 
                             height: '32px', 
                             borderRadius: '50%', 
-                            backgroundColor: '#1890ff', 
+                            backgroundColor: '#5e6ad2', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
@@ -1424,11 +1424,11 @@ export const AlertCurrentEvent = (props) => {
             />
             <style>{`
                 .severity-row-P0 td:first-child {
-                    border-left: 6px solid #ff4d4f !important;
+                    border-left: 6px solid #ef4444 !important;
                     padding-left: 10px !important;
                 }
                 .severity-row-P1 td:first-child {
-                    border-left: 6px solid #faad14 !important;
+                    border-left: 6px solid #f59e0b !important;
                     padding-left: 10px !important;
                 }
                 .severity-row-P2 td:first-child {
@@ -1480,7 +1480,7 @@ export const AlertCurrentEvent = (props) => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             style={{ 
-                                                color: '#1890ff', 
+                                                color: '#5e6ad2', 
                                                 textDecoration: 'none',
                                                 cursor: 'pointer'
                                             }}
@@ -1613,7 +1613,7 @@ export const AlertCurrentEvent = (props) => {
                                         <a 
                                             onClick={() => openNoticeDrawer(selectedEvent.eventId)}
                                             style={{ 
-                                                color: '#1890ff', 
+                                                color: '#5e6ad2', 
                                                 textDecoration: 'none',
                                                 cursor: 'pointer'
                                             }}
@@ -1693,7 +1693,7 @@ export const AlertCurrentEvent = (props) => {
                                                                     <Button
                                                                         key="delete-comment"
                                                                         type="text"
-                                                                        style={{ color: "#ff4d4f", fontSize: "12px", marginLeft: "8px" }}
+                                                                        style={{ color: "#ef4444", fontSize: "12px", marginLeft: "8px" }}
                                                                     >
                                                                         删除
                                                                     </Button>

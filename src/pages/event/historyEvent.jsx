@@ -100,8 +100,8 @@ export const AlertHistoryEvent = (props) => {
 
     // Constants
     const SEVERITY_COLORS = {
-        P0: "#ff4d4f",
-        P1: "#faad14",
+        P0: "#ef4444",
+        P1: "#f59e0b",
         P2: "#b0e1fb",
     }
     const SEVERITY_LABELS = {
@@ -807,11 +807,11 @@ export const AlertHistoryEvent = (props) => {
             />
             <style>{`
                 .severity-row-P0 td:first-child {
-                    border-left: 6px solid #ff4d4f !important;
+                    border-left: 6px solid #ef4444 !important;
                     padding-left: 10px !important;
                 }
                 .severity-row-P1 td:first-child {
-                    border-left: 6px solid #faad14 !important;
+                    border-left: 6px solid #f59e0b !important;
                     padding-left: 10px !important;
                 }
                 .severity-row-P2 td:first-child {
@@ -861,7 +861,7 @@ export const AlertHistoryEvent = (props) => {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             style={{ 
-                                                color: '#1890ff', 
+                                                color: '#5e6ad2', 
                                                 textDecoration: 'none',
                                                 cursor: 'pointer'
                                             }}
@@ -993,7 +993,7 @@ export const AlertHistoryEvent = (props) => {
                                         <a 
                                             onClick={() => openNoticeDrawer(selectedEvent.eventId)}
                                             style={{ 
-                                                color: '#1890ff', 
+                                                color: '#5e6ad2', 
                                                 textDecoration: 'none',
                                                 cursor: 'pointer'
                                             }}
@@ -1072,7 +1072,7 @@ export const AlertHistoryEvent = (props) => {
                                                                         key="delete-comment"
                                                                         type="text"
                                                                         style={{
-                                                                            color: "#ff4d4f",
+                                                                            color: "#ef4444",
                                                                             fontSize: "12px",
                                                                             marginLeft: "8px",
                                                                         }}

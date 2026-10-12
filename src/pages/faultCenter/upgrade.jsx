@@ -200,7 +200,7 @@ export const AlarmUpgrade = () => {
                             name="claimTimeout"
                             label={
                                 <div style={{display: "flex", alignItems: "center"}}>
-                                    <ClockCircleOutlined style={{marginRight: "8px", color: "#ff4d4f"}}/>
+                                    <ClockCircleOutlined style={{marginRight: "8px", color: "#ef4444"}}/>
                                     <span>认领超时时间</span>
                                 </div>
                             }
@@ -220,7 +220,7 @@ export const AlarmUpgrade = () => {
                             name="claimRepeatInterval"
                             label={
                                 <div style={{display: "flex", alignItems: "center"}}>
-                                    <BellOutlined style={{marginRight: "8px", color: "#faad14"}}/>
+                                    <BellOutlined style={{marginRight: "8px", color: "#f59e0b"}}/>
                                     <span>重复通知间隔</span>
                                 </div>
                             }
@@ -240,7 +240,7 @@ export const AlarmUpgrade = () => {
                             name="claimNoticeId"
                             label={
                                 <div style={{display: "flex", alignItems: "center"}}>
-                                    <TeamOutlined style={{marginRight: "8px", color: "#1677ff"}}/>
+                                    <TeamOutlined style={{marginRight: "8px", color: "#5e6ad2"}}/>
                                     <span>升级到通知对象</span>
                                 </div>
                             }

@@ -240,7 +240,7 @@ const NoticeTemplateCreateModal = ({ visible, onClose, selectedRow, type, handle
                                         width: 120,
                                         position: 'relative',
                                         cursor: type === 'update' ? 'not-allowed' : 'pointer',
-                                        border: selectedNotifyCard === index ? '2px solid #1890ff' : '1px solid #d9d9d9',
+                                        border: selectedNotifyCard === index ? '2px solid #5e6ad2' : '1px solid #d9d9d9',
                                         pointerEvents: type === 'update' ? 'none' : 'auto',
                                     }}
                                     onClick={() => handleCardClick(index)}
@@ -273,7 +273,7 @@ const NoticeTemplateCreateModal = ({ visible, onClose, selectedRow, type, handle
                         <MyFormItem style={{marginBottom: '0', marginRight: '10px'}}>
                             <span>应用飞书高级消息卡片</span>
                             <Tooltip title="需要则输入 飞书消息卡片搭建工具的Json Code">
-                                <QuestionCircleOutlined style={{color: '#1890ff', marginLeft: '4px'}}/>
+                                <QuestionCircleOutlined style={{color: '#5e6ad2', marginLeft: '4px'}}/>
                             </Tooltip>
                         </MyFormItem>
                         <Checkbox

@@ -11,12 +11,23 @@ export const THEME_LIGHT = 'light'
 
 /**
  * 读取持久化主题；无有效值返回 null。
+ * 兼容两种格式：
+ *   1. 纯字符串 'light' | 'dark'（本仓早期/回退格式）
+ *   2. JSON {"theme":"light"}（haven-console pinia persistedstate 格式，权威）
  * @returns {string|null}
  */
 export function getStoredTheme() {
   if (typeof localStorage === 'undefined') return null
-  const v = localStorage.getItem(THEME_KEY)
-  return v === THEME_DARK || v === THEME_LIGHT ? v : null
+  const raw = localStorage.getItem(THEME_KEY)
+  if (!raw) return null
+  if (raw === THEME_DARK || raw === THEME_LIGHT) return raw
+  try {
+    const obj = JSON.parse(raw)
+    const t = obj && obj.theme
+    return t === THEME_DARK || t === THEME_LIGHT ? t : null
+  } catch {
+    return null
+  }
 }
 
 /**
@@ -49,13 +60,13 @@ export function applyTheme(theme, doc = typeof document !== 'undefined' ? docume
 }
 
 /**
- * 持久化主题。
+ * 持久化主题（对齐 haven-console pinia persistedstate 格式：JSON {"theme": ...}）。
  * @param {string} theme 'light' | 'dark'
  */
 export function persistTheme(theme) {
   if (typeof localStorage === 'undefined') return
   if (theme === THEME_LIGHT || theme === THEME_DARK) {
-    localStorage.setItem(THEME_KEY, theme)
+    localStorage.setItem(THEME_KEY, JSON.stringify({ theme }))
   } else {
     localStorage.removeItem(THEME_KEY)
   }

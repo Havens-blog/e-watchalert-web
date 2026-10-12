@@ -167,13 +167,13 @@ const Components = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'column',
-                background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+                background: 'linear-gradient(135deg, #08090a 0%, #0f1011 100%)',
                 zIndex: 9999,
                 transition: 'opacity 0.3s ease-out'
             }}
         >
             <Spin 
-                indicator={<LoadingOutlined style={{ fontSize: 40, color: '#FF9900' }} spin />} 
+                indicator={<LoadingOutlined style={{ fontSize: 40, color: '#7170ff' }} spin />} 
                 size="large" 
             />
             <Typography.Text style={{ marginTop: 16, color: '#CCCCCC' }}>
@@ -190,7 +190,7 @@ const Components = (props) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                background: "linear-gradient(135deg, #000000 0%, #1a1a1a 100%)",
+                background: "linear-gradient(135deg, #08090a 0%, #0f1011 100%)",
             }}
         >
             <Result
@@ -209,11 +209,11 @@ const Components = (props) => {
                             window.location.href = loginUrl || "/login"
                         }}
                         style={{
-                            background: "linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%)",
-                            borderColor: "#FF9900",
-                            color: "#000",
+                            background: "linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%)",
+                            borderColor: "#7170ff",
+                            color: "#fff",
                             fontWeight: "600",
-                            boxShadow: "0 4px 12px rgba(255, 153, 0, 0.3)",
+                            boxShadow: "0 4px 12px rgba(94, 106, 210, 0.3)",
                             border: "none"
                         }}
                     >
@@ -232,7 +232,7 @@ const Components = (props) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    background: "linear-gradient(135deg, #000000 0%, #1a1a1a 100%)",
+                    background: "linear-gradient(135deg, #08090a 0%, #0f1011 100%)",
                 }}
             >
                 <Result
@@ -250,11 +250,11 @@ const Components = (props) => {
                                 window.location.reload()
                             }}
                             style={{
-                                background: "linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%)",
-                                borderColor: "#FF9900",
-                                color: "#000",
+                                background: "linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%)",
+                                borderColor: "#7170ff",
+                                color: "#fff",
                                 fontWeight: "600",
-                                boxShadow: "0 4px 12px rgba(255, 153, 0, 0.3)",
+                                boxShadow: "0 4px 12px rgba(94, 106, 210, 0.3)",
                                 border: "none"
                             }}
                         >
@@ -293,7 +293,7 @@ const Components = (props) => {
                 style={{
                     height: "100vh",
                     overflow: "hidden",
-                    background: "#000000",
+                    background: "var(--bg-page)",
                     opacity: isRendered ? 1 : 0, // 添加淡入效果
                     transition: 'opacity 0.3s ease-in'
                 }}
@@ -311,7 +311,7 @@ const Components = (props) => {
                             overflow: "hidden",
                             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
                             height: "100%",
-                            background: "#000000",
+                            background: "var(--bg-elevated)",
                         }}
                     >
                         <div style={{ height: "100%", overflow: "auto" }}>
@@ -353,10 +353,10 @@ const Components = (props) => {
                                 fontSize: "12px",
                                 padding: "2px",
                                 background: "rgba(0, 0, 0, 0.8)",
-                                borderTop: "1px solid rgba(255, 153, 0, 0.1)",
+                                borderTop: "1px solid rgba(255, 255, 255, 0.08)",
                             }}
                         >
-                            <span style={{ color: "rgb(167, 135, 83)" }}>WatchAlert</span> 提供轻量级一站式监控报警服务!
+                            <span style={{ color: "#5e6ad2" }}>WatchAlert</span> 提供轻量级一站式监控报警服务!
                         </div>
                     </Layout>
                 </Layout>

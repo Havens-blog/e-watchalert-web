@@ -208,7 +208,7 @@ export const CreateSilenceModal = ({ visible, onClose, selectedRow, type, handle
                                         {fields.length > 1 && (
                                             <MinusCircleOutlined
                                                 onClick={() => remove(name)}
-                                                style={{ color: "#ff4d4f", cursor: "pointer" }}
+                                                style={{ color: "#ef4444", cursor: "pointer" }}
                                             />
                                         )}
                                     </Space>

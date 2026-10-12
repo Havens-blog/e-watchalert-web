@@ -326,7 +326,7 @@ export const CreateDatasourceModal = ({ visible, onClose, selectedRow, type, han
                                 onClick={() => handleSelectType(dsType.value)}
                                 style={{
                                     height: "100%",
-                                    borderColor: selectedType === dsType.value ? "#1890ff" : undefined,
+                                    borderColor: selectedType === dsType.value ? "#5e6ad2" : undefined,
                                     boxShadow: selectedType === dsType.value ? "0 0 0 2px rgba(24,144,255,0.2)" : undefined,
                                 }}
                             >
@@ -342,7 +342,7 @@ export const CreateDatasourceModal = ({ visible, onClose, selectedRow, type, han
                                             justifyContent: "center",
                                             background: "#f0f5ff",
                                             borderRadius: "8px",
-                                            color: "#1890ff",
+                                            color: "#5e6ad2",
                                         }}
                                     >
                                         {dsType.icon}

@@ -190,8 +190,8 @@
 .value { margin-left: auto; padding-left: 20px; }
 .status-container { display: flex; align-items: center; gap: 8px; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; }
-.status-enabled { background-color: #52c41a; }
-.status-disabled { background-color: #ff4d4f; }
+.status-enabled { background-color: #10b981; }
+.status-disabled { background-color: #ef4444; }
 
 @media (max-width: 760px) {
     .alert-rule-page { margin-top: 0; padding-bottom: 24px; }

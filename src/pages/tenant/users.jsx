@@ -90,7 +90,7 @@ export const TenantUsers = ({ tenantInfo }) => {
                                 type="text" 
                                 icon={<DeleteOutlined/>} 
                                 disabled={record.userName === 'admin'} 
-                                style={{color: record.userName === 'admin' ? "#b2b2b2" : "#ff4d4f"}}
+                                style={{color: record.userName === 'admin' ? "#b2b2b2" : "#ef4444"}}
                             />
                         </Popconfirm>
                     </Tooltip>

@@ -62,7 +62,7 @@ export const SearchViewLogs = ({ type, datasourceId, index, query, logScope }) =
                     }}
                 >
                     <div style={{ display: "flex", alignItems: "center", marginBottom: "8px", marginLeft: "10px", marginTop: "10px" }}>
-                        <MessageOutlined style={{ color: "#1890ff", marginRight: "8px" }} />
+                        <MessageOutlined style={{ color: "#5e6ad2", marginRight: "8px" }} />
                         <Text strong style={{ fontSize: "16px" }}>
                             Message #{index + 1}
                         </Text>

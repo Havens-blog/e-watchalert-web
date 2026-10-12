@@ -26,7 +26,7 @@ export const DutyManage = () => {
                     <Link
                         to={`/dutyManage/${record.id}/calendar?calendarName=${record.name}`}
                         style={{
-                            color: "#1677ff",
+                            color: "#5e6ad2",
                             display: "flex",
                             alignItems: "center",
                             gap: "8px",

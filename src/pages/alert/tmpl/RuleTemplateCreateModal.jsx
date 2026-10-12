@@ -398,7 +398,7 @@ const RuleTemplateCreateModal = ({ visible, onClose, selectedRow, type, handleLi
                                             width: 120,
                                             position: 'relative',
                                             cursor: type === 'update' ? 'not-allowed' : 'pointer',
-                                            border: selectedCard === index ? '2px solid #1890ff' : '1px solid #d9d9d9',
+                                            border: selectedCard === index ? '2px solid #5e6ad2' : '1px solid #d9d9d9',
                                             pointerEvents: type === 'update' ? 'none' : 'auto',
                                             flexShrink: 0,  // 防止卡片被压缩
                                         }}
@@ -440,7 +440,7 @@ const RuleTemplateCreateModal = ({ visible, onClose, selectedRow, type, handleLi
                                         />
                                     </MyFormItem>
 
-                                    <MyFormItem name="" label={<><span style={{ marginInlineEnd: '4px', color: '#ff4d4f', fontSize: '14px', fontFamily: 'SimSun,sans-serif'}}>*</span>告警条件</>} rules={[{required: !exprRule}]}>
+                                    <MyFormItem name="" label={<><span style={{ marginInlineEnd: '4px', color: '#ef4444', fontSize: '14px', fontFamily: 'SimSun,sans-serif'}}>*</span>告警条件</>} rules={[{required: !exprRule}]}>
                                         {exprRule?.map((label, index) => (
                                             <div className="rule-item" key={index} style={{gap: '10px'}}>
                                                 <MyFormItem
@@ -879,7 +879,7 @@ const RuleTemplateCreateModal = ({ visible, onClose, selectedRow, type, handleLi
                                 {esFilterType === "RawJson" && (
                                     <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px'}}>
                                         <MyFormItem
-                                            label={<><span style={{ marginInlineEnd: '4px', color: '#ff4d4f', fontSize: '14px', fontFamily: 'SimSun,sans-serif'}}>*</span>查询语句</>}
+                                            label={<><span style={{ marginInlineEnd: '4px', color: '#ef4444', fontSize: '14px', fontFamily: 'SimSun,sans-serif'}}>*</span>查询语句</>}
                                             rules={[{required: true}]}
                                             style={{width: '100%', height: '100%'}}
                                         >

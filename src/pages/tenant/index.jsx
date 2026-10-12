@@ -362,7 +362,7 @@ export const Tenants = () => {
                                                     fontWeight: "500",
                                                     backgroundColor: "#f0f5ff",
                                                     border: "none",
-                                                    color: "#1677ff",
+                                                    color: "#5e6ad2",
                                                 }}>
                                                     {item.manager || "未设置"}
                                                 </Tag>

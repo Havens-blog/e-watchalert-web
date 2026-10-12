@@ -31,7 +31,7 @@ export const Probing = () => {
                 <Link 
                     to={`/probing/${record.ruleId}/edit`}
                     style={{
-                            color: "#1677ff",
+                            color: "#5e6ad2",
                             display: "flex",
                             alignItems: "center",
                             gap: "8px",
@@ -70,7 +70,7 @@ export const Probing = () => {
                     <Link 
                         to={`/probing/${record.ruleId}/detail`}
                         style={{
-                            color: "#1677ff",
+                            color: "#5e6ad2",
                             display: "flex",
                             flexDirection: "column",
                             gap: "4px",
@@ -382,7 +382,7 @@ export const Probing = () => {
                             border: '1px solid #d9d9d9', 
                             borderRadius: '6px', 
                         }}>
-                            <Title level={5} style={{ margin: 0, color: '#1677ff' }}>HTTP 拨测</Title>
+                            <Title level={5} style={{ margin: 0, color: '#5e6ad2' }}>HTTP 拨测</Title>
                             <Paragraph style={{ margin: '8px 0 0 0', fontSize: '13px' }}>
                                 <Text strong>可配置指标：</Text><br/>
                                 • <Text code>probe_http_status_code</Text> - HTTP响应状态码<br/>
@@ -396,7 +396,7 @@ export const Probing = () => {
                             border: '1px solid #d9d9d9', 
                             borderRadius: '6px', 
                         }}>
-                            <Title level={5} style={{ margin: 0, color: '#52c41a' }}>ICMP 拨测</Title>
+                            <Title level={5} style={{ margin: 0, color: '#10b981' }}>ICMP 拨测</Title>
                             <Paragraph style={{ margin: '8px 0 0 0', fontSize: '13px' }}>
                                 <Text strong>可配置指标：</Text><br/>
                                 • <Text code>probe_icmp_packet_loss_percent</Text> - ICMP包丢失百分比<br/>
@@ -426,7 +426,7 @@ export const Probing = () => {
                             border: '1px solid #d9d9d9', 
                             borderRadius: '6px', 
                         }}>
-                            <Title level={5} style={{ margin: 0, color: '#722ed1' }}>SSL 拨测</Title>
+                            <Title level={5} style={{ margin: 0, color: '#8b5cf6' }}>SSL 拨测</Title>
                             <Paragraph style={{ margin: '8px 0 0 0', fontSize: '13px' }}>
                                 <Text strong>可配置指标：</Text><br/>
                                 • <Text code>probe_ssl_certificate_expiry_days</Text> - SSL证书剩余有效天数<br/>

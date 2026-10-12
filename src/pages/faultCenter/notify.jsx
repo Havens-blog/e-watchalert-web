@@ -316,7 +316,7 @@ export const FaultCenterNotify = () => {
                                 borderBottom: "1px solid #f0f0f0"
                             }}>
                                 <div>
-                                    <SettingOutlined style={{ marginRight: "8px", color: "#1677ff" }} />
+                                    <SettingOutlined style={{ marginRight: "8px", color: "#5e6ad2" }} />
                                     <Text strong>基本配置</Text>
                                 </div>
                                 {basicEditable ? (
@@ -355,7 +355,7 @@ export const FaultCenterNotify = () => {
                                 name="noticeIds"
                                 label={
                                     <div style={{ display: "flex", alignItems: "center" }}>
-                                        <TeamOutlined style={{ marginRight: "8px", color: "#1677ff" }} />
+                                        <TeamOutlined style={{ marginRight: "8px", color: "#5e6ad2" }} />
                                         <span>默认通知对象</span>
                                     </div>
                                 }
@@ -390,7 +390,7 @@ export const FaultCenterNotify = () => {
 
                             <div style={{marginBottom: '16px', marginTop: '-8px'}}>
                                 <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
-                                    <ClockCircleOutlined style={{ marginRight: "8px", color: "#faad14" }} />
+                                    <ClockCircleOutlined style={{ marginRight: "8px", color: "#f59e0b" }} />
                                     <Text>重复通知间隔</Text>
                                     <Tooltip title="告警持续存在时，重复发送通知的时间间隔，按告警级别配置">
                                         <InfoCircleOutlined style={{ color: "#8c8c8c", marginLeft: "8px" }} />
@@ -438,7 +438,7 @@ export const FaultCenterNotify = () => {
                                 name="recoverWaitTime"
                                 label={
                                     <div style={{ display: "flex", alignItems: "center" }}>
-                                        <ClockCircleOutlined style={{ marginRight: "8px", color: "#52c41a" }} />
+                                        <ClockCircleOutlined style={{ marginRight: "8px", color: "#10b981" }} />
                                         <span>恢复等待时间</span>
                                     </div>
                                 }
@@ -487,7 +487,7 @@ export const FaultCenterNotify = () => {
                                 borderBottom: "1px solid #f0f0f0",
                             }}>
                                 <div>
-                                    <TagOutlined style={{ marginRight: "8px", color: "#1677ff" }} />
+                                    <TagOutlined style={{ marginRight: "8px", color: "#5e6ad2" }} />
                                     <Text strong>告警路由</Text>
                                     <Tooltip title="根据 Metric 标签路由到相应的通知对象">
                                         <InfoCircleOutlined style={{ color: "#8c8c8c", marginLeft: "8px" }} />
@@ -637,7 +637,7 @@ export const FaultCenterNotify = () => {
                                                                                 {routeEditable && labelFields.length > 1 && (
                                                                                     <MinusCircleOutlined
                                                                                         onClick={() => removeLabel(labelField.name)}
-                                                                                        style={{ color: "#ff4d4f", cursor: "pointer", fontSize: "16px", flexShrink: 0 }}
+                                                                                        style={{ color: "#ef4444", cursor: "pointer", fontSize: "16px", flexShrink: 0 }}
                                                                                     />
                                                                                 )}
                                                                             </div>
@@ -674,7 +674,7 @@ export const FaultCenterNotify = () => {
                                                                     alignItems: "center",
                                                                     marginBottom: "8px"
                                                                 }}>
-                                                                    <TeamOutlined style={{ color: "#1677ff", marginRight: "6px" }} />
+                                                                    <TeamOutlined style={{ color: "#5e6ad2", marginRight: "6px" }} />
                                                                     <Text strong style={{ fontSize: "13px" }}>通知对象</Text>
                                                                 </div>
                                                                 <Form.Item
@@ -712,7 +712,7 @@ export const FaultCenterNotify = () => {
                                                             {routeEditable && (
                                                                 <MinusCircleOutlined
                                                                     onClick={() => remove(name)}
-                                                                    style={{ color: "#ff4d4f", cursor: "pointer", fontSize: "18px", marginTop: "35px" }}
+                                                                    style={{ color: "#ef4444", cursor: "pointer", fontSize: "18px", marginTop: "35px" }}
                                                                 />
                                                             )}
                                                         </div>
@@ -743,7 +743,7 @@ export const FaultCenterNotify = () => {
                                                         background: "#fafafa"
                                                     }}
                                                     onMouseEnter={(e) => {
-                                                        e.currentTarget.style.borderColor = "#1677ff"
+                                                        e.currentTarget.style.borderColor = "#5e6ad2"
                                                         e.currentTarget.style.background = "#f0f5ff"
                                                     }}
                                                     onMouseLeave={(e) => {

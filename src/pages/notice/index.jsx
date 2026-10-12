@@ -33,7 +33,7 @@ export const NoticeObjects = () => {
                     <span 
                         style={{ 
                             cursor: 'pointer', 
-                            color: '#1677ff',
+                            color: '#5e6ad2',
                             textDecoration: 'none'
                         }}
                         onClick={() => handleShowHistory(record)}

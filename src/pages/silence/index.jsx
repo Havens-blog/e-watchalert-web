@@ -207,7 +207,7 @@ export const Silences = () => {
                     <span 
                         style={{ 
                             cursor: 'pointer', 
-                            color: '#1890ff',
+                            color: '#5e6ad2',
                         }}
                         onClick={() => {
                             setSelectedRow(record);
@@ -305,7 +305,7 @@ export const Silences = () => {
                                 cancelText="取消"
                                 placement="left"
                             >
-                                <Button type="text" icon={<DeleteOutlined />} style={{ color: "#ff4d4f" }} />
+                                <Button type="text" icon={<DeleteOutlined />} style={{ color: "#ef4444" }} />
                             </Popconfirm>
                         </Tooltip>
                     </Space>

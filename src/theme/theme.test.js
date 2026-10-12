@@ -41,6 +41,13 @@ describe('theme/theme 管理器', () => {
     expect(getStoredTheme()).toBe(THEME_LIGHT);
   });
 
+  it('getStoredTheme：兼容 haven-console pinia JSON 格式 {"theme":"light"}', () => {
+    localStorage.setItem(THEME_KEY, JSON.stringify({ theme: THEME_LIGHT }));
+    expect(getStoredTheme()).toBe(THEME_LIGHT);
+    localStorage.setItem(THEME_KEY, JSON.stringify({ theme: THEME_DARK }));
+    expect(getStoredTheme()).toBe(THEME_DARK);
+  });
+
   it('resolveTheme：无持久化回退系统偏好（dark）', () => {
     expect(resolveTheme()).toBe(THEME_DARK);
   });
@@ -57,9 +64,9 @@ describe('theme/theme 管理器', () => {
     expect(document.documentElement.classList.contains('light')).toBe(false);
   });
 
-  it('persistTheme：写入/移除', () => {
+  it('persistTheme：写入（JSON 格式）/移除', () => {
     persistTheme(THEME_LIGHT);
-    expect(localStorage.getItem(THEME_KEY)).toBe(THEME_LIGHT);
+    expect(localStorage.getItem(THEME_KEY)).toBe(JSON.stringify({ theme: THEME_LIGHT }));
     persistTheme('bogus');
     expect(localStorage.getItem(THEME_KEY)).toBeNull();
   });
@@ -67,12 +74,12 @@ describe('theme/theme 管理器', () => {
   it('toggleTheme：dark→light→dark 并持久化', () => {
     const first = toggleTheme();
     expect(first).toBe(THEME_LIGHT);
-    expect(localStorage.getItem(THEME_KEY)).toBe(THEME_LIGHT);
+    expect(localStorage.getItem(THEME_KEY)).toBe(JSON.stringify({ theme: THEME_LIGHT }));
     expect(document.documentElement.classList.contains('light')).toBe(true);
 
     const second = toggleTheme();
     expect(second).toBe(THEME_DARK);
-    expect(localStorage.getItem(THEME_KEY)).toBe(THEME_DARK);
+    expect(localStorage.getItem(THEME_KEY)).toBe(JSON.stringify({ theme: THEME_DARK }));
   });
 
   it('initTheme：应用并返回生效主题', () => {

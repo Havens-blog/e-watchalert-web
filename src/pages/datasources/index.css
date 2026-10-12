@@ -16,13 +16,13 @@
 
 /* 启用状态的小圆点 */
 .status-enabled {
-    background-color: #52c41a; /* 绿色 */
+    background-color: #10b981; /* 绿色 */
     animation: pulse-enabled 1.5s infinite;
 }
 
 /* 禁用状态的小圆点 */
 .status-disabled {
-    background-color: #ff4d4f; /* 红色 */
+    background-color: #ef4444; /* 红色 */
     animation: pulse-disabled 1.5s infinite;
 }
 

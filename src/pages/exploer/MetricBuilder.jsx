@@ -114,7 +114,7 @@ export const MetricBuilder = ({ datasourceId, onApply }) => {
     return (
         <div style={{ border: '1px solid #f0f0f0', borderRadius: 8, padding: '12px 16px', marginBottom: 16, background: '#fafafa' }}>
             <Space align="center" style={{ marginBottom: 8 }}>
-                <ThunderboltOutlined style={{ color: '#1677ff' }} />
+                <ThunderboltOutlined style={{ color: '#5e6ad2' }} />
                 <Text strong>指标浏览器</Text>
                 <Text type="secondary" style={{ fontSize: 12 }}>
                     不会写 PromQL？选指标 + 加过滤 + 选聚合，一键生成

@@ -340,28 +340,28 @@ export const ComponentSider = () => {
             
             /* 选中状态 - 渐变背景 */
             .ant-menu-dark .ant-menu-item-selected {
-                background: linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%);
-                color: #000;
+                background: linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%);
+                color: #fff;
                 font-weight: 600;
-                box-shadow: 0 4px 12px rgba(167, 135, 83, 0.3);
+                box-shadow: 0 4px 12px rgba(94, 106, 210, 0.3);
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             .ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon {
-                color: #000;
+                color: #fff;
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             /* 悬停效果 */
             .ant-menu-dark .ant-menu-item:hover:not(.ant-menu-item-selected) {
-                background: rgba(167, 135, 83, 0.1);
+                background: rgba(94, 106, 210, 0.12);
                 transform: translateX(6px);
-                color: rgb(255, 203, 125);
+                color: #7170ff;
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             .ant-menu-dark .ant-menu-item:hover:not(.ant-menu-item-selected) .ant-menu-item-icon {
-                color: rgb(255, 203, 125);
+                color: #7170ff;
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
@@ -378,39 +378,39 @@ export const ComponentSider = () => {
             }
             
             .ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
-                background: linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%);
-                color: #000;
+                background: linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%);
+                color: #fff;
                 font-weight: 600;
-                box-shadow: 0 4px 12px rgba(167, 135, 83, 0.3);
+                box-shadow: 0 4px 12px rgba(94, 106, 210, 0.3);
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             .ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title .ant-menu-submenu-arrow {
-                color: #000;
+                color: #fff;
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             .ant-menu-dark .ant-menu-submenu-title:hover:not(.ant-menu-submenu-selected) {
-                background: rgba(167, 135, 83, 0.1);
-                color: rgb(255, 203, 125);
+                background: rgba(94, 106, 210, 0.12);
+                color: #7170ff;
                 transform: translateX(6px);
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             .ant-menu-dark .ant-menu-submenu-title:hover:not(.ant-menu-submenu-selected) .ant-menu-submenu-arrow {
-                color: rgb(255, 203, 125);
+                color: #7170ff;
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             /* 即使子菜单被选中，父级菜单悬停时仍应有高亮效果 */
             .ant-menu-dark .ant-menu-submenu-selected:hover > .ant-menu-submenu-title {
-                background: linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%) !important;
-                color: #000;
+                background: linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%) !important;
+                color: #fff;
                 transform: translateX(0px);
             }
             
             .ant-menu-dark .ant-menu-submenu-selected:hover > .ant-menu-submenu-title .ant-menu-submenu-arrow {
-                color: #000;
+                color: #fff;
             }
             
             /* 子菜单内容 */
@@ -444,13 +444,13 @@ export const ComponentSider = () => {
             }
             
             .ant-layout-sider-children::-webkit-scrollbar-thumb {
-                background: rgba(167, 135, 83, 0.5);
+                background: rgba(94, 106, 210, 0.5);
                 border-radius: 3px;
                 transition: background 0.3s ease;
             }
             
             .ant-layout-sider-children::-webkit-scrollbar-thumb:hover {
-                background: rgb(255, 203, 125);
+                background: #7170ff;
             }
             
             /* 侧边栏容器滚动条样式 */
@@ -465,13 +465,13 @@ export const ComponentSider = () => {
             }
             
             .sidebar-menu-container::-webkit-scrollbar-thumb {
-                background: rgba(167, 135, 83, 0.3);
+                background: rgba(94, 106, 210, 0.3);
                 border-radius: 3px;
                 transition: background 0.3s ease;
             }
             
             .sidebar-menu-container::-webkit-scrollbar-thumb:hover {
-                background: rgb(167, 135, 83);
+                background: #5e6ad2;
             }
             
             /* 菜单子项动画 */
@@ -650,7 +650,7 @@ export const ComponentSider = () => {
             style={{
                 overflow: 'hidden',
                 height: '100%',
-                background: '#000',
+                background: 'var(--bg-elevated)',
                 borderRadius: '12px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -693,22 +693,22 @@ export const ComponentSider = () => {
                         display: 'flex',
                         alignItems: 'center',
                         padding: '8px 12px',
-                        borderRadius: '4px',
+                        borderRadius: '8px',
                         cursor: 'pointer',
-                        background: 'rgba(255, 255, 255, 0.06)',
-                        border: '1px solid rgba(167, 135, 83, 0.15)',
+                        background: 'var(--glass-bg)',
+                        border: '1px solid var(--border-base)',
                         transition: 'all 0.2s ease',
                     }}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(167, 135, 83, 0.12)';
-                        e.currentTarget.style.borderColor = 'rgba(167, 135, 83, 0.3)';
+                        e.currentTarget.style.background = 'var(--glass-bg-hover)';
+                        e.currentTarget.style.borderColor = 'var(--border-strong)';
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                        e.currentTarget.style.borderColor = 'rgba(167, 135, 83, 0.15)';
+                        e.currentTarget.style.background = 'var(--glass-bg)';
+                        e.currentTarget.style.borderColor = 'var(--border-base)';
                     }}
                     >
-                        <TeamOutlined style={{color: 'rgb(255, 203, 125)', fontSize: '14px', marginRight: '8px'}}/>
+                        <TeamOutlined style={{color: 'var(--accent-blue)', fontSize: '14px', marginRight: '8px'}}/>
                         <Typography.Text
                             style={{color: '#fff', fontSize: '13px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
                             {getTenantName()}
@@ -720,7 +720,7 @@ export const ComponentSider = () => {
 
             <Divider style={{
                 margin: '0 16px 12px', 
-                background: 'linear-gradient(90deg, transparent 0%, rgb(167, 135, 83) 50%, transparent 100%)',
+                background: 'linear-gradient(90deg, transparent 0%, var(--border-strong) 50%, transparent 100%)',
                 height: '1px',
                 borderRadius: '1px',
                 minWidth: 'auto',
@@ -813,8 +813,8 @@ export const ComponentSider = () => {
                     }}>
                         <Avatar
                             style={{
-                                background: "linear-gradient(135deg, rgb(255, 203, 125) 0%, rgb(167, 135, 83) 100%)",
-                                color: "#000",
+                                background: "linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%)",
+                                color: "#fff",
                                 fontWeight: "bold",
                                 display: "flex",
                                 alignItems: "center",

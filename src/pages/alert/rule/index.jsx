@@ -131,7 +131,7 @@ export const AlertRuleList = () => {
                         }}>
                             <Link
                                 style={{
-                                    color: "#1677ff",
+                                    color: "#5e6ad2",
                                     display: "flex",
                                     alignItems: "center",
                                 }}
@@ -879,7 +879,7 @@ export const AlertRuleList = () => {
                         />
                         <Search allowClear placeholder="输入搜索关键字" onSearch={onSearch} style={{ width: 300 }} />
                         {selectedRowKeys.length > 0 && (
-                            <div style={{ color: '#1677ff', fontSize: '14px' }}>
+                            <div style={{ color: '#5e6ad2', fontSize: '14px' }}>
                                 已选择 {selectedRowKeys.length} 项
                             </div>
                         )}
@@ -1143,7 +1143,7 @@ rules:
                                                     />
                                                 </div>
                                             </div>
-                                            <div style={{ marginTop: '8px', fontSize: '12px', color: '#ff4d4f' }}>
+                                            <div style={{ marginTop: '8px', fontSize: '12px', color: '#ef4444' }}>
                                                 注意：如果当前规则的数据源类型与选择的类型不匹配，修改将不生效
                                             </div>
                                         </Form.Item>

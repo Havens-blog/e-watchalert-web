@@ -104,7 +104,7 @@ export const ServiceCreateModal = ({ visible, onClose, selectedRow, type, groupI
                     一键复制
                 </Button>
             </div>
-            <div style={{ marginBottom: '12px', border: jsonError ? '1px solid #ff4d4f' : undefined, borderRadius: '6px' }}>
+            <div style={{ marginBottom: '12px', border: jsonError ? '1px solid #ef4444' : undefined, borderRadius: '6px' }}>
                 <VSCodeEditor
                     value={jsonText}
                     onChange={v => { setJsonText(v ?? ''); setJsonError(null) }}
@@ -114,7 +114,7 @@ export const ServiceCreateModal = ({ visible, onClose, selectedRow, type, groupI
                 />
             </div>
             {jsonError && (
-                <div style={{ color: '#ff4d4f', fontSize: '12px', marginTop: '4px' }}>{jsonError}</div>
+                <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{jsonError}</div>
             )}
             <Alert
                 type="info"

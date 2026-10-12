@@ -20,8 +20,8 @@ const { Text } = Typography
 
 // 告警等级颜色配置
 const SEVERITY_COLORS = {
-    P0: '#ff4d4f',
-    P1: '#faad14',
+    P0: '#ef4444',
+    P1: '#f59e0b',
     P2: '#b0e1fb'
 }
 

@@ -387,7 +387,7 @@ export const RuleTemplate = () => {
                     {/* 选择状态显示 */}
                     {selectedRowKeys.length > 0 && (
                         <div style={{ 
-                            color: '#1677ff', 
+                            color: '#5e6ad2', 
                             fontSize: '14px',
                         }}>
                             已选择 {selectedRowKeys.length} 项

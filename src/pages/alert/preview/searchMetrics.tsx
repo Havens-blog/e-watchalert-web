@@ -260,7 +260,7 @@ export const SearchViewMetrics = ({
                         <div
                             key={index}
                             style={{
-                                borderLeft: `4px solid #1890ff`,
+                                borderLeft: `4px solid #5e6ad2`,
                                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                                 backgroundColor: "#fff",
                                 border: "1px solid #f0f0f0",
@@ -275,7 +275,7 @@ export const SearchViewMetrics = ({
                                     <Space direction="vertical" size="small" style={{ width: "100%" }}>
                                         {/* 标题 */}
                                         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                            <BarChartOutlined style={{ color: "#1890ff", fontSize: "16px" }} />
+                                            <BarChartOutlined style={{ color: "#5e6ad2", fontSize: "16px" }} />
                                             <Text strong style={{ fontSize: "16px" }}>
                                                 Metric #{index + 1}
                                             </Text>
@@ -325,7 +325,7 @@ export const SearchViewMetrics = ({
                                                 style={{
                                                     fontSize: "24px",
                                                     fontWeight: "bold",
-                                                    color: item.value[1] === "0" ? "#52c41a" : "#1890ff",
+                                                    color: item.value[1] === "0" ? "#10b981" : "#5e6ad2",
                                                 }}
                                             >
                                                 {Number.parseFloat(item.value[1]).toLocaleString()}
@@ -354,7 +354,7 @@ export const SearchViewMetrics = ({
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
             <div style={{ marginBottom: "20px" }}>
                 <Title level={5}>
-                    <LineChartOutlined style={{ marginRight: "8px", color: "#1890ff" }} />
+                    <LineChartOutlined style={{ marginRight: "8px", color: "#5e6ad2" }} />
                     Metrics 趋势图
                 </Title>
             </div>

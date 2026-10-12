@@ -191,7 +191,7 @@ export const ServiceGroupSidebar = ({ selectedGroupId, onGroupChange }) => {
                                                     size="small"
                                                     icon={<DeleteOutlined style={{ fontSize: '12px' }} />}
                                                     onClick={(e) => handleDeleteGroup(group, e)}
-                                                    style={{ padding: '2px', height: '20px', width: '20px', minWidth: '20px', color: '#ff4d4f' }}
+                                                    style={{ padding: '2px', height: '20px', width: '20px', minWidth: '20px', color: '#ef4444' }}
                                                 />
                                             </Tooltip>
                                         </div>

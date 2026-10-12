@@ -40,7 +40,7 @@ export const RuleTemplateGroup = () => {
                 <Link
                     to={`/tmplType/${record.type}/${record.name}/templates`}
                     style={{
-                        color: "#1677ff",
+                        color: "#5e6ad2",
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
@@ -60,7 +60,7 @@ export const RuleTemplateGroup = () => {
                     count={count}
                     showZero
                     style={{
-                        backgroundColor: count > 0 ? "#1677ff" : "#d9d9d9",
+                        backgroundColor: count > 0 ? "#5e6ad2" : "#d9d9d9",
                         fontWeight: "normal",
                         fontSize: "14px",
                     }}

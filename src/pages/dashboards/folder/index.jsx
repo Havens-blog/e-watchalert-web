@@ -28,7 +28,7 @@ export const DashboardFolder = () => {
                     <Link
                         to={`/folder/${record.id}/list`}
                         style={{
-                            color: "#1677ff",
+                            color: "#5e6ad2",
                             display: "flex",
                             alignItems: "center",
                             gap: "8px",
