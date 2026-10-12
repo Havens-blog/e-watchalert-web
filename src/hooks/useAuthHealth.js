@@ -38,9 +38,6 @@ export function useAuthHealth(intervalMs = 10000) {
         setAuthHealth(next);
       } catch (e) {
         // 传输层故障：不降级、不置空，维持上一态
-        if (!cancelled) {
-          // 保留当前 snapshot/authHealth 不变
-        }
       }
     };
 
