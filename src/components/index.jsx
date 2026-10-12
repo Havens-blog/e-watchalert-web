@@ -141,12 +141,15 @@ const Components = (props) => {
                 index: index,
             }))
 
-            // 设置默认租户：跳过 eiam 系统根租户（system-root，母体管理空间，无业务数据），
-            // 默认落到第一个业务租户（default-tenant / 用户首个业务空间）。
-            const firstBusinessTenant = tenantOptions.find(t => t.code !== 'system-root') || tenantOptions[0]
-            localStorage.setItem("TenantName", firstBusinessTenant.label)
-            localStorage.setItem("TenantID", String(firstBusinessTenant.value))
-            localStorage.setItem("TenantIndex", String(firstBusinessTenant.index))
+            // 设置默认租户：仅在无已有租户记忆时（首次进入）设置，避免覆盖用户手动切换的租户。
+            // 跳过 eiam 系统根租户（system-root）与内置默认租户空间（default-tenant），
+            // 落到第一个真实业务租户（如嘉立创 jlc，业务数据所在）。
+            if (!localStorage.getItem("TenantName")) {
+                const firstBusinessTenant = tenantOptions.find(t => t.code !== 'system-root' && t.code !== 'default-tenant') || tenantOptions[0]
+                localStorage.setItem("TenantName", firstBusinessTenant.label)
+                localStorage.setItem("TenantID", String(firstBusinessTenant.value))
+                localStorage.setItem("TenantIndex", String(firstBusinessTenant.index))
+            }
 
             return tenantOptions
         } catch (error) {

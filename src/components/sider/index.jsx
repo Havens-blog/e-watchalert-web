@@ -565,9 +565,9 @@ export const ComponentSider = () => {
             setTenantList(opts)
 
             if (getTenantName() === null && opts.length > 0) {
-                // 默认租户：跳过 eiam 系统根租户（system-root，母体管理空间，无业务数据），
-                // 落到第一个业务租户（default-tenant / 用户首个业务空间）。
-                const firstBusinessTenant = opts.find(o => o.code !== 'system-root') || opts[0]
+                // 默认租户：跳过 eiam 系统根租户（system-root）与内置默认租户空间（default-tenant），
+                // 落到第一个真实业务租户（如嘉立创 jlc，业务数据所在）。
+                const firstBusinessTenant = opts.find(o => o.code !== 'system-root' && o.code !== 'default-tenant') || opts[0]
                 localStorage.setItem("TenantName", firstBusinessTenant.label)
                 localStorage.setItem("TenantID", String(firstBusinessTenant.value))
                 localStorage.setItem("TenantIndex", String(firstBusinessTenant.index))
