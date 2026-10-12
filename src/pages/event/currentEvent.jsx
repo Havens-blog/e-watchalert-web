@@ -129,8 +129,8 @@ const SloMetricCard = ({ title, subtitle, dataKey, data, loading, gradientId, ic
                         </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#cacacaff" vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={{ stroke: "#cacacaff" }} tickLine={{ stroke: "#cacacaff" }} />
-                    <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={{ stroke: "#cacacaff" }} tickLine={{ stroke: "#cacacaff" }} tickFormatter={(value) => `${value}s`} width={40} />
+                    <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--text-secondary)" }} axisLine={{ stroke: "#cacacaff" }} tickLine={{ stroke: "#cacacaff" }} />
+                    <YAxis tick={{ fontSize: 11, fill: "var(--text-secondary)" }} axisLine={{ stroke: "#cacacaff" }} tickLine={{ stroke: "#cacacaff" }} tickFormatter={(value) => `${value}s`} width={40} />
                     <RechartsTooltip
                         contentStyle={{ backgroundColor: "var(--bg-elevated)", border: "1px solid #cacacaff", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.1)", fontSize: 12 }}
                         labelStyle={{ color: "#000000ff", fontWeight: 600 }}

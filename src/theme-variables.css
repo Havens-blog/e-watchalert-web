@@ -11,11 +11,11 @@
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, Monaco, 'Courier New', monospace;
 
   /* 主色调 */
-  --color-primary: var(--bg-page);
+  --color-primary: #f7f8f8;
   --color-success: #27a644;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
-  --color-info: var(--text-secondary);
+  --color-info: #8a8f98;
 
   /* 强调色 */
   --accent-primary: #5e6ad2;
@@ -35,10 +35,10 @@
   --bg-page: #08090a;
 
   /* 文本颜色 (Linear 4 级灰阶) */
-  --text-primary: var(--bg-page);
+  --text-primary: #f7f8f8;
   --text-regular: #d0d6e0;
-  --text-secondary: var(--text-secondary);
-  --text-tertiary: var(--text-tertiary);
+  --text-secondary: #8a8f98;
+  --text-tertiary: #62666d;
   --text-muted: #52525b;
   --text-placeholder: #52525b;
 
@@ -93,7 +93,7 @@
   --color-success: #27a644;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
-  --color-info: var(--text-secondary);
+  --color-info: #8a8f98;
 
   /* 强调色 (两主题一致) */
   --accent-primary: #5e6ad2;
@@ -105,25 +105,25 @@
   --accent-purple: #8b5cf6;
 
   /* 背景层级 (Linear light mode) */
-  --bg-base: var(--bg-page);
+  --bg-base: #f7f8f8;
   --bg-elevated: #ffffff;
   --bg-surface: #ffffff;
   --bg-overlay: #ffffff;
-  --bg-hover: var(--bg-surface);
-  --bg-page: var(--bg-page);
+  --bg-hover: #f3f4f5;
+  --bg-page: #f7f8f8;
 
   /* 文本颜色 (深灰阶保持) */
   --text-primary: #111111;
-  --text-regular: var(--text-regular);
-  --text-secondary: var(--text-secondary);
-  --text-tertiary: var(--text-tertiary);
+  --text-regular: #333333;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
   --text-muted: #bbbbbb;
-  --text-placeholder: var(--text-tertiary);
+  --text-placeholder: #999999;
 
   /* 边框颜色 (Linear light border) */
   --border-subtle: rgba(0, 0, 0, 0.05);
-  --border-base: var(--border-base);
-  --border-light: var(--border-base);
+  --border-base: #e6e6e6;
+  --border-light: #e6e6e6;
   --border-strong: #d0d6e0;
 
   /* 玻璃拟态 (浅色版本) */
@@ -147,17 +147,17 @@
   --input-border-focus: var(--accent-blue);
 
   /* 表格 */
-  --table-header-bg: var(--bg-page);
-  --table-row-hover: var(--bg-surface);
-  --table-border: var(--border-base);
+  --table-header-bg: #f7f8f8;
+  --table-row-hover: #f3f4f5;
+  --table-border: #e6e6e6;
 
   /* 弹窗/对话框 */
   --dialog-bg: #ffffff;
-  --dialog-border: var(--border-base);
+  --dialog-border: #e6e6e6;
 
   /* 下拉菜单 */
   --dropdown-bg: #ffffff;
-  --dropdown-hover: var(--bg-surface);
+  --dropdown-hover: #f3f4f5;
 
   /* 标签 */
   --tag-bg: rgba(0, 0, 0, 0.06);

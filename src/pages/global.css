@@ -103,7 +103,7 @@
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
-    border-color: #e5e7eb;
+    border-color: var(--border-base);
 }
 
 .transition-colors {
@@ -184,7 +184,7 @@ body {
 
 .form-checkbox:focus {
     outline: none;
-    border-color: #6B7280;
+    border-color: var(--border-base);
 }
 
 /*.ant-form-item .ant-form-item-label >label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {*/

@@ -1,9 +1,9 @@
 .recording-rule-page {
-    --recording-ink: var(--bg-surface);
-    --recording-muted: #6b7280;
-    --recording-border: #e7e9ee;
+    --recording-ink: var(--text-primary);
+    --recording-muted: var(--text-secondary);
+    --recording-border: var(--border-base);
     --recording-surface: var(--bg-surface);
-    --recording-accent: #111827;
+    --recording-accent: var(--accent-primary);
     max-width: 1440px;
     margin: 10px auto 24px;
     color: var(--recording-ink);
@@ -34,13 +34,13 @@
     width: 28px;
     height: 28px;
     place-items: center;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border-base);
     border-radius: 50%;
     font-size: 12px;
     font-weight: 700;
 }
 .recording-rule-step strong, .recording-rule-step small { display: block; }
-.recording-rule-step strong { color: #4b5563; font-size: 13px; }
+.recording-rule-step strong { color: var(--text-secondary); font-size: 13px; }
 .recording-rule-step small { margin-top: 1px; font-size: 11px; }
 .recording-rule-step.is-active > span { color: #fff; background: var(--recording-accent); border-color: var(--recording-accent); }
 .recording-rule-step.is-active strong { color: var(--recording-ink); }
@@ -79,9 +79,9 @@
 .recording-section-heading p { max-width: 510px; margin: 4px 0 0; color: var(--recording-muted); font-size: 13px; line-height: 1.6; }
 .recording-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .recording-form-grid .ant-form-item { margin-bottom: 4px; }
-.recording-rule-form .ant-form-item-label > label { color: #374151; font-size: 13px; font-weight: 600; }
+.recording-rule-form .ant-form-item-label > label { color: var(--text-regular); font-size: 13px; font-weight: 600; }
 .recording-rule-form .ant-input, .recording-rule-form .ant-input-number, .recording-rule-form .ant-select-selector { border-radius: 7px !important; }
-.recording-rule-form .ant-input:focus, .recording-rule-form .ant-input-focused, .recording-rule-form .ant-select-focused .ant-select-selector, .recording-rule-form .ant-input-number-focused { border-color: #4b5563 !important; box-shadow: 0 0 0 3px rgba(75, 85, 99, .1) !important; }
+.recording-rule-form .ant-input:focus, .recording-rule-form .ant-input-focused, .recording-rule-form .ant-select-focused .ant-select-selector, .recording-rule-form .ant-input-number-focused { border-color: var(--accent-primary) !important; box-shadow: 0 0 0 3px rgba(75, 85, 99, .1) !important; }
 
 .recording-label-form-item { margin-top: 18px; margin-bottom: 0; }
 .recording-label-list { max-width: 800px; }
@@ -89,28 +89,28 @@
 .recording-label-row .ant-form-item { margin-bottom: 8px; }
 .recording-remove-label { margin-top: 2px; }
 
-.recording-query-panel { margin-top: 20px; padding: 20px; background: #fbfcfe; border: 1px solid #e6e9ef; border-radius: 10px; }
+.recording-query-panel { margin-top: 20px; padding: 20px; background: var(--bg-surface); border: 1px solid var(--border-base); border-radius: 10px; }
 .recording-query-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .recording-query-header > div { display: flex; flex-direction: column; gap: 3px; }
-.recording-query-header strong { color: #374151; font-size: 13px; }
+.recording-query-header strong { color: var(--text-regular); font-size: 13px; }
 .recording-query-header span { color: var(--recording-muted); font-size: 12px; }
 .recording-required { margin-right: 4px; color: #ef4444 !important; }
-.recording-query-header .ant-btn { color: #fff; background: #111827; border-color: #111827; }
+.recording-query-header .ant-btn { color: #fff; background: var(--accent-primary); border-color: var(--accent-primary); }
 .recording-query-header .ant-btn:disabled { color: rgba(0, 0, 0, .25); background: var(--bg-surface); border-color: var(--border-base); }
 .recording-query-panel .ant-form-item { margin-bottom: 0; }
 
 .recording-publish-section { background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-surface) 100%); }
-.recording-enable-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px; background: #fbfcfe; border: 1px solid #e6e9ef; border-radius: 10px; }
+.recording-enable-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px; background: var(--bg-surface); border: 1px solid var(--border-base); border-radius: 10px; }
 .recording-enable-row > div { display: flex; flex-direction: column; gap: 3px; }
-.recording-enable-row strong { color: #374151; font-size: 14px; }
+.recording-enable-row strong { color: var(--text-regular); font-size: 14px; }
 .recording-enable-row span { color: var(--recording-muted); font-size: 12px; }
 .recording-submit-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--recording-border); }
 .recording-submit-status { display: flex; align-items: center; gap: 8px; color: var(--recording-muted); font-size: 13px; }
-.recording-status-dot { width: 8px; height: 8px; background: #9ca3af; border-radius: 50%; }
+.recording-status-dot { width: 8px; height: 8px; background: var(--text-tertiary); border-radius: 50%; }
 .recording-status-dot.is-enabled { background: #16a34a; box-shadow: 0 0 0 4px #dcfce7; }
 .recording-submit-actions { display: flex; gap: 10px; }
-.recording-submit-button.ant-btn-primary { min-width: 112px; background: #111827; border-color: #111827; box-shadow: none; }
-.recording-submit-button.ant-btn-primary:hover, .recording-submit-button.ant-btn-primary:focus { background: #374151 !important; border-color: #374151 !important; }
+.recording-submit-button.ant-btn-primary { min-width: 112px; background: var(--accent-primary); border-color: var(--accent-primary); box-shadow: none; }
+.recording-submit-button.ant-btn-primary:hover, .recording-submit-button.ant-btn-primary:focus { background: var(--text-regular) !important; border-color: var(--text-regular) !important; }
 .recording-loading-mask { position: fixed; inset: 0; z-index: 1001; display: grid; place-items: center; background: rgba(255, 255, 255, .58); }
 
 @media (max-width: 760px) {
