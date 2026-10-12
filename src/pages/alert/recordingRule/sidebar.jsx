@@ -114,11 +114,11 @@ const TreeNode = ({
                     background: isSelected ? '#f5f0e6'
                         : isHovered && node.isReal ? '#fafafa' : 'transparent',
                     border: `1px solid ${
-                        isSelected ? 'rgba(167, 135, 83, 0.45)'
+                        isSelected ? 'rgba(94, 106, 210, 0.45)'
                         : isHovered && node.isReal ? '#f0f0f0' : 'transparent'
                     }`,
                     boxShadow: isSelected
-                        ? '0 1px 4px rgba(167, 135, 83, 0.12)'
+                        ? '0 1px 4px rgba(94, 106, 210, 0.2)'
                         : 'none',
                     transition: 'all 0.12s ease',
                     marginLeft: `${depth * 10}px`,
@@ -146,7 +146,7 @@ const TreeNode = ({
                     {/* 文件夹图标 */}
                     <FolderOutlined style={{
                         fontSize: '13px',
-                        color: isSelected ? 'rgb(167, 135, 83)' : (node.isReal ? '#bfbfbf' : '#d9d9d9'),
+                        color: isSelected ? '#5e6ad2' : (node.isReal ? '#bfbfbf' : '#d9d9d9'),
                         flexShrink: 0,
                     }} />
 

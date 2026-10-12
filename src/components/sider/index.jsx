@@ -18,13 +18,16 @@ import {
     LogoutOutlined,
     FileTextOutlined,
     ClusterOutlined,
+    SunOutlined,
+    MoonOutlined,
 } from '@ant-design/icons';
 import {Link, useNavigate} from 'react-router-dom';
-import {Menu, Layout, Typography, Dropdown, message, Spin, theme, Popover, Avatar, Divider} from 'antd';
+import {Menu, Layout, Typography, Dropdown, message, Spin, theme, Popover, Avatar, Divider, Button} from 'antd';
 import logoIcon from "../../img/logo.svg";
 import {getUserInfo, logoutUser} from "../../api/user";
 import {getTenantList, getTenant} from "../../api/tenant";
 import {buildConsoleLoginUrl} from "../../config/auth";
+import {resolveTheme, toggleTheme, THEME_DARK} from "../../theme/theme";
 
 const { Sider } = Layout;
 
@@ -218,10 +221,27 @@ export const ComponentSider = () => {
     const [tenantList, setTenantList] = useState([])
     const [currentTenant, setCurrentTenant] = useState(null)
     const [getTenantStatus, setTenantStatus] = useState(null)
+    const [isDark, setIsDark] = useState(() => resolveTheme() === THEME_DARK)
 
     const {
         token: { colorBgContainer },
     } = theme.useToken()
+
+    // 主题跟随：haven-console 切主题（hc_theme）+ 本组件切换均经 hc-theme-change 同步
+    useEffect(() => {
+        const sync = () => setIsDark(resolveTheme() === THEME_DARK)
+        window.addEventListener('hc-theme-change', sync)
+        window.addEventListener('storage', sync)
+        return () => {
+            window.removeEventListener('hc-theme-change', sync)
+            window.removeEventListener('storage', sync)
+        }
+    }, [])
+
+    const handleToggleTheme = () => {
+        toggleTheme()                              // 落 html.light class + 持久化 hc_theme
+        window.dispatchEvent(new Event('hc-theme-change'))  // 通知 App(antd) 与自身刷新
+    }
 
     const handleMenuClick = useCallback((key, path) => {
         if (path) {
@@ -327,8 +347,8 @@ export const ComponentSider = () => {
         const style = document.createElement('style');
         style.textContent = `
             /* 主菜单项样式 */
-            .ant-menu-dark .ant-menu-item {
-                color: #CCCCCC;
+            .sidebar-menu .ant-menu-item {
+                color: var(--text-secondary);
                 border-radius: 8px;
                 margin: 4px 8px;
                 padding: 0 16px;
@@ -339,7 +359,7 @@ export const ComponentSider = () => {
             }
             
             /* 选中状态 - 渐变背景 */
-            .ant-menu-dark .ant-menu-item-selected {
+            .sidebar-menu .ant-menu-item-selected {
                 background: linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%);
                 color: #fff;
                 font-weight: 600;
@@ -347,27 +367,27 @@ export const ComponentSider = () => {
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
-            .ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon {
+            .sidebar-menu .ant-menu-item-selected .ant-menu-item-icon {
                 color: #fff;
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             /* 悬停效果 */
-            .ant-menu-dark .ant-menu-item:hover:not(.ant-menu-item-selected) {
+            .sidebar-menu .ant-menu-item:hover:not(.ant-menu-item-selected) {
                 background: rgba(94, 106, 210, 0.12);
                 transform: translateX(6px);
                 color: #7170ff;
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
-            .ant-menu-dark .ant-menu-item:hover:not(.ant-menu-item-selected) .ant-menu-item-icon {
+            .sidebar-menu .ant-menu-item:hover:not(.ant-menu-item-selected) .ant-menu-item-icon {
                 color: #7170ff;
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             /* 子菜单样式 */
-            .ant-menu-dark .ant-menu-submenu-title {
-                color: #CCCCCC;
+            .sidebar-menu .ant-menu-submenu-title {
+                color: var(--text-secondary);
                 border-radius: 8px;
                 margin: 4px 8px;
                 padding: 0 16px;
@@ -377,7 +397,7 @@ export const ComponentSider = () => {
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
-            .ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
+            .sidebar-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
                 background: linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%);
                 color: #fff;
                 font-weight: 600;
@@ -385,37 +405,37 @@ export const ComponentSider = () => {
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
-            .ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title .ant-menu-submenu-arrow {
+            .sidebar-menu .ant-menu-submenu-selected > .ant-menu-submenu-title .ant-menu-submenu-arrow {
                 color: #fff;
                 transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
-            .ant-menu-dark .ant-menu-submenu-title:hover:not(.ant-menu-submenu-selected) {
+            .sidebar-menu .ant-menu-submenu-title:hover:not(.ant-menu-submenu-selected) {
                 background: rgba(94, 106, 210, 0.12);
                 color: #7170ff;
                 transform: translateX(6px);
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
-            .ant-menu-dark .ant-menu-submenu-title:hover:not(.ant-menu-submenu-selected) .ant-menu-submenu-arrow {
+            .sidebar-menu .ant-menu-submenu-title:hover:not(.ant-menu-submenu-selected) .ant-menu-submenu-arrow {
                 color: #7170ff;
                 transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             }
             
             /* 即使子菜单被选中，父级菜单悬停时仍应有高亮效果 */
-            .ant-menu-dark .ant-menu-submenu-selected:hover > .ant-menu-submenu-title {
+            .sidebar-menu .ant-menu-submenu-selected:hover > .ant-menu-submenu-title {
                 background: linear-gradient(135deg, #7170ff 0%, #5e6ad2 100%) !important;
                 color: #fff;
                 transform: translateX(0px);
             }
             
-            .ant-menu-dark .ant-menu-submenu-selected:hover > .ant-menu-submenu-title .ant-menu-submenu-arrow {
+            .sidebar-menu .ant-menu-submenu-selected:hover > .ant-menu-submenu-title .ant-menu-submenu-arrow {
                 color: #fff;
             }
             
             /* 子菜单内容 */
-            .ant-menu-dark .ant-menu-sub {
-                background: rgba(0, 0, 0, 0.8);
+            .sidebar-menu .ant-menu-sub {
+                background: var(--bg-base);
                 border-radius: 8px;
                 margin: 4px 16px;
                 padding: 8px 0;
@@ -423,7 +443,7 @@ export const ComponentSider = () => {
                 transition: all 0.3s ease-in-out;
             }
             
-            .ant-menu-dark .ant-menu-sub .ant-menu-item {
+            .sidebar-menu .ant-menu-sub .ant-menu-item {
                 margin: 2px 8px;
                 padding-left: 24px;
                 height: 32px;
@@ -497,8 +517,8 @@ export const ComponentSider = () => {
             }
             
             /* 分组标题样式 */
-            .ant-menu-dark .ant-menu-item-group-title {
-                color: rgba(255, 255, 255, 0.45);
+            .sidebar-menu .ant-menu-item-group-title {
+                color: var(--text-tertiary);
                 font-size: 11px;
                 font-weight: normal;
                 text-transform: uppercase;
@@ -507,16 +527,16 @@ export const ComponentSider = () => {
                 margin-top: 4px;
             }
             
-            .ant-menu-dark .ant-menu-item-group:first-child .ant-menu-item-group-title {
+            .sidebar-menu .ant-menu-item-group:first-child .ant-menu-item-group-title {
                 margin-top: 0;
                 padding-top: 8px;
             }
             
-            .ant-menu-dark .ant-menu-item-group-list .ant-menu-item {
+            .sidebar-menu .ant-menu-item-group-list .ant-menu-item {
                 margin: 2px 8px;
             }
             
-            .ant-menu-dark .ant-menu-item-group-list .ant-menu-submenu-title {
+            .sidebar-menu .ant-menu-item-group-list .ant-menu-submenu-title {
                 margin: 2px 8px;
             }
         `;
@@ -656,7 +676,7 @@ export const ComponentSider = () => {
                 flexDirection: 'column',
                 position: 'relative',
             }}
-            theme="dark"
+            theme={isDark ? "dark" : "light"}
         >
             {/* 顶部Logo和租户选择区域 */}
             <div style={{
@@ -743,7 +763,7 @@ export const ComponentSider = () => {
                 className="sidebar-menu-container"
             >
                 <Menu
-                    theme="dark"
+                    theme={isDark ? "dark" : "light"}
                     mode="inline"
                     selectedKeys={[selectedMenuKey]}
                     style={{ background: 'transparent'}}
@@ -787,16 +807,19 @@ export const ComponentSider = () => {
                 />
             </div>
 
-            {/* 绝对定位底部用户信息 */}
+            {/* 绝对定位底部用户信息 + 主题切换 */}
             <div style={{
                 position: 'absolute',
                 left: 0,
                 bottom: 0,
                 width: '100%',
-                padding: '16px',
-                borderTop: '1px solid rgba(167, 135, 83, 0.2)',
-                background: 'linear-gradient(180deg, rgba(0,0,0,0.8) 0%, #000 100%)',
+                padding: '12px 16px',
+                borderTop: '1px solid var(--border-subtle)',
+                background: 'var(--bg-elevated)',
                 backdropFilter: 'blur(10px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
             }}>
                 <Popover 
                     content={<Menu mode="vertical" items={userPopoverMenuItems} />} 
@@ -808,8 +831,9 @@ export const ComponentSider = () => {
                         alignItems: "center",
                         cursor: "pointer",
                         padding: '8px',
-                        borderRadius: '4px',
-                        width: '100%',
+                        borderRadius: '8px',
+                        flex: 1,
+                        minWidth: 0,
                     }}>
                         <Avatar
                             style={{
@@ -825,12 +849,20 @@ export const ComponentSider = () => {
                             {userInfo.username ? userInfo.username.charAt(0).toUpperCase() : ""}
                         </Avatar>
                         <div style={{marginLeft: "12px", overflow: 'hidden'}}>
-                            <Typography.Text style={{color: "#FFFFFFA6", display: 'block'}}>
+                            <Typography.Text style={{color: "var(--text-primary)", display: 'block'}}>
                                 {userInfo.username}
                             </Typography.Text>
                         </div>
                     </div>
                 </Popover>
+                <Button
+                    type="text"
+                    size="small"
+                    onClick={handleToggleTheme}
+                    icon={isDark ? <SunOutlined /> : <MoonOutlined />}
+                    style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}
+                    title={isDark ? "切换到浅色主题" : "切换到深色主题"}
+                />
             </div>
         </Sider>
     );

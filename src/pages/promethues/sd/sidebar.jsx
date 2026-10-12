@@ -134,9 +134,9 @@ export const ServiceGroupSidebar = ({ selectedGroupId, onGroupChange }) => {
                                     cursor: 'pointer',
                                     userSelect: 'none',
                                     background: isSelected ? '#f5f0e6' : '#fff',
-                                    border: `1px solid ${isSelected ? 'rgba(167, 135, 83, 0.5)' : '#f0f0f0'}`,
+                                    border: `1px solid ${isSelected ? 'rgba(94, 106, 210, 0.5)' : '#f0f0f0'}`,
                                     boxShadow: isSelected
-                                        ? '0 1px 4px rgba(167, 135, 83, 0.15)'
+                                        ? '0 1px 4px rgba(94, 106, 210, 0.25)'
                                         : isHovered
                                             ? '0 1px 4px rgba(0,0,0,0.08)'
                                             : '0 0.5px 2px rgba(0,0,0,0.04)',
@@ -151,7 +151,7 @@ export const ServiceGroupSidebar = ({ selectedGroupId, onGroupChange }) => {
                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                                     <FolderOutlined style={{
                                         fontSize: '14px',
-                                        color: isSelected ? 'rgb(167, 135, 83)' : '#bfbfbf',
+                                        color: isSelected ? '#5e6ad2' : '#bfbfbf',
                                         marginTop: '2px',
                                         flexShrink: 0,
                                     }} />

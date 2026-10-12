@@ -295,9 +295,9 @@ export const RuleTemplateGroup = () => {
                                             cursor: 'pointer',
                                             userSelect: 'none',
                                             background: isSelected ? '#f5f0e6' : '#fff',
-                                            border: `1px solid ${isSelected ? 'rgba(167, 135, 83, 0.45)' : '#f0f0f0'}`,
+                                            border: `1px solid ${isSelected ? 'rgba(94, 106, 210, 0.45)' : '#f0f0f0'}`,
                                             boxShadow: isSelected
-                                                ? '0 1px 4px rgba(167, 135, 83, 0.12)'
+                                                ? '0 1px 4px rgba(94, 106, 210, 0.2)'
                                                 : '0 0.5px 2px rgba(0,0,0,0.04)',
                                             transition: 'all 0.12s ease',
                                         }}
